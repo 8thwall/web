@@ -1,6 +1,6 @@
 # IMPORTANT NOTE:
 
-This page is still under construction
+This page is still under construction. The information contained here may be still be incomplete.
 
 # Amazon Sumerian with 8th Wall Web
 ### tl;dr
