@@ -67,7 +67,7 @@ Delete all entites, cameras, lights, etc. from your scene. It should be complete
 *Note: You may get an error that the camera cannot be deleted. If so, rename to "Delete me".*
 
 Click `Import Assets` at the top of the page.
-Drag in the `sumerian-toaster-scene.zip` file contained in this repo.
+Drag in the `xrsumerian-scene.zip` file contained in this repo.
 Click the `AR Camera` entity in your scene.
 On the right pane, there should be a `Camera` category. Check the `Main Camera` option on it.
 If you previously renamed a camera "Delete me", then delete that camera from the scene.
@@ -76,15 +76,15 @@ If you previously renamed a camera "Delete me", then delete that camera from the
 Within the Sumerian scene, you should see a `Publish` button on the top right.
 Click the `Publish` button, then click `Host Privately`, then `Publish`.
 Copy the JSON provided in the drop down that appeared.
-Create a new file under your repository's `sumerian-toaster/src/` folder called `sumerian-exports.json`. Paste the copied JSON there.
+Create a new file under your repository's `xrsumerian/src/` folder called `sumerian-exports.json`. Paste the copied JSON there.
 
 ## Creating and Setting up an Amazon Amplify App
 Now that a Sumerian scene has been created and published, let's get an Ampliy project setup to host it!
 
-First, make sure you are back in the root directory of your `sumerian-toaster` project.
+First, make sure you are back in the root directory of your `xrsumerian` project.
 ```
 $ pwd
-/path_to_repo/sumerian-toaster
+/path_to_repo/xrsumerian
  ```
 
 Then run the following to setup download the necessary Node dependencies and setp Amplify:
@@ -143,11 +143,11 @@ For both of these, do the following:
 4) Enter a name for the application you'd like to create and click `Create`.
 5) Click the `Edit` button on the newly created app.
 6) Copy the `appKey` value displayed in the script tag at the top of the page.
-7) Navigate to the `sumerian-toaster/index.html` file in your project.
+7) Navigate to the `xrsumerian/index.html` file in your project.
 8) Paste in the app key in the 8th Wall Web script tag.
 
 ## Testing your App
-From the `sumerian-toaster` directory, run the following command:
+From the `xrsumerian` directory, run the following command:
 ```
 $ npm start
 ```
