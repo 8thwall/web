@@ -14,3 +14,4 @@ Tap to place | Toss Object | Portal
 ------------ | ----------- | ------
 ![tapplace-screenshot](../../images/screenshot-tap.jpg) | ![toss-screenshot](../../images/screenshot-toss.jpg) | ![portal-screenshot](../../images/screenshot-portal.jpg)
 [Try Now](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Now](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Now](https://apps.8thwall.com/8thWall/aframe_portal)
+Scan on phone ![QR1](../../images/qr-placeground.png) | Scan on phone ![QR2](../../images/qr-tossobject.png) | Scan on phone ![QR2](../../images/qr-portal.png)
