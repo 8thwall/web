@@ -1,0 +1,3 @@
+dist/*
+src/sumerian-exports.json
+src/aws-exports.js
