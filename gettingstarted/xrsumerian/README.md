@@ -1,7 +1,3 @@
-# IMPORTANT NOTE:
-
-This page is still under construction. The information contained here may be still be incomplete.
-
 # Amazon Sumerian with 8th Wall Web
 ### tl;dr
 While Amazon Sumerian provides you with the tools to create immersive 3D experiences, it does not provide creative control over the web page that is hosting these experiences. In order do something like, say, customize your loading screen, you’re required to use Sumerian with Amazon Amplify. Amazon Amplify is a tool that allows developers to create web apps and provides APIs to several AWS Services (like Sumerian!).
@@ -72,6 +68,8 @@ Click the `AR Camera` entity in your scene.
 On the right pane, there should be a `Camera` category. Check the `Main Camera` option on it.
 If you previously renamed a camera "Delete me", then delete that camera from the scene.
 
+Next, open up `src/app.js`. Edit `YOUR_AWS_REGION` to be the AWS region in which you created your Sumerian scene.
+
 ## Publishing a Sumerian Scene
 Within the Sumerian scene, you should see a `Publish` button on the top right.
 Click the `Publish` button, then click `Host Privately`, then `Publish`.
@@ -111,7 +109,7 @@ Use the defaults again when prompted by `amplify add auth`.
 
 ## Granting Sumerian Access to AWS Services
 ### Adding Access for Unauthenticated Identities to an Identity Pool
-1) Open up `src/aws-exports.json`. Take not of your `aws_project_region` and `aws_cognito_identity_pool_id` for the next step.
+1) Open up `src/aws-exports.json`. Take note of your `aws_project_region` and `aws_cognito_identity_pool_id` for the next step.
 2) Navigate to:
 ```url
 https://{aws_project_region}.console.aws.amazon.com/cognito/pool/?region={aws_project_region}&id={aws_cognito_identity_pool_id}
