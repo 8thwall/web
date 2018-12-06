@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.75, user-scalable=yes">
+    <title>8th Wall Web: three.js</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+    <!-- THREE.js must be supplied -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js"></script>
+
+    <!-- Required to load glTF (.gltf or .glb) models -->
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+
+    <!-- Javascript tweening engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+
+    <!-- 8thWall Web - Replace the app key here with your own app key -->
+    <script async src="https://apps.8thwall.com/xrweb?appKey=XXXXXXXXXXXXXXX"></script>
+
+    <!-- client code -->
+    <script src="index.js"></script>
+  </head>
+
+  <body>
+    <!-- The AR canvas -->
+    <canvas id="xrweb" width="480" height="640" />
+
+  </body>
+</html>

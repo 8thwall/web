@@ -17,3 +17,15 @@ Tap to place | Toss Object | Portal
 ![tapplace-screenshot](../images/screenshot-tap.jpg) | ![toss-screenshot](../images/screenshot-toss.jpg) | ![portal-screenshot](../images/screenshot-portal.jpg)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_portal)
 or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR2](../images/qr-portal.png)
+
+## three.js
+
+* [Tap to place](https://github.com/8thwall/web/tree/master/examples/threejs/placeground) - This interactive example allows the user to grow trees on the ground by tapping. This showcases raycasting, instantiating objects, importing 3D models, and animation.
+
+After following the steps above, you should have fully functional versions of:
+
+Tap to place
+:----------:
+![tapplace-threejs-screenshot](../images/screenshot-tap.jpg)
+[Try Demo (mobile)](https://apps.8thwall.com/8thWall/threejs_placeground)
+or scan on phone:<br> ![QR1](../images/qr-threejs-placeground.png)
