@@ -1,5 +1,5 @@
 // Copyright (c) 2018 8th Wall, Inc.
-// Original Author: Scott Pollack (scott@8thwall.com)
+
 const os = require('os')
 const dns = require('dns')
 const path = require('path')
@@ -41,7 +41,7 @@ if (process.env.CERT_FILE) {
 
 const serverConfig = {
   compress: true,
-  clientLogLevel: 'info', 
+  clientLogLevel: 'info',
   contentBase: contentBase,
   watchContentBase: true,
   publicPath: '/',
@@ -67,56 +67,78 @@ const config = {
   plugins: [],
 }
 
-dns.lookup(os.hostname(), (err, address) => {
+// Determine interface address
+const ifaces = Object.entries(os.networkInterfaces())
+  .reduce((o, [k, v]) => o.concat(v.map(v => ({...v, iface: k}))), [])
+  .filter(i => i.family === 'IPv4')
+  .sort((a, b) => (a.iface < b.iface ? -1 : 1))
+const ifacesByName = ifaces
+  .reduce((o, v) => Object.assign(o, {[v.iface]: v.address}), {})
+if (ifaces.length < 1) {
+  console.error('No network interfaces found, cannot serve.')
+  process.exit(1)
+}
+const iface = process.env.NET_IFACE || ifaces[0].iface
+const address = ifacesByName[iface]
+if (!address) {
+  console.error(`Interface ${iface} does not exist`, ifacesByName)
+  process.exit(1)
+}
+if (ifaces.length > 2) {
+  // expect en0 and lo0
+  console.log(`There are multiple network interfaces.  Use -i <name> to choose.`)
+  console.log(`  ${JSON.stringify(ifacesByName)}`)
+  console.log(`using ${iface} = ${address}`)
+  console.log('')
+}
 
-  // Inject live.js into page for hot reloading
-  config.plugins.push(new HtmlWebpackPlugin({
-    inject: true,
-    template: `${contentBase}/index.html`,
-  }))
+// Inject live.js into page for hot reloading
+config.plugins.push(new HtmlWebpackPlugin({
+  inject: true,
+  template: `${contentBase}/index.html`,
+}))
 
-  // enable hot reloading
-  if (process.env.NO_RELOAD !== "true") {
-    config.entry.app.unshift(path.resolve(__dirname, '..', 'node_modules', 'webpack-dev-server/client/index.js')
-      + `?${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`)
-    config.devServer = { inline: "true" }
+// enable hot reloading
+if (process.env.NO_RELOAD !== "true") {
+  config.entry.app.unshift(path.resolve(__dirname, '..', 'node_modules', 'webpack-dev-server/client/index.js')
+    + `?${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`)
+  config.devServer = { inline: "true" }
+}
+
+const compiler = webpack(config)
+compiler.plugin('invalid', () => console.log('Compiling...'))
+compiler.plugin('done', stats => {
+  const isSuccessful = !stats.compilation.errors.length && !stats.compilation.warnings.length
+  if (isSuccessful) {
+    console.log(chalk.green('Compiled successfully!'))
   }
+  if (stats.compilation.errors.length) {
+    console.log(chalk.red('Failed to compile.\n'))
+    console.log(stats.compilation.errors[0] + '\n\n')
+    return
+  }
+  if (stats.compilation.warnings.length) {
+    console.log(chalk.yellow('Compiled with warnings.\n'))
+    console.log(stats.compilation.warnings.join('\n\n'))
+  }
+}) // end compiler.plugin on done
 
-  const compiler = webpack(config)
-  compiler.plugin('invalid', () => console.log('Compiling...'))
-  compiler.plugin('done', stats => {
-    const isSuccessful = !stats.compilation.errors.length && !stats.compilation.warnings.length
-    if (isSuccessful) {
-      console.log(chalk.green('Compiled successfully!'))
-    }
-    if (stats.compilation.errors.length) {
-      console.log(chalk.red('Failed to compile.\n'))
-      console.log(stats.compilation.errors[0] + '\n\n')
-      return
-    }
-    if (stats.compilation.warnings.length) {
-      console.log(chalk.yellow('Compiled with warnings.\n'))
-      console.log(stats.compilation.warnings.join('\n\n'))
-    }
-  }) // end compiler.plugin on done
-
-  // Launch WebpackDevServer.
-  const devServer = new WebpackDevServer(compiler, serverConfig)
-  devServer.listen(PORT, serverConfig.host, err => {
-    if (err) {
-      return console.error(err)
-    }
-    const message = `Starting the development server\n` + 
-      `  Listening: ${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}\n` +
-      `  Serving  : ${contentBase}`
-    console.log(boxen(chalk.bold(chalk.cyan(message)), { padding: 1, borderColor: 'green', margin: 1 }))
-  })
-
-  ;['SIGINT', 'SIGTERM'].forEach(function(sig) {
-    process.on(sig, function() {
-      devServer.close()
-      process.exit()
-    })
-  })
-
+// Launch WebpackDevServer.
+const devServer = new WebpackDevServer(compiler, serverConfig)
+devServer.listen(PORT, serverConfig.host, err => {
+  if (err) {
+    return console.error(err)
+  }
+  const message = `Starting the development server\n` +
+    `  Listening: ${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}\n` +
+    `  Serving  : ${contentBase}`
+  console.log(boxen(chalk.bold(chalk.cyan(message)), { padding: 1, borderColor: 'green', margin: 1 }))
 })
+
+;['SIGINT', 'SIGTERM'].forEach(sig => {
+  process.on(sig, () => {
+    devServer.close()
+    process.exit()
+  })
+})
+

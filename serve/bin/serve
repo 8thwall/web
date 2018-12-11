@@ -13,6 +13,7 @@ function usage() {
   echo "8  -p PORT   default PORT=8080"
   echo "8  -h        hot reload on localhost"
   echo "8  -r        enable hot reload"
+  echo "8  -i IFACE  choose network interface"
   echo "8  -n        don't print these instructions"
   echo "8  -- ...    forwarded to serve"
   echo "8"
@@ -26,6 +27,7 @@ while [ ! -z "$1" ]; do
     -p) shift; export PORT=$1; shift;;
     -r) export NO_RELOAD=false; shift;;
     -h) export USE_LOCALHOST=true; shift;;
+    -i) shift; export NET_IFACE=$1; shift;;
     -n) PRINT_INSTRUCTIONS=""; shift;;
     --) break;;
     *) usage;;

@@ -15,6 +15,7 @@ SET PRINT_INSTRUCTIONS=true
   ) ELSE IF "%1" == "-h" (SET USE_LOCALHOST=true
   ) ELSE IF "%1" == "-r" (SET NO_RELOAD=false
   ) ELSE IF "%1" == "-n" (SET PRINT_INSTRUCTIONS=false
+  ) ELSE IF "%1" == "-n" (SET NET_IFACE=%2 & SHIFT
   ) ELSE IF NOT "%1" == "" (SET PRINT_INSTRUCTIONS=true & ECHO UNKNOWN FLAG: %1
   )
   SHIFT
@@ -37,6 +38,7 @@ EXIT /B %ERRORLEVEL%
   echo 8  -p PORT   default PORT=8080
   echo 8  -h        hot reload on localhost
   echo 8  -r        enable hot reload
+  echo 8  -i IFACE  choose network interface
   echo 8  -n        don't print these instructions
   echo 8
   echo 8888888888888888888888888888888888888888888888888888888888888888
