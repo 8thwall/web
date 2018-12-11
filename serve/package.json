@@ -2,7 +2,6 @@
   "name": "serve",
   "version": "1.0.0",
   "main": "src/index.js",
-  "author": "Scott Pollack <scott@8thwall.com>",
   "license": "Copyright (c) 2018 8th Wall, Inc.",
   "dependencies": {
     "boxen": "^1.3.0",
