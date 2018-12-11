@@ -1,5 +1,5 @@
 // Copyright (c) 2018 8th Wall, Inc.
-// Original Author: Scott Pollack (scott@8thwall.com)
+
 const os = require('os')
 const dns = require('dns')
 const path = require('path')
