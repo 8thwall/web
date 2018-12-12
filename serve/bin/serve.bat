@@ -15,7 +15,7 @@ SET PRINT_INSTRUCTIONS=true
   ) ELSE IF "%1" == "-h" (SET USE_LOCALHOST=true
   ) ELSE IF "%1" == "-r" (SET NO_RELOAD=false
   ) ELSE IF "%1" == "-n" (SET PRINT_INSTRUCTIONS=false
-  ) ELSE IF "%1" == "-n" (SET NET_IFACE=%2 & SHIFT
+  ) ELSE IF "%1" == "-i" (SET NET_IFACE=%2 & SHIFT
   ) ELSE IF NOT "%1" == "" (SET PRINT_INSTRUCTIONS=true & ECHO UNKNOWN FLAG: %1
   )
   SHIFT
