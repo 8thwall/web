@@ -19,6 +19,7 @@ if (process.argv.length < 3) {
   console.log('  USE_LOCALHOST  # [false] "true" hot reloads over localhost instead of ip')
   console.log('  NO_RELOAD      # [false] "true" disables hot reloading, useful for iOS')
   console.log('  CERT_FILE      # set to SSL certificate file')
+  console.log('  NET_IFACE      # choose network interface by name')
   process.exit(1)
 }
 const contentBase = process.argv[2]
@@ -68,17 +69,26 @@ const config = {
 }
 
 // Determine interface address
+const fixName = n => n.replace(/\-/g, '').replace(/ /g, '')
 const ifaces = Object.entries(os.networkInterfaces())
   .reduce((o, [k, v]) => o.concat(v.map(v => ({...v, iface: k}))), [])
   .filter(i => i.family === 'IPv4')
-  .sort((a, b) => (a.iface < b.iface ? -1 : 1))
+  .sort((a, b) => {
+    if (a.internal && !b.internal) {
+      return 1
+    }
+    if (b.internal && !a.internal) {
+      return -1
+    }
+    return (a.iface < b.iface ? -1 : 1)
+  })
 const ifacesByName = ifaces
-  .reduce((o, v) => Object.assign(o, {[v.iface]: v.address}), {})
+  .reduce((o, v) => Object.assign(o, {[fixName(v.iface)]: v.address}), {})
 if (ifaces.length < 1) {
   console.error('No network interfaces found, cannot serve.')
   process.exit(1)
 }
-const iface = process.env.NET_IFACE || ifaces[0].iface
+const iface = (process.env.NET_IFACE && process.env.NET_IFACE.trim()) || fixName(ifaces[0].iface)
 const address = ifacesByName[iface]
 if (!address) {
   console.error(`Interface ${iface} does not exist`, ifacesByName)
