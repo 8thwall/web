@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>8thWall Web: QR Code</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+    <!-- 8thWall Web - Replace the app key here with your own app key -->
+    <script async src="https://apps.8thwall.com/xrweb?appKey=XXXXXXXXXXXXXXXXX"></script>
+
+    <!-- JSQRCode -->
+    <script src="jsqrcode/src/grid.js"></script>
+    <script src="jsqrcode/src/version.js"></script>
+    <script src="jsqrcode/src/detector.js"></script>
+    <script src="jsqrcode/src/formatinf.js"></script>
+    <script src="jsqrcode/src/errorlevel.js"></script>
+    <script src="jsqrcode/src/bitmat.js"></script>
+    <script src="jsqrcode/src/datablock.js"></script>
+    <script src="jsqrcode/src/bmparser.js"></script>
+    <script src="jsqrcode/src/datamask.js"></script>
+    <script src="jsqrcode/src/rsdecoder.js"></script>
+    <script src="jsqrcode/src/gf256poly.js"></script>
+    <script src="jsqrcode/src/gf256.js"></script>
+    <script src="jsqrcode/src/decoder.js"></script>
+    <script src="jsqrcode/src/qrcode.js"></script>
+    <script src="jsqrcode/src/findpat.js"></script>
+    <script src="jsqrcode/src/alignpat.js"></script>
+    <script src="jsqrcode/src/databr.js"></script>
+
+    <!-- Client code -->
+    <script defer src="index.js"></script>
+  </head>
+
+  <body>
+    <div class="canvas">
+      <canvas id="camerafeed"></canvas>
+    </div>
+    <div class="cardplace">
+      <div class="card" id="url">
+      </div>
+    </div>
+  </body>
+</html>
