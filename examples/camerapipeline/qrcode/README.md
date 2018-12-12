@@ -7,4 +7,4 @@ QR Code
 :----------:
 ![qrcode-screenshot](../../../images/screenshot-qrcode.png)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/camerapipeline_qrcode)
-or scan on phone:<br> ![QR1](../../images/qr-camerapipeline_qrcode.png)
+or scan on phone:<br> ![QR1](../../../images/qr-camerapipeline_qrcode.png)

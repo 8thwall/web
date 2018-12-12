@@ -7,4 +7,4 @@ Camera Feed
 :----------:
 ![camerafeed-screenshot](../../../images/screenshot-camerafeed.png)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/camerapipeline_camerafeed)
-or scan on phone:<br> ![QR1](../../images/qr-camerapipeline_camerafeed.png)
+or scan on phone:<br> ![QR1](../../../images/qr-camerapipeline_camerafeed.png)

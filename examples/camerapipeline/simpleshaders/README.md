@@ -6,4 +6,4 @@ Simple Shaders
 :----------:
 ![simpleshaders-screenshot](../../../images/screenshot-simpleshaders.png)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/camerapipeline_simpleshaders)
-or scan on phone:<br> ![QR1](../../images/qr-camerapipeline_simpleshaders.png)
+or scan on phone:<br> ![QR1](../../../images/qr-camerapipeline_simpleshaders.png)
