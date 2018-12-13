@@ -1,29 +1,5 @@
-body {
-  margin: 0px;
-}
-
-canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-}
-
-div.canvas {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-}
-
 div.nextbutton {
-  z-index: 1;
+  z-index: 10;
   width: 33%;
   height: 10%;
   position: absolute;
@@ -33,5 +9,6 @@ div.nextbutton {
   text-align: center;
   color: #FFFFFF;
   vertical-align: middle;
-  user-select: none
+  user-select: none;
+  visibility: hidden;
 }
