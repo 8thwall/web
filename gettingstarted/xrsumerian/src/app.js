@@ -12,7 +12,7 @@ Auth.configure(awsconfig);
 
 AwsXR.configure({
   SumerianProvider: {
-    region: 'us-west-2', // Sumerian region
+    region: 'YOUR_AWS_REGION', // Sumerian region
     scenes: {
       "scene1": { // Friendly scene name
         sceneConfig: scene1Config // Scene configuration from Sumerian publish
