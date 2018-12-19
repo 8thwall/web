@@ -6,6 +6,7 @@ const path = require('path')
 const chalk = require('chalk')
 const boxen = require('boxen')
 const webpack = require('webpack')
+const qr = require('qrcode')
 const WebpackDevServer = require('webpack-dev-server')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -139,12 +140,17 @@ devServer.listen(PORT, serverConfig.host, err => {
   if (err) {
     return console.error(err)
   }
+  const url = `${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`
   const message = `Starting the development server\n\n` +
-    `  Listening: ${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}\n` +
+    `  Listening: ${url}\n` +
     `  Serving  : ${contentBase}\n\n` +
     `  IMPORTANT: Make sure to copy the entire "Listening" URL above into your browser,\n` +
     `  including both the protocol "${protocol}://" at the beginning, and port ":${PORT}" number at the end.`
-  console.log(boxen(chalk.bold(chalk.cyan(message)), { padding: 1, borderColor: 'green', margin: 1 }))
+
+  qr.toString(url, { type: 'terminal' }, (err, qrtext) => {
+    const msg = err ? message : `${message}\n\nOr scan the QR code:\n\n${qrtext}`
+    console.log(boxen(chalk.bold(chalk.cyan(msg)), { padding: 1, borderColor: 'green', margin: 1 }))
+  })
 })
 
 ;['SIGINT', 'SIGTERM'].forEach(sig => {
