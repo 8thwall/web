@@ -139,9 +139,11 @@ devServer.listen(PORT, serverConfig.host, err => {
   if (err) {
     return console.error(err)
   }
-  const message = `Starting the development server\n` +
+  const message = `Starting the development server\n\n` +
     `  Listening: ${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}\n` +
-    `  Serving  : ${contentBase}`
+    `  Serving  : ${contentBase}\n\n` +
+    `  IMPORTANT: Make sure to copy the entire "Listening" URL above into your browser,\n` +
+    `  including both the protocol "${protocol}://" at the beginning, and port ":${PORT}" number at the end.`
   console.log(boxen(chalk.bold(chalk.cyan(message)), { padding: 1, borderColor: 'green', margin: 1 }))
 })
 
