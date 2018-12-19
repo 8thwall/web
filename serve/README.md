@@ -22,6 +22,8 @@ Example:
 ./serve/bin/serve -n -d gettingstarted/xraframe/ -p 7777
 ```
 
+**IMPORTANT**: To connect to this local webserver, make sure to copy the **entire** "Listening" URL into your browser, including both the "**https://**" at the beginning and **port** number at the end.
+
 **NOTE**: If the serve script states it's listening on **127.0.0.1**:<port\> (which is the loopback device aka "localhost") your mobile phone won't be able to connect to that IP address directly.  Please re-run the `serve` script with the `-i` flag to specify the network interface the serve script should listen on.
 
 Example - specify network interface:
@@ -48,6 +50,7 @@ Example:
 ```
 serve\bin\serve.bat -n -d gettingstarted\xraframe -p 7777
 ```
+**IMPORTANT**: To connect to this local webserver, make sure to copy the **entire** "Listening" URL into your browser, including both the "**https://**" at the beginning and **port** number at the end.
 
 **NOTE**: If the serve script states it's listening on **127.0.0.1**:<port\> (which is the loopback device aka "localhost") your mobile phone won't be able to connect to that IP address directly.  Please re-run the `serve` script with the `-i` flag to specify the network interface the serve script should listen on.
 
