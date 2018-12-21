@@ -1,0 +1,84 @@
+* {
+  font-family: inherit;
+  box-sizing: inherit;
+}
+
+#almostthereContainer {
+  z-index: 820;
+  background-color: #FFFFFF;
+}
+
+.absolute-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.apple-safari-hint {
+  position: fixed;
+  bottom: 3%;
+  right: 8%;
+  height: 72px;
+}
+
+.desktop-home-link {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color:rgba(173, 80, 255, 0.2);
+  -webkit-user-select: all;  /* Chrome 49+ */
+  -moz-user-select: all;     /* Firefox 43+ */
+  -ms-user-select: all;      /* No support yet */
+  user-select: all;
+  pointer-events: auto;
+}
+
+.error-text-outer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-margin-top-5 {
+  margin-top: 5vh;
+}
+
+.error-margin-top-20 {
+  margin-top: 20vh;
+}
+
+.error-text-container {
+  flex: 0 0 auto;
+  text-align: center;
+  width: 90%;
+}
+
+.error-text-header {
+  font-family: 'Varela-Round', sans-serif;
+  font-size: 18pt;
+  color: #323232;
+  letter-spacing: .37;
+  line-height: 23pt;
+}
+
+.error-text-detail {
+  font-family: 'Varela-Round', sans-serif;
+  font-size: 14pt;
+  color: #323232;
+  letter-spacing: .37;
+  line-height: 23pt;
+}
+
+.error-text-hint {
+  font-family: 'Raleway-Regular', sans-serif;
+  font-size: 14pt;
+  color: #A8A8BA;
+  letter-spacing: .37;
+}

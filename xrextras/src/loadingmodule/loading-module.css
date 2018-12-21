@@ -1,0 +1,195 @@
+* {
+  font-family: inherit;
+  box-sizing: inherit;
+}
+
+#loadingContainer {
+  z-index: 800;
+}
+
+.absolute-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#loadBackground {
+  z-index: 10;
+  background-color: white;
+  pointer-events: auto;
+}
+
+#requestingCameraPermissions {
+  z-index: 11;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  text-align: center;
+  color: white;
+  font-size: 3.7vh;
+  background-color: #7611B7;
+  padding: 3vh 0;
+  font-family: 'Varela-Round', sans-serif;
+}
+
+#requestingCameraIcon {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 2vh;
+  height: 7vh;
+}
+
+#loadImage {
+  position: absolute;
+  margin-top: -2.5em;
+  margin-left: -2.5em;
+  top: 50%;
+  left: 50%;
+  height: 5em;
+  width: 5em;
+  transform: translate(-50%, -50%);
+}
+
+#cameraPermissionsErrorApple {
+  padding: 20vh 5vw;
+  font-size: 6.5vmin;
+  text-align: center;
+}
+
+#cameraPermissionsErrorAppleArrow {
+  position: absolute;
+  right: 5vmin;
+  top: 15vmin;
+  width: 20vmin;
+  transform: rotate(130deg);
+}
+
+#cameraPermissionsErrorAppleReloadCamera {
+  display: block;
+  margin: 0 auto;
+  margin-top: 10vh;
+  max-width: 30vw;
+}
+
+#cameraPermissionsErrorAndroid {
+  padding: 2vh 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white
+}
+
+#cameraPermissionsCameraIcon{
+  overflow: hidden;
+  flex: 0 0 auto;
+  margin-bottom: 2vh;
+}
+
+#cameraPermissionsCameraIcon img {
+  display: block;
+  margin: 0 auto;
+  height: 5vh;
+}
+
+#cameraPermissionsDeniedHeader {
+  font-size: 3.5vh;
+  flex: 0 0 auto;
+}
+
+#cameraPermissionsDeniedFooter {
+  font-size: 3vh;
+  line-height: 5.5vh;
+  flex: 0 0 auto;
+  text-align: center;
+  width: 80vmin
+}
+
+#cameraPermissionsDeniedFooter img {
+  display: block;
+  height: 5vh;
+  margin: 0 auto;
+  margin-bottom: 2vh;
+}
+
+#cameraPermissionsDeniedInstructions {
+  flex: 0 0 auto;
+}
+
+#cameraPermissionsDeniedInstructionsList {
+  font-family: 'Raleway-Regular', sans-serif;
+  font-size: 2.5vh;
+  list-style: none;
+  margin-left: 1em;
+  counter-reset: line;
+}
+
+#cameraPermissionsDeniedInstructionsList > li {
+  position: relative;
+  margin-bottom: 5vh;
+}
+
+#cameraPermissionsDeniedInstructionsList > li > img {
+  max-height: 3vh;
+  vertical-align: middle;
+  margin: 0 .5vh;
+}
+
+#cameraPermissionsDeniedInstructionsList > li:before {
+  font-family: 'Varela-Round', sans-serif;
+  position: absolute;
+  width: 6vh;
+  height: 6vh;
+  border-radius: 3vh;
+  color: #fff;
+  background-color: rgba(218, 209, 228, 128);
+  text-align:center;
+  left: -8vh;
+  top: -1vh;
+  font-size: 2.5vh;
+  line-height: 6.5vh;
+  counter-increment: line;
+  content: counter(line);
+}
+
+.highlight {
+  color: #7611B7;
+  font-family: 'Raleway-Bold', sans-serif;
+  font-weight: bold;
+}
+
+.camera-instruction-block {
+  display: inline-block;
+  background-color: #EBEBEB;
+  padding: 1vh;
+}
+
+.camera-instruction-button {
+  display: inline-block;
+  background-color: #EBEBEB;
+  padding: 1vh;
+  background-color: #359AFF;
+  color: white;
+  font-size: 2vh;
+  box-shadow: 0 .125vh .25vh rgba(0, 0, 0, 0.5);
+}
+
+.rotate-center {animation: rotate-center 1.1s cubic-bezier(0.785, 0.135, 0.150, 0.860) infinite both;}
+@keyframes rotate-center {
+  0% {transform: rotate(0);}
+  100% {transform: rotate(360deg);}
+}
+
+.fade-out { animation: fade-out 1s linear forwards; }
+@keyframes fade-out {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
