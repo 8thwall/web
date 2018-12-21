@@ -1,0 +1,66 @@
+<div id="loadingContainer" class="absolute-fill">
+  <!--Loading screen-->
+  <div id="loadBackground" class="absolute-fill">
+    <div id="loadImageContainer" class="absolute-fill">
+      <img src="//cdn.8thwall.com/web/img/loading/v1/eight.png" id="loadImage" class="rotate-center" />
+    </div>
+  </div>
+
+  <!--Camera Permissions-->
+  <div id="requestingCameraPermissions" class="hidden" />
+    <img id="requestingCameraIcon" src="//cdn.8thwall.com/web/img/loading/v1/camera-purple.png" />
+    Tap "Allow" so we can<br>augment your reality.
+  </div>
+
+  <!--Permission error, iOS-->
+  <div id="cameraPermissionsErrorApple" class="absolute-fill hidden" />
+    Refresh the page to enable<br>your camera for AR
+    <img id="cameraPermissionsErrorAppleArrow" src="//cdn.8thwall.com/web/img/loading/v1/arrow.png" />
+    <img id="cameraPermissionsErrorAppleReloadCamera" src="//cdn.8thwall.com/web/img/loading/v1/reload-camera.png" />
+  </div>
+
+  <!--Permission error, Android-->
+  <div id="cameraPermissionsErrorAndroid" class="absolute-fill hidden">
+    <div id="cameraPermissionsCameraIcon">
+      <img src="//cdn.8thwall.com/web/img/loading/v1/camera-purple.png" />
+    </div>
+    <div id="cameraPermissionsDeniedHeader">Let's enable your camera</div>
+    <div id="cameraPermissionsDeniedInstructions">
+      <ol id="cameraPermissionsDeniedInstructionsList">
+        <li>Tap the <img src="//cdn.8thwall.com/web/img/loading/v1/ellipsis.png"> in the top right</li>
+        <li>Tap <span class="highlight">Settings</li>
+        <li class="chrome-instruction hidden">
+          <span class="highlight">Site settings</span>
+        </li>
+        <li class="chrome-instruction hidden">
+          <span class="highlight">Camera</span>
+        </li>
+        <li class="chrome-instruction hidden">
+          <span class="highlight">Blocked</span>
+          <br>
+          <span class="camera-instruction-block domain-view">apps.8thwall.com</span>
+        </li>
+        <li class="chrome-instruction hidden">
+          <span class="camera-instruction-button">CLEAR & RESET</span>
+        </li>
+        <li class="samsung-instruction hidden">
+          <span class="highlight">Advanced</span>
+        </li>
+        <li class="samsung-instruction hidden">
+          <span class="highlight">Manage website data</span>
+        </li>
+        <li class="samsung-instruction hidden">
+          Press and hold<br>
+          <span class="camera-instruction-block domain-view">apps.8thwall.com</span>
+        </li>
+        <li class="samsung-instruction hidden">
+          <span class="highlight" style="color: #1500ba">DELETE</span>
+        </li>
+      </ol>
+    </div>
+    <div id="cameraPermissionsDeniedFooter">
+      <img src="//cdn.8thwall.com/web/img/loading/v1/reload.png" />
+      Then, reload the page to experience some AR magic!
+    </div>
+  </div>
+</div>
