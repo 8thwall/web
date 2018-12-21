@@ -73,7 +73,7 @@ const nextbuttonPipelineModule = () => {
     const ww = window.innerWidth
     const wh = window.innerHeight
 
-    // Wait for orientation change to take effect before handline resize.
+    // Wait for orientation change to take effect before handling resize.
     if (((orientation == 0 || orientation == 180) && ww > wh)
       || ((orientation == 90 || orientation == -90) && wh > ww)) {
       window.requestAnimationFrame(() => adjustButtonTextCenter({orientation}))
@@ -97,8 +97,11 @@ const nextbuttonPipelineModule = () => {
 const onxrloaded = () => {
   XR.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.FullWindowCanvas.pipelineModule(),   // Modifies the canvas to fill the window.
-    XR.GlTextureRenderer.pipelineModule(),  // Draws the camera feed.
+    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
+    XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
+    XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
+    XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
     // Custom pipeline modules.
     nextbuttonPipelineModule(),             // Cycles through shaders and keeps UI up to date.
   ])

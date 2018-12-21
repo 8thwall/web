@@ -3,13 +3,17 @@
 const onxrloaded = () => {
   XR.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.FullWindowCanvas.pipelineModule(),   // Modifies the canvas to fill the window.
-    XR.GlTextureRenderer.pipelineModule(),  // Draws the camera feed.
+    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
+    XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
+    XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
+    XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
   ])
 
   // Request camera permissions and run the camera.
   XR.run({canvas: document.getElementById('camerafeed')})
 }
 
-// Wait until the XR javascript has loaded before making XR calls.
-window.onload = () => {window.XR ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded)}
+// Show loading screen before the full XR library has been loaded.
+const load = () => { XRExtras.Loading.showLoading({onxrloaded}) }
+window.onload = () => { window.XRExtras ? load() : window.addEventListener('xrextrasloaded', load) }
