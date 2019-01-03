@@ -9,6 +9,7 @@ const webpack = require('webpack')
 const qr = require('qrcode')
 const WebpackDevServer = require('webpack-dev-server')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const {nextAvailable} = require('node-port-check')
 
 process.on('unhandledRejection', err => { console.error(err); throw err })
 
@@ -29,7 +30,7 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = 'development'
 }
 
-const PORT = process.env.PORT || 8080
+const DEFAULT_PORT = 8080
 const HOST = process.env.HOST || '0.0.0.0'
 const protocol = 'https'
 const useLocalhost = process.env.USE_LOCALHOST === 'true'
@@ -134,29 +135,38 @@ compiler.plugin('done', stats => {
   }
 }) // end compiler.plugin on done
 
-// Launch WebpackDevServer.
-const devServer = new WebpackDevServer(compiler, serverConfig)
-devServer.listen(PORT, serverConfig.host, err => {
-  if (err) {
-    return console.error(err)
+// Find available port and launch WebpackDevServer
+nextAvailable(process.env.PORT || DEFAULT_PORT).then((PORT) => {
+  // Exit if user defined port is in use
+  if (process.env.PORT && (process.env.PORT != PORT)) {
+    console.log('ERROR: Port ' + process.env.PORT + ' is in use by another process.')
+    process.exit(1)
   }
-  const url = `${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`
-  const message = `Starting the development server\n\n` +
-    `  Listening: ${url}\n` +
-    `  Serving  : ${contentBase}\n\n` +
-    `  IMPORTANT: Make sure to copy the entire "Listening" URL above into your browser,\n` +
-    `  including both the protocol "${protocol}://" at the beginning, and port ":${PORT}" number at the end.`
-
-  qr.toString(url, { type: 'terminal' }, (err, qrtext) => {
-    const msg = err ? message : `${message}\n\nOr scan the QR code:\n\n${qrtext}`
-    console.log(boxen(chalk.bold(chalk.cyan(msg)), { padding: 1, borderColor: 'green', margin: 1 }))
+  
+  // Launch WebpackDevServer.
+  const devServer = new WebpackDevServer(compiler, serverConfig)
+  devServer.listen(PORT, serverConfig.host, err => {
+    if (err) {
+      return console.error(err)
+    }
+    const url = `${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`
+    const message = `Starting the development server\n\n` +
+      `  Listening: ${url}\n` +
+      `  Serving  : ${contentBase}\n\n` +
+      `  IMPORTANT: Make sure to copy the entire "Listening" URL above into your browser,\n` +
+      `  including both the protocol "${protocol}://" at the beginning, and port ":${PORT}" number at the end.`
+  
+    qr.toString(url, { type: 'terminal' }, (err, qrtext) => {
+      const msg = err ? message : `${message}\n\nOr scan the QR code:\n\n${qrtext}`
+      console.log(boxen(chalk.bold(chalk.cyan(msg)), { padding: 1, borderColor: 'green', margin: 1 }))
+    })
   })
-})
 
-;['SIGINT', 'SIGTERM'].forEach(sig => {
-  process.on(sig, () => {
-    devServer.close()
-    process.exit()
+  ;['SIGINT', 'SIGTERM'].forEach(sig => {
+    process.on(sig, () => {
+      devServer.close()
+      process.exit()
+    })
   })
 })
 
