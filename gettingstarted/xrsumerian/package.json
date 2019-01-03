@@ -12,7 +12,8 @@
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {
-    "start": "webpack && pushd serve && npm install && popd && ./serve/serve -d dist -n",
+    "start": "webpack && pushd ../../serve && npm install && popd && ../../serve/bin/serve -d dist -n",
+    "start-windows": "webpack && pushd ..\\..\\serve && npm install && popd && ..\\..\\serve\\bin\\serve.bat -d dist -n",
     "build": "webpack"
   }
 }

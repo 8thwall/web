@@ -146,11 +146,15 @@ For both of these, do the following:
 
 ## Testing your App
 From the `xrsumerian` directory, run the following command:
+### MacOS
 ```
 $ npm start
 ```
+### Windows
+```
+$ npm run start-windows
+```
 
-You should now see your application hosted on `https://{local_ip}:8080`
-
-From your Android or iOS device, ensure you are on the same network as your computer, then navigate to the
-provided IP address.
+You should now see your application hosted on `https://{local_ip}:8080`.
+Scanning theh QR code on the console from your mobile device will take you to this address.
+Both the mobile device and the computer serving thhe demo application must be on the same network.
