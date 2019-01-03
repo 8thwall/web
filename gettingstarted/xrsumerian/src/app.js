@@ -12,7 +12,7 @@ Auth.configure(awsconfig);
 
 AwsXR.configure({
   SumerianProvider: {
-    region: 'YOUR_AWS_REGION', // Sumerian region
+    region: 'us-west-2', // Sumerian region
     scenes: {
       "scene1": { // Friendly scene name
         sceneConfig: scene1Config // Scene configuration from Sumerian publish
@@ -24,8 +24,6 @@ AwsXR.configure({
 async function loadAndStartScene() {
   await AwsXR.loadScene("scene1", "sumerian-scene-dom-id")
 
-  const sceneController = AwsXR.getSceneController('scene1')
-  window.sceneController = sceneController
   const world = AwsXR.getSceneController('scene1').sumerianRunner.world
   window.sumerian.SystemBus.addListener('xrready', () => {
     // Both Sumerian scene and camera have loaded. Dismiss loading screen.
@@ -57,4 +55,10 @@ async function loadAndStartScene() {
   AwsXR.start("scene1")
 }
 
-loadAndStartScene();
+window.onload = () => {
+  if (window.XR) {
+    loadAndStartScene()
+  } else {
+    window.addEventListener('xrloaded', loadAndStartScene)
+  }
+}
