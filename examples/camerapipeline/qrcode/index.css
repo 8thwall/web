@@ -1,5 +1,5 @@
 div.cardplace {
-  z-index: 1000;
+  z-index: 10;
   position: absolute;
   top: 5%;
   width: 100%;
