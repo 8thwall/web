@@ -76,5 +76,6 @@ const onxrloaded = () => {
   XR.run({canvas: document.getElementById('camerafeed')})
 }
 
-// Wait until the XR javascript has loaded before making XR calls.
-window.onload = () => {window.XR ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded)}
+// Show loading screen before the full XR library has been loaded.
+const load = () => { XRExtras.Loading.showLoading({onxrloaded}) }
+window.onload = () => { window.XRExtras ? load() : window.addEventListener('xrextrasloaded', load) }

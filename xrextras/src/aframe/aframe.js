@@ -8,6 +8,8 @@ const AFrameFactory = () => {
   return xrextrasAframe
 }
 
+const onxrloaded = () => { XR.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
+
 function create() {
   let registered = false
 
@@ -34,7 +36,6 @@ function create() {
         let aframeLoaded = false
         this.el.addEventListener('loaded', () => {aframeLoaded = true})
         const aframeDidLoad = () => { return aframeLoaded }
-        const onxrloaded = () => { XR.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
         const load = () => {
           XRExtras.Loading.setAppLoadedProvider(aframeDidLoad)
           XRExtras.Loading.showLoading({onxrloaded})
@@ -92,7 +93,7 @@ const eagerload = () => {
     }
 
     if (attr == 'xrextras-loading') {
-      window.XRExtras.Loading.showLoading()
+      window.XRExtras.Loading.showLoading({onxrloaded})
     }
   })
 }
