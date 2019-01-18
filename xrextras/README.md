@@ -15,10 +15,10 @@ $ npm run build
 
 ## Currnet Version
 
-The current version of xrextras is 0.0.1, and it can be specifically referenced using
-[//cdn.8thwall.com/web/xrextras/xrextras-0.0.1.js](https://cdn.8thwall.com/web/xrextras/xrextras-0.0.1.js)
+The current version of xrextras is 0.0.4, and it can be specifically referenced using
+[//cdn.8thwall.com/web/xrextras/xrextras-0.0.4.js](https://cdn.8thwall.com/web/xrextras/xrextras-0.0.4.js)
 
-This version requires 8th Wall XR Version 9.4.1 or newer.
+This version requires 8th Wall XR Version 10.0.4 or newer.
 
 ## Hello World
 
@@ -37,7 +37,7 @@ index.html:
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
     <!-- 8thWall Web - Replace the app key here with your own app key -->
-    <script async src="https://apps.8thwall.com/xrweb?appKey=XXXXXXXXXXXXXXXXX"></script>
+    <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXX"></script>
 
     <script src="index.js"></script>
   </head>
@@ -85,7 +85,7 @@ index.html:
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
     <!-- 8thWall Web - Replace the app key here with your own app key -->
-    <script async src="https://apps.8thwall.com/xrweb?appKey=XXXXXXXXXXXXXXXXX"></script>
+    <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXX"></script>
   </head>
 
   <body>

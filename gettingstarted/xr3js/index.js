@@ -46,15 +46,14 @@ const onxrloaded = () => {
     camera.position.set(0, 3, 0)
   }
 
-  // Add the XrController pipeline module, which enables 6DoF camera motion estimation.
-  XR.addCameraPipelineModule(XR.XrController.pipelineModule())
-
-  // Add a GlTextureRenderer which draws the camera feed to the canvas.
-  XR.addCameraPipelineModule(XR.GlTextureRenderer.pipelineModule())
-
-  // Add XR.Threejs which creates a threejs scene, camera, and renderer, and drives the scene camera
-  // based on 6DoF camera motion.
-  XR.addCameraPipelineModule(XR.Threejs.pipelineModule())
+  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+    // Existing pipeline modules.
+    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    XR.Threejs.pipelineModule(),                 // Creates a ThreeJS AR Scene.
+    XR.XrController.pipelineModule(),            // Enables SLAM tracking.
+    XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
+    XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
+  ])
 
   // Add custom logic to the camera loop. This is done with camera pipeline modules that provide
   // logic for key lifecycle moments for processing each camera frame. In this case, we'll be
@@ -91,7 +90,8 @@ const onxrloaded = () => {
   })
 
   // Call xrController.pause() / xrController.resume() when the button is pressed.
-  document.getElementById('pause').addEventListener(
+  const pauseButton = document.getElementById('pause')
+  pauseButton && pauseButton.addEventListener(
     'click',
     () => {
       if (!XR.isPaused()) {
@@ -106,21 +106,14 @@ const onxrloaded = () => {
     },
     true)
 
+  const canvas = document.getElementById('camerafeed')
   // Call XrController.recenter() when the canvas is tapped with two fingers. This resets the
   // ar camera to the position specified by XrController.updateCameraProjectionMatrix() above.
-  document.getElementById('xrweb').addEventListener(
-    'touchstart',
-    (e) => { if (e.touches.length == 2) { XR.XrController.recenter() }},
-    true)
+  canvas.addEventListener(
+    'touchstart', (e) => { e.touches.length == 2 && XR.XrController.recenter() }, true)
 
   // Open the camera and start running the camera run loop.
-  XR.run({canvas: document.getElementById('xrweb')})
+  XR.run({canvas})
 }
 
-window.onload = () => {
-  if (window.XR) {
-    onxrloaded()
-  } else {
-    window.addEventListener('xrloaded', onxrloaded)
-  }
-}
+window.onload = () => {window.XR ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded)}

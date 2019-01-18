@@ -187,7 +187,7 @@
   100% {transform: rotate(360deg);}
 }
 
-.fade-out { animation: fade-out 1s linear forwards; }
+.fade-out { animation: fade-out 0.3s linear forwards; }
 @keyframes fade-out {
   0% {opacity: 1;}
   100% {opacity: 0;}

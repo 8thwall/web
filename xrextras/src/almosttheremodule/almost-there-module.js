@@ -64,7 +64,15 @@ function create() {
       return
     }
 
+    // Desktop: help our user with a qr code
     showId('error_msg_device')
+    const scriptElem = document.createElement("script")
+    scriptElem.type = "text/javascript"
+    scriptElem.src = "https://cdn.8thwall.com/web/share/qrcode8.js"
+    scriptElem.onload = () => {
+      document.getElementById('qrcode').innerHTML = qrcode8.generateQRHtml(redirectUrl)
+    }
+    document.getElementById("almostthereContainer").appendChild(scriptElem)
   }
 
   const checkCompatibility = () => {

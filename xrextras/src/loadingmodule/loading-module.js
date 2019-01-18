@@ -24,6 +24,8 @@ function create() {
   let appLoaded_ = () => { return true }
   let numUpdates_ = 0
   let waitingOnReality_ = false
+  let needsPermissionCookie_ = false
+  const ua = navigator.userAgent
 
   const setRoot = rootNode => {
     rootNode_ = rootNode
@@ -45,12 +47,11 @@ function create() {
     setTimeout(() => {
       loadBackground_.classList.add('fade-out')
       loadBackground_.style.pointerEvents = 'none'
-      setTimeout(() => hideLoadingScreenNow(), 1000)
-    }, 1000)
+      setTimeout(() => hideLoadingScreenNow(), 400)
+    }, 400)
   }
 
   const showCameraPermissionsPrompt = () => {
-    showLoading()
     camPermissionsRequest_.classList.remove('hidden')
   }
 
@@ -60,7 +61,6 @@ function create() {
 
   const promptUserToChangeBrowserSettings = () => {
     camPermissionsRequest_.classList.add('hidden')
-    const ua = navigator.userAgent
     if (ua.includes('Linux')) {
       let instructionsToShow
 
@@ -88,12 +88,17 @@ function create() {
 
   const checkLoaded = () => {
     if (appLoaded_() && !waitingOnReality_) {
+      if (needsPermissionCookie_) {
+        document.cookie = 'previouslyGotCameraPermission=true;max-age=31536000';
+      }
       hideLoadingScreen()
       return
     }
     requestAnimationFrame(() => { checkLoaded() })
   }
-
+  const isAndroid = ua.includes('Linux')
+  needsPermissionCookie_ = isAndroid && !document.cookie.includes('previouslyGotCameraPermission=true')
+  const previouslyGotCameraPermission = isAndroid && !needsPermissionCookie_
   const pipelineModule = () => {
     return {
       name: 'loading',
@@ -113,11 +118,16 @@ function create() {
           return
         }
         if (status == 'requesting') {
-          showCameraPermissionsPrompt()
+          showLoading()
+          if (!previouslyGotCameraPermission) {
+            showCameraPermissionsPrompt()
+          }
         } else if (status == 'hasStream') {
-          dismissCameraPermissionsPrompt()
+          if (!previouslyGotCameraPermission) {
+            dismissCameraPermissionsPrompt()
+          }
         } else if (status == 'hasVideo') {
-          // ignore; wait a few frames for UI to update before dropping load screen.
+          // wait a few frames for UI to update before dropping load screen.
         } else if (status == 'failed') {
           promptUserToChangeBrowserSettings()
         }
