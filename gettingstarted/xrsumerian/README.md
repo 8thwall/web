@@ -1,6 +1,6 @@
 # Amazon Sumerian with 8th Wall Web
 ### tl;dr
-While Amazon Sumerian provides you with the tools to create immersive 3D experiences, it does not provide creative control over the web page that is hosting these experiences. In order do something like, say, customize your loading screen, you’re required to use Sumerian with Amazon Amplify. Amazon Amplify is a tool that allows developers to create web apps and provides APIs to several AWS Services (like Sumerian!).
+While Amazon Sumerian provides you with the tools to create immersive 3D experiences, it does not provide creative control over the web page that is hosting these experiences. In order do something like, say, customize your loading screen, you’re required to use Sumerian with AWS Amplify. AWS Amplify is a tool that allows developers to create web apps and provides APIs to several AWS Services (like Sumerian!).
 
 With that said, we’ve made it as simple as adding a few lines of JavaScript to your Amplify app to AR-ify your Sumerian scene.
 
@@ -35,7 +35,7 @@ async function loadAndStartScene() {
 ```
 
 ## Setting up Development Environment
-Sign up for an Amazon [AWS Account](https://portal.aws.amazon.com/billing/signup?redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start). Both Amazon Amplify and Sumerian require this.
+Sign up for an Amazon [AWS Account](https://portal.aws.amazon.com/billing/signup?redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start). Both AWS Amplify and Sumerian require this.
 
 Install [Node.js](https://nodejs.org/en/download/) and [npm](https://www.npmjs.com/get-npm).
 Make sure you are running Node.js version 8.11+ or greater, and npm version 5.x or greater. This can be checked by running the following in your termnial:
