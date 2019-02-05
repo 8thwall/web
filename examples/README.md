@@ -16,9 +16,9 @@ After following the steps above, you should have fully functional versions of:
 
 Tap to place | Toss Object | Portal | Manipulate
 :----------: | :---------: | :----: | :--------:
-![tapplace-screenshot](../images/screenshot-tap.jpg) | ![toss-screenshot](../images/screenshot-toss.jpg) | ![portal-screenshot](../images/screenshot-portal.jpg) | ![manipulate-screenshot](../../images/screenshot-manipulate.jpg)
+![tapplace-screenshot](../images/screenshot-tap.jpg) | ![toss-screenshot](../images/screenshot-toss.jpg) | ![portal-screenshot](../images/screenshot-portal.jpg) | ![manipulate-screenshot](../images/screenshot-manipulate.jpg)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_portal) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_manipulate)
-or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR2](../images/qr-portal.png)| or scan on phone:<br> ![QR2](../../images/qr-manipulate.png)
+or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR2](../images/qr-portal.png)| or scan on phone:<br> ![QR2](../images/qr-manipulate.png)
 
 ## three.js
 
