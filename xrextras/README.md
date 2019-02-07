@@ -33,7 +33,7 @@ index.html:
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
-         See github.com/8thwall/web/xrextras -->
+         See https://github.com/8thwall/web/tree/master/xrextras/ -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
     <!-- 8thWall Web - Replace the app key here with your own app key -->
@@ -81,7 +81,7 @@ index.html:
     <script src="//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js"></script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
-         See https://github.com/8thwall/web/edit/master/xrextras/ -->
+         See https://github.com/8thwall/web/tree/master/xrextras/ -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
     <!-- 8thWall Web - Replace the app key here with your own app key -->
