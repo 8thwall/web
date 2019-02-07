@@ -13,9 +13,9 @@ $ npm install
 $ npm run build
 ```
 
-## Currnet Version
+## Current Version
 
-The current version of xrextras is 0.0.4, and it can be specifically referenced using
+The current version of `xrextras` is 0.0.4, and it can be specifically referenced using
 [//cdn.8thwall.com/web/xrextras/xrextras-0.0.4.js](https://cdn.8thwall.com/web/xrextras/xrextras-0.0.4.js)
 
 This version requires 8th Wall XR Version 10.0.4 or newer.
@@ -81,7 +81,7 @@ index.html:
     <script src="//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js"></script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
-         See github.com/8thwall/web/xrextras -->
+         See https://github.com/8thwall/web/edit/master/xrextras/ -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
     <!-- 8thWall Web - Replace the app key here with your own app key -->
