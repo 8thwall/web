@@ -21,18 +21,20 @@ AFRAME.registerComponent('photo-mode', {
     })
 
     this.el.sceneEl.addEventListener('screenshotready', e => {
+      // Hide the flash
+      container.classList.remove('flash')
+
+      // If an error occurs while trying to take the screenshot, e.detail will be empty.
+      // We could either retry or return control to the user
+      if (!e.detail) {
+        return
+      }
+
       // e.detail is the base64 representation of the JPEG screenshot
       image.src = 'data:image/jpeg;base64,' + e.detail
 
-      // Switch classes on the container to control showing and hiding elements
-      container.classList.remove('flash')
+      // Show the photo
       container.classList.add('photo')
-    })
-
-    this.el.sceneEl.addEventListener('screenshoterror', e => {
-      // If an error occurs while trying to take the screenshot, this event will be emitted.
-      // We could either retry or return control to the user
-      container.classList.remove('flash')
     })
   }
 })
