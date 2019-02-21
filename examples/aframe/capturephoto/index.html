@@ -29,7 +29,6 @@
 
     <a-scene
       xrweb
-      gesture-detector
       xrextras-almost-there
       xrextras-loading
       xrextras-runtime-error
@@ -46,16 +45,13 @@
 
       <a-entity
         light="type: directional;
-               intensity: 0.8;
-               castShadow: true;
-               shadowMapHeight: 2048;
-               shadowMapWidth: 2048"
-        position="1 2 3"
-        ></a-entity>
+               intensity: 0.8;"
+        position="1 4.3 2.5">
+      </a-entity>
 
       <a-light type="ambient" intensity="1"></a-light>
 
-      <a-entity gltf-model="#flyingSaucerModel" scale="300 300 300" shadow="receive: false" position="0 7 0"></a-entity>
+      <a-entity gltf-model="#flyingSaucerModel" scale="300 300 300" position="0 7 0"></a-entity>
 
       <a-cylinder
         geometry="segments-radial: 8"
