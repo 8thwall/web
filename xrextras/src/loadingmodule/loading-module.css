@@ -1,10 +1,11 @@
-* {
+#loadingContainer * {
   font-family: inherit;
   box-sizing: inherit;
 }
 
 #loadingContainer {
   z-index: 800;
+  font-family: 'Varela-Round', sans-serif;
 }
 
 .absolute-fill {
@@ -35,7 +36,6 @@
   font-size: 3.7vh;
   background-color: #7611B7;
   padding: 3vh 0;
-  font-family: 'Varela-Round', sans-serif;
 }
 
 #requestingCameraIcon {
@@ -60,6 +60,7 @@
   padding: 20vh 5vw;
   font-size: 6.5vmin;
   text-align: center;
+  background-color: white;
 }
 
 #cameraPermissionsErrorAppleArrow {
@@ -84,7 +85,17 @@
   pointer-events: auto;
   justify-content: space-around;
   align-items: center;
-  background-color: white
+  background-color: white;
+}
+
+#deviceMotionErrorApple {
+  padding: 2vh 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
 }
 
 #cameraPermissionsCameraIcon{
@@ -99,12 +110,12 @@
   height: 5vh;
 }
 
-#cameraPermissionsDeniedHeader {
+.loading-error-header {
   font-size: 3.5vh;
   flex: 0 0 auto;
 }
 
-#cameraPermissionsDeniedFooter {
+.loading-error-footer {
   font-size: 3vh;
   line-height: 5.5vh;
   flex: 0 0 auto;
@@ -112,37 +123,34 @@
   width: 80vmin
 }
 
-#cameraPermissionsDeniedFooter img {
+.loading-error-footer img {
   display: block;
   height: 5vh;
   margin: 0 auto;
   margin-bottom: 2vh;
 }
 
-#cameraPermissionsDeniedInstructions {
-  flex: 0 0 auto;
-}
-
-#cameraPermissionsDeniedInstructionsList {
+.loading-error-instructions {
   font-family: 'Raleway-Regular', sans-serif;
   font-size: 2.5vh;
   list-style: none;
   margin-left: 1em;
   counter-reset: line;
+  flex: 0 0 auto;
 }
 
-#cameraPermissionsDeniedInstructionsList > li {
+.loading-error-instructions > li {
   position: relative;
   margin-bottom: 5vh;
 }
 
-#cameraPermissionsDeniedInstructionsList > li > img {
+.loading-error-instructions > li > img {
   max-height: 3vh;
   vertical-align: middle;
   margin: 0 .5vh;
 }
 
-#cameraPermissionsDeniedInstructionsList > li:before {
+.loading-error-instructions > li:before {
   font-family: 'Varela-Round', sans-serif;
   position: absolute;
   width: 6vh;

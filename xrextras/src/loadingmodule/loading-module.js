@@ -21,11 +21,19 @@ function create() {
   let camPermissionsFailedAndroid_
   let camPermissionsFailedApple_
   let camPermissionsFailedSamsung_
+  let deviceMotionErrorApple_
   let appLoaded_ = () => { return true }
   let numUpdates_ = 0
   let waitingOnReality_ = false
   let needsPermissionCookie_ = false
   const ua = navigator.userAgent
+
+  let hasMotionEvents_ = false
+  const motionListener = () => {
+    hasMotionEvents_ = true
+    window.removeEventListener('devicemotion', motionListener)
+  }
+  window.addEventListener('devicemotion', motionListener)
 
   const setRoot = rootNode => {
     rootNode_ = rootNode
@@ -35,19 +43,20 @@ function create() {
     camPermissionsFailedAndroid_ = document.getElementById("cameraPermissionsErrorAndroid")
     camPermissionsFailedApple_ = document.getElementById("cameraPermissionsErrorApple")
     camPermissionsFailedSamsung_ = document.getElementById("cameraPermissionsErrorSamsung")
+    deviceMotionErrorApple_ = document.getElementById("deviceMotionErrorApple")
   }
 
-  const hideLoadingScreenNow = () => {
+  const hideLoadingScreenNow = (removeRoot = true) => {
     loadBackground_.classList.add('hidden')
-    rootNode_.parentNode && rootNode_.parentNode.removeChild(rootNode_)
+    removeRoot && rootNode_.parentNode && rootNode_.parentNode.removeChild(rootNode_)
   }
 
-  const hideLoadingScreen = () => {
+  const hideLoadingScreen = (removeRoot = true) => {
     loadImageContainer_.classList.add('fade-out')
     setTimeout(() => {
       loadBackground_.classList.add('fade-out')
       loadBackground_.style.pointerEvents = 'none'
-      setTimeout(() => hideLoadingScreenNow(), 400)
+      setTimeout(() => hideLoadingScreenNow(removeRoot), 400)
     }, 400)
   }
 
@@ -81,7 +90,18 @@ function create() {
     } else {
       camPermissionsFailedApple_.classList.remove('hidden')
     }
+    hideLoadingScreen(false)
 
+    XR.pause()
+    XR.stop()
+  }
+
+  const promptUserToChangeBrowserMotionSettings = () => {
+    if (XR.XrDevice.deviceEstimate().os !== 'iOS') {
+      return
+    }
+    deviceMotionErrorApple_.classList.remove('hidden')
+    hideLoadingScreen(false)
     XR.pause()
     XR.stop()
   }
@@ -102,6 +122,11 @@ function create() {
   const pipelineModule = () => {
     return {
       name: 'loading',
+      onStart: () => {
+        if (hasMotionEvents_ !== true) {
+          promptUserToChangeBrowserMotionSettings()
+        }
+      },
       onUpdate: () => {
         if (!waitingOnReality_) {
           return
