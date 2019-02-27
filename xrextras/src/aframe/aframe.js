@@ -24,8 +24,14 @@ function create() {
 
     // Display 'almost there' flows.
     AFRAME.registerComponent('xrextras-almost-there', {
+      schema: {
+        url: {default: ''},
+      },
       init: function() {
-        const load = () => { XR.addCameraPipelineModule(XRExtras.AlmostThere.pipelineModule()) }
+        const load = () => {
+          this.data.url && XRExtras.AlmostThere.configure({url: this.data.url})
+          XR.addCameraPipelineModule(XRExtras.AlmostThere.pipelineModule())
+        }
         window.XRExtras && window.XR ? load() : window.addEventListener('xrandextrasloaded', load)
       }
     })
@@ -87,6 +93,8 @@ const eagerload = () => {
   Object.keys(attrs).forEach(a => {
     const attr = attrs.item(a).name
     if (attr == 'xrextras-almost-there') {
+      const redirectMatch = new RegExp('url:([^;]*)').exec(attrs.item(a).value)
+      redirectMatch && window.XRExtras.AlmostThere.configure({url: redirectMatch[1]})
       window.XR
         ? window.XRExtras.AlmostThere.checkCompatibility()
         : window.addEventListener('xrloaded', window.XRExtras.AlmostThere.checkCompatibility)

@@ -15,6 +15,7 @@ const AlmostThereFactory = () => {
 
 function create() {
   let shown = false
+  let customRedirectUrl
   const showId = id => {
     document.getElementById(id).classList.remove('hidden')
   }
@@ -25,7 +26,7 @@ function create() {
     const rootNode = e.content.firstChild
     document.getElementsByTagName('body')[0].appendChild(rootNode)
 
-    const redirectUrl = window.location.href
+    const redirectUrl = customRedirectUrl || window.location.href
     const redirectLinks = rootNode.querySelectorAll('.desktop-home-link')
     for (let i = 0; i < redirectLinks.length; i++) {
       redirectLinks[i].textContent = redirectUrl
@@ -109,9 +110,16 @@ function create() {
     }
   }
 
+  const configure = ({url}) => {
+    if (url !== undefined) {
+      customRedirectUrl = url
+    }
+  }
+
   return {
     pipelineModule,
     checkCompatibility,
+    configure,
   }
 }
 
