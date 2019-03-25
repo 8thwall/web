@@ -13,12 +13,6 @@ $ npm install
 $ npm run build
 ```
 
-## Current Version
-
-The current version of `xrextras` is 0.0.6, and it can be specifically referenced using
-[//cdn.8thwall.com/web/xrextras/xrextras-0.0.6.js](https://cdn.8thwall.com/web/xrextras/xrextras-0.0.6.js)
-
-This version requires 8th Wall XR Version 10.0.4 or newer.
 
 ## Hello World
 
