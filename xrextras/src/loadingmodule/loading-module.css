@@ -89,7 +89,8 @@
 }
 
 #deviceMotionErrorApple {
-  padding: 2vh 0;
+  padding: 3vh 2vh;
+  color: #2D2E43;
   display: flex;
   flex-direction: column;
   pointer-events: auto;
@@ -132,6 +133,7 @@
 
 .loading-error-instructions {
   font-family: 'Raleway-Regular', sans-serif;
+  color: #2D2E43;
   font-size: 2.5vh;
   list-style: none;
   margin-left: 1em;
