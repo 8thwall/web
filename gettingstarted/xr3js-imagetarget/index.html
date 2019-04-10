@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>8th Wall Web: three.js Image Targets</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+    <!-- THREE.js must be supplied -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js"></script>
+
+    <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
+         See github.com/8thwall/web/xrextras -->
+    <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+
+    <!-- 8thWall Web - Replace the app key here with your own app key -->
+    <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXX"></script>
+
+    <!-- client code -->
+    <script src="index.js"></script>
+  </head>
+
+  <body>
+    <!-- The AR canvas -->
+    <canvas id="camerafeed"></canvas>
+  </body>
+</html>
