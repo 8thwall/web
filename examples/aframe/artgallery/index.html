@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <title>8th Wall Web: Art Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+  <!-- We've included a slightly modified version of A-Frame, which fixes some polish concerns -->
+  <script src="//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js"></script>
+
+  <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
+         See github.com/8thwall/web/xrextras -->
+  <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+
+  <!-- 8thWall Web - Replace the app key here with your own app key -->
+  <script
+    src="//apps.8thwall.com/xrweb?appKey=XXXXX"></script>
+
+  <!-- client code -->
+  <script src="index.js"></script>
+  <link rel="stylesheet" type="text/css" href="index.css">
+
+</head>
+
+<body>
+
+  <div id="container" class="collapsed">
+    <div class="outer">
+      <div id="closeButton" onclick="document.getElementById('container').classList.add('collapsed')">close</div>
+    </div>
+    <div id="contents"></div>
+    <div class="outer">Article provided by Wikipedia</div>
+  </div>
+
+  <a-scene
+    antialias="true"
+    xrweb="disableWorldTracking: true"
+    xrextras-generate-image-targets="primitive: artgallery-frame"
+    xrextras-almost-there
+    xrextras-loading
+    xrextras-runtime-error>
+
+    <a-assets>
+      <a-asset-item id="frame-model" src="frame.glb"></a-asset-item>
+    </a-assets>
+
+    <a-camera id="camera" position="0 4 10"
+      raycaster="objects: .cantap"
+      cursor="fuse:false; rayOrigin:mouse;">
+    </a-camera>
+    <a-light type="ambient" intensity="1.3"></a-light>
+    <a-light type="directional" intensity="3" position="1.5 2.5 0.6"></a-light>
+  </a-scene>
+</body>
+</html>
