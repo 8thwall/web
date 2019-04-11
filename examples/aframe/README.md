@@ -19,3 +19,14 @@ Tap to place | Toss Object | Portal | Manipulate | Capture a photo
 ![tapplace-screenshot](../../images/screenshot-tap.jpg) | ![toss-screenshot](../../images/screenshot-toss.jpg) | ![portal-screenshot](../../images/screenshot-portal.jpg) | ![manipulate-screenshot](../../images/screenshot-manipulate.jpg) | ![capture-screenshot](../../images/screenshot-capture.jpg)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_portal)| [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_manipulate) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_capturephoto)
 or scan on phone:<br> ![QR1](../../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../../images/qr-tossobject.png) | or scan on phone:<br> ![QR2](../../images/qr-portal.png)| or scan on phone:<br> ![QR2](../../images/qr-manipulate.png) | or scan on phone:<br> ![QR2](../../images/qr-capturephoto.png)
+
+## Marker Based
+
+* [Art gallery](https://github.com/8thwall/web/tree/master/examples/aframe/artgallery) - This example uses image targets to show information about paintings in AR. This showcases image target tracking, as well as loading dynamic content and using the xrextras-generate-image-targets component.
+
+| Art gallery |
+| :----------: |
+| ![artgallery-screenshot](../../images/screenshot-artgallery.jpg) |
+| [Image targets for demo](./artgallery/gallery.jpg) |
+| [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_artgallery) |
+| or scan on phone:<br> ![QR1](../../images/qr-artgallery.png) |

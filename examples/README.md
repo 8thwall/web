@@ -22,6 +22,18 @@ Tap to place | Toss Object | Portal | Manipulate | Capture a photo
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_portal) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_manipulate) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_capturephoto)
 or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR2](../images/qr-portal.png)| or scan on phone:<br> ![QR2](../images/qr-manipulate.png) | or scan on phone:<br> ![QR2](../images/qr-capturephoto.png)
 
+### Marker Based
+
+* [Art gallery](https://github.com/8thwall/web/tree/master/examples/aframe/artgallery) - This example uses image targets to show information about paintings in AR. This showcases image target tracking, as well as loading dynamic content and using the xrextras-generate-image-targets component.
+
+| Art gallery |
+| :----------: |
+| ![artgallery-screenshot](../images/screenshot-artgallery.jpg)
+| [Image targets for demo](./aframe/artgallery/gallery.jpg) |
+| [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_artgallery) |
+| or scan on phone:<br> ![QR1](../images/qr-artgallery.png) |
+
+
 ## three.js
 
 * [Tap to place](https://github.com/8thwall/web/tree/master/examples/threejs/placeground) - This interactive example allows the user to grow trees on the ground by tapping. This showcases raycasting, instantiating objects, importing 3D models, and animation.
