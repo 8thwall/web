@@ -3,14 +3,14 @@
     <head>
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
         <link rel="stylesheet" href="index.css">
+
+        <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
+         See github.com/8thwall/web/xrextras -->
+        <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+
         <script async src="https://apps.8thwall.com/xrweb?appKey=XXXXXXXXXXXXXX"></script>
     </head>
     <body>
-      <div id="loadBackground" class="absolute-fill" style="z-index:100">
-        <div id="loadImageContainer" class="absolute-fill">
-          <img src="img/eight.png" id="loadImage" class="rotate-center">
-        </div>
-      </div>
         <div id='sumerian-app' class='absolute-fill'>
             <div id="sumerian-scene-dom-id"></div>
         </div>
