@@ -21,21 +21,34 @@ AwsXR.configure({
   }
 });
 
+let xrready = false
+
+const isXrReady = () => {
+  return xrready
+}
+
 async function loadAndStartScene() {
-  await AwsXR.loadScene("scene1", "sumerian-scene-dom-id")
+  await AwsXR.loadScene('scene1', 'sumerian-scene-dom-id')
 
   const world = AwsXR.getSceneController('scene1').sumerianRunner.world
+
   window.sumerian.SystemBus.addListener('xrready', () => {
-    // Both Sumerian scene and camera have loaded. Dismiss loading screen.
-    const loadBackground = document.getElementById('loadBackground')
-    loadBackground.classList.add('fade-out')
-    setTimeout(function () {
-      return loadBackground && loadBackground.parentNode && loadBackground.parentNode.removeChild(loadBackground);
-    }, 1000);
+    // Both Sumerian scene and camera have loaded.
+    xrready = true
   })
   window.sumerian.SystemBus.addListener('xrerror', (params) => {
-    // Dismiss loading screen and display error
+    // Custom error handling through Sumerian SystemBus.
   })
+
+  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+    // Existing pipeline modules.
+    XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
+    XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
+    XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
+  ])
+
+  XRExtras.Loading.setAppLoadedProvider(isXrReady)
+
   window.XR.Sumerian.addXRWebSystem(world)
 
   const handleClickEvent = (e) => {
@@ -52,13 +65,8 @@ async function loadAndStartScene() {
     sumerianContainer.addEventListener('touchstart', handleClickEvent, true)
   }
 
-  AwsXR.start("scene1")
+  AwsXR.start('scene1')
 }
 
-window.onload = () => {
-  if (window.XR) {
-    loadAndStartScene()
-  } else {
-    window.addEventListener('xrloaded', loadAndStartScene)
-  }
-}
+// Show loading screen before the full XR library has been loaded.
+window.onload = () => { XRExtras.Loading.showLoading({onxrloaded: loadAndStartScene}) }

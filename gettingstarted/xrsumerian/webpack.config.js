@@ -23,7 +23,7 @@ module.exports = {
         hot: true
     },
     plugins: [
-        new CopyWebpackPlugin(['index.html', 'index.css', { from: 'src/img', to: 'img' }]),
+        new CopyWebpackPlugin(['index.html', 'index.css']),
         new webpack.HotModuleReplacementPlugin()
     ]
 };
