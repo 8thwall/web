@@ -17,6 +17,7 @@ Built entirely using standards-compliant JavaScript and WebGL, 8th Wall Web is a
 # Examples
 
 * [A-Frame Examples](https://github.com/8thwall/web/tree/master/examples/aframe)(Recommended to start)
+* [Babylon.js Examples](https://github.com/8thwall/web/tree/master/examples/babylonjs)
 * [three.js Examples](https://github.com/8thwall/web/tree/master/examples/threejs)
 * [Camera Pipeline Examples](https://github.com/8thwall/web/tree/master/examples/camerapipeline)
 * [Amazon Sumerian Setup](https://github.com/8thwall/web/tree/master/gettingstarted/xrsumerian)
