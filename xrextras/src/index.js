@@ -7,6 +7,12 @@ const onxr = () => {
 }
 
 const onearly = () => {
+
+  if (window.XR && typeof(window.XR) === 'function') {
+    window.nativeXR = window.XR
+    window.XR = undefined
+  }
+
   window.XRExtras = xrextras.XRExtras
   setTimeout(() => {
     window.dispatchEvent(new CustomEvent("xrextrasloaded"))
