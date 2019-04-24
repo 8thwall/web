@@ -35,6 +35,14 @@ function create() {
   }
   window.addEventListener('devicemotion', motionListener)
 
+  const iframeMotionListener = (event) => {
+    if (event.data.deviceOrientation8w || event.data.deviceMotion8w) {
+      hasMotionEvents_ = true
+      window.removeEventListener('message', iframeMotionListener)
+    }
+  }
+  window.addEventListener('message', iframeMotionListener)
+
   const setRoot = rootNode => {
     rootNode_ = rootNode
     loadBackground_ = rootNode_.querySelector('#loadBackground')
@@ -97,9 +105,24 @@ function create() {
   }
 
   const promptUserToChangeBrowserMotionSettings = () => {
+    window.removeEventListener('devicemotion', motionListener)
+    window.removeEventListener('message', iframeMotionListener)
+
+    // Device orientation permissions only need to be requested on iOS.
     if (XR.XrDevice.deviceEstimate().os !== 'iOS') {
       return
     }
+
+    // Device orientation permissions only need to be requested if they're required.
+    if (XR.XrPermissions) {
+      const permissions = XR.XrPermissions.permissions()
+      const requiredPermissions = XR.requiredPermissions()
+      if (!requiredPermissions.has(permissions.DEVICE_MOTION)
+        && !requiredPermissions.has(permissions.DEVICE_ORIENTATION)) {
+        return
+      }
+    }
+
     deviceMotionErrorApple_.classList.remove('hidden')
     hideLoadingScreen(false)
     XR.pause()
