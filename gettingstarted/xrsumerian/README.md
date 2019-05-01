@@ -117,13 +117,17 @@ https://{aws_project_region}.console.aws.amazon.com/cognito/pool/?region={aws_pr
 3) Click Edit Identity pool.
 4) Expand Unauthenticated Identities and ensure the checkbox is enabled.
 5) Ensure that the Unauthenticated role and the Authenticated role matches the names of the UnauthRoleName and AuthRoleName in your `.amplifyrc` file.
-6) Copy the identity pool id to a place where you can access later. We will set this in the Sumerian scene.
+6) Copy the identity pool id.
+7) Navigate to your Sumerian scene editor.
+8) Click on the root element in your scene on the left sidebar (it should be the name of your scene).
+9) On the right sidebar, click `AWS Configuration`.
+10) Paste the identity pool id you copied earlier into the `Congnito Identity Pool ID` section.
 
 ### Adding Permissions to an Identity Pool Role
 Navigate to the [Roles page](https://console.aws.amazon.com/iam/home#/roles) in the AWS IAM console. Locate the Roles that have been created for your project. They should look something like
 ```
-	{project-name}-{time-created}-authRole
-	{project-name}-{time-created}-unauthRole
+  {project-name}-{time-created}-authRole
+  {project-name}-{time-created}-unauthRole
 ```
 
 For both of these, do the following:
