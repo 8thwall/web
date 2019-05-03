@@ -14,11 +14,21 @@ Example 8th Wall Web projects, by 3D framework
 
 * [Capture a photo](https://github.com/8thwall/web/tree/master/examples/aframe/capturephoto) - This example allows the user to capture photo evidence of a UFO abduction.
 
-Tap to place | Toss Object | Portal | Manipulate | Capture a photo
-:----------: | :---------: | :----: | :--------: | :-------------:
-![tapplace-screenshot](../images/screenshot-tap.jpg) | ![toss-screenshot](../images/screenshot-toss.jpg) | ![portal-screenshot](../images/screenshot-portal.jpg) | ![manipulate-screenshot](../images/screenshot-manipulate.jpg) | ![capture-screenshot](../images/screenshot-capture.jpg)
-[Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_portal) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_manipulate) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_capturephoto)
-or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR2](../images/qr-portal.png)| or scan on phone:<br> ![QR2](../images/qr-manipulate.png) | or scan on phone:<br> ![QR2](../images/qr-capturephoto.png)
+* [Change animations](https://github.com/8thwall/web/tree/master/examples/aframe/animation-mixer) - This interactive example allows the user to position, scale, rotate, and change between animations embedded in a 3D model. This showcases raycasting, gesture inputs and using A-Frame's animation-mixer.
+
+After following the steps above, you should have fully functional versions of:
+
+Tap to place | Toss Object | Portal 
+:----------: | :---------: | :----: 
+![tapplace-screenshot](../images/screenshot-tap.jpg) | ![toss-screenshot](../images/screenshot-toss.jpg) | ![portal-screenshot](../images/screenshot-portal.jpg)
+[Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_placeground) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_tossobject) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_portal)
+or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR3](../images/qr-portal.png)
+
+Manipulate | Capture a photo | Change animations
+:--------: | :-------------: | :-------------:
+![manipulate-screenshot](../images/screenshot-manipulate.jpg) | ![capture-screenshot](../images/screenshot-capture.jpg) | ![animation-screenshot](../images/screenshot-animation.jpg)
+[Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_manipulate) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_capturephoto) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_animation)
+or scan on phone:<br> ![QR2](../images/qr-manipulate.png) | or scan on phone:<br> ![QR2](../images/qr-capturephoto.png) | or scan on phone:<br> ![QR3](../images/qr-animation.png)
 
 ### Marker Based
 
