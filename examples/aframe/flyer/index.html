@@ -51,12 +51,14 @@
 
     <a-light type="ambient" intensity="1"></a-light>
 
+    <!-- Note: "name:" must be set to the name of the image target uploaded to the 8th Wall Console -->
     <a-entity
       xrextras-named-image-target="name: video-target"
       xrextras-play-video="video: #jelly-video; thumb: #jelly-thumb; canstop: true"
       geometry="primitive: plane; height: 1; width: 0.79;">
     </a-entity>
 
+    <!-- Note: "name:" must be set to the name of the image target uploaded to the 8th Wall Console -->
     <a-entity xrextras-named-image-target="name: model-target">
       <!-- Add a child entity that can be rotated independently of the image target. -->
       <a-entity xrextras-one-finger-rotate gltf-model="#jelly-glb"></a-entity>
