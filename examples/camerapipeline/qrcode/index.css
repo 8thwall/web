@@ -23,3 +23,16 @@ div.card {
   text-overflow: ellipsis;
   visibility: hidden;
 }
+
+canvas {
+  display: block;
+}
+
+#overlay2d {
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
