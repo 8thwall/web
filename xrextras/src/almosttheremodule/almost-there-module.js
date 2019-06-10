@@ -50,6 +50,15 @@ function create() {
               return
             }
           }
+        case XR.XrDevice.IncompatibilityReasons.MISSING_WEB_ASSEMBLY:
+          if (device.os == 'iOS') {
+            showId('error_msg_web_assembly_ios')
+            return
+          }
+          if (device.os == 'Android') {
+            showId('error_msg_web_assembly_android')
+            return
+          }
         default:
           break;
       }
