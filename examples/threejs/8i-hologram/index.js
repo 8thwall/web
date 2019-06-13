@@ -2,7 +2,7 @@
 const applicationName = "8thWall-8i"
 const version = "0.1"
 
-const assetFile = "./hvrs/Odyssey_S46B_T01_Web600_20181107_111442.hvrs"
+const assetFile = "https://cdn.8thwall.com/web/assets/8i/Odyssey_S46B_T01_Web600_20181107_111442.hvrs"
 const floorImage = "./img/floor_logo_cropped.png"
 
 let theScene = null
