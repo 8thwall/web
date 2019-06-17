@@ -40,7 +40,7 @@ async function loadAndStartScene() {
     // Custom error handling through Sumerian SystemBus.
   })
 
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -49,7 +49,7 @@ async function loadAndStartScene() {
 
   XRExtras.Loading.setAppLoadedProvider(isXrReady)
 
-  window.XR.Sumerian.addXRWebSystem(world)
+  window.XR8.Sumerian.addXRWebSystem(world)
 
   const handleClickEvent = (e) => {
     if (!e.touches || e.touches.length < 2) {
