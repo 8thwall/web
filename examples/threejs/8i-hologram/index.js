@@ -2,7 +2,25 @@
 const applicationName = "8thWall-8i"
 const version = "0.1"
 
+/*
+ * URL's to other holograms (update the "assetFile" variable below)
+ *
+ * Alpaca:
+ * https://cdn.8thwall.com/web/assets/8i/Web600_ANIMALS2-S16-T02-SOf1187029.hvrs
+ *
+ * Fire Breather:
+ * https://d24wgmntpybhqp.cloudfront.net/artists/Burdetta%20Jackson/hvrs/FloodGates_S21A_T08_Web600_20190219_180912.hvrs
+ *
+ * Yoga:
+ * https://d24wgmntpybhqp.cloudfront.net/artists/Marie%20Grujicic/hvrs/OdysseyInce_S15D_T02_Web600.hvrs
+ *
+ * Person (default):
+ * https://cdn.8thwall.com/web/assets/8i/Odyssey_S46B_T01_Web600_20181107_111442.hvrs
+*/
+
+// Hologram to display:
 const assetFile = "https://cdn.8thwall.com/web/assets/8i/Odyssey_S46B_T01_Web600_20181107_111442.hvrs"
+
 const floorImage = "./img/floor_logo_cropped.png"
 
 let theScene = null
