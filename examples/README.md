@@ -31,14 +31,15 @@ or scan on phone:<br> ![QR2](../images/qr-manipulate.png) | or scan on phone:<br
 ### Marker Based
 
 * [Art gallery](https://github.com/8thwall/web/tree/master/examples/aframe/artgallery) - This example uses image targets to show information about paintings in AR. This showcases image target tracking, as well as loading dynamic content and using the xrextras-generate-image-targets component.
-* [Flyer](https://github.com/8thwall/web/tree/master/examples/aframe/flyer) - This example uses image targets to display information about jellyfish on a flyer. It uses the xrextras-named-image-target component to connect an <a-entity> to an image target by name while the xrextras-play-video component enables video playback. 
+* [Flyer](https://github.com/8thwall/web/tree/master/examples/aframe/flyer) - This example uses image targets to display information about jellyfish on a flyer. It uses the xrextras-named-image-target component to connect an <a-entity> to an image target by name while the xrextras-play-video component enables video playback.
+* [Alpha Video](https://github.com/8thwall/web/tree/master/examples/aframe/alpha-video) - This example uses an image target to trigger a video. An A-Frame component is used for background removal of an mp4 video file to give a "green screen" effect.
 
-| Art gallery | Flyer
-| :----------: | :----------: |
-| ![artgallery-screenshot](../images/screenshot-artgallery.jpg) | ![flyer-screenshot](../images/screenshot-flyer.jpg)
-| [Image targets for demo](./aframe/artgallery/gallery.jpg) | [Image targets for demo](./aframe/flyer/flyer.jpg)
-| [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_artgallery) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_flyer)
-| or scan on phone:<br> ![QR1](../images/qr-artgallery.png) | or scan on phone:<br> ![QR1](../images/qr-flyer.png)
+| Art gallery | Flyer | Alpha Video
+| :---------: | :---: | :---------:
+| ![artgallery-screenshot](../images/screenshot-artgallery.jpg) | ![flyer-screenshot](../images/screenshot-flyer.jpg) | ![alpha-screenshot](../images/screenshot-alpha-video.jpg)
+| [Image targets for demo](./aframe/artgallery/gallery.jpg) | [Image targets for demo](./aframe/flyer/flyer.jpg) | [Imaget target for demo](./aframe/alpha-video/targets/outside.jpg)
+| [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_artgallery) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_flyer) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/aframe_alpha_video)
+| or scan on phone:<br> ![QR1](../images/qr-artgallery.png) | or scan on phone:<br> ![QR2](../images/qr-flyer.png) | or scan on phone:<br> ![QR3](../images/qr-alpha-video.png)
 
 ## Babylon.js
 
