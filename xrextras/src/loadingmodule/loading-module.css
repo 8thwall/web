@@ -99,6 +99,28 @@
   background-color: white;
 }
 
+.permission-error {
+  padding: 3vh 5vh;
+  font-size: 3.5vh;
+  background-color: white;
+}
+
+.permission-error > h1 {
+  font-size: 1.3em;
+}
+
+.main-button {
+  border: none;
+  outline: none;
+  background-color: #7611B7;
+  color: white;
+  font-size: 2.5vh;
+  display: block;
+  margin-top: 2em;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+}
+
 #cameraPermissionsCameraIcon{
   overflow: hidden;
   flex: 0 0 auto;
