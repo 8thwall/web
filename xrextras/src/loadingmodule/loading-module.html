@@ -74,4 +74,16 @@
     <!-- Empty footer to take up space -->
     <div class="loading-error-footer"></div>
   </div>
+
+  <div id="userPromptError" class="permission-error absolute-fill hidden">
+    <h1>Permissions were denied.</h1>
+    <p>You need to accept permissions to continue.</p>
+    <button id="reloadButton" class="main-button" onClick="window.location.reload()">Refresh</button>
+  </div>
+
+  <div id="motionPermissionsErrorApple" class="permission-error absolute-fill hidden">
+    <h1>Permissions were denied.</h1>
+    <p>You've prevented the page from accessing your motion sensors.</p>
+    <p>Please close out of Safari to reenable your motion sensors.</p>
+  </div>
 </div>

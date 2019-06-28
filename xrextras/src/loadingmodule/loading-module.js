@@ -52,6 +52,8 @@ function create() {
     camPermissionsFailedApple_ = document.getElementById("cameraPermissionsErrorApple")
     camPermissionsFailedSamsung_ = document.getElementById("cameraPermissionsErrorSamsung")
     deviceMotionErrorApple_ = document.getElementById("deviceMotionErrorApple")
+    userPromptError_ = document.getElementById("userPromptError")
+    motionPermissionsErrorApple_ = document.getElementById("motionPermissionsErrorApple")
   }
 
   const hideLoadingScreenNow = (removeRoot = true) => {
@@ -123,7 +125,12 @@ function create() {
       }
     }
 
-    deviceMotionErrorApple_.classList.remove('hidden')
+    if (XR.XrDevice.deviceEstimate().osVersion.startsWith('12')) {
+      deviceMotionErrorApple_.classList.remove('hidden')
+    } else {
+      motionPermissionsErrorApple_.classList.remove('hidden')
+    }
+
     hideLoadingScreen(false)
     XR.pause()
     XR.stop()
@@ -161,6 +168,9 @@ function create() {
           checkLoaded()
         }
       },
+      onBeforeRun: () => {
+        showLoading()
+      },
       onCameraStatusChange: ({status}) => {
         if (!XR.XrDevice.isDeviceBrowserCompatible()) {
           return
@@ -180,10 +190,29 @@ function create() {
           promptUserToChangeBrowserSettings()
         }
       },
-      onException: () => {
+      onException: error => {
         if (!rootNode_) {
           return
         }
+
+        if (error instanceof Object) {
+          if (error.type === 'permission') {
+            if (error.permission === 'prompt') {
+              // User denied XR8's prompt to start requesting
+              hideLoadingScreen(false)
+              userPromptError_.classList.remove('hidden')
+              return
+            }
+
+            if (error.permission === XR8.XrPermissions.permissions().DEVICE_MOTION ||
+                error.permission === XR8.XrPermissions.permissions().DEVICE_ORIENTATION) {
+              // This only happens if motion or orientation are requestable permissions (iOS 13+)
+              promptUserToChangeBrowserMotionSettings()
+              return
+            }
+          }
+        }
+
         dismissCameraPermissionsPrompt()
         hideLoadingScreenNow()
       },
