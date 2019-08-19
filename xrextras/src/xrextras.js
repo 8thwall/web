@@ -3,6 +3,7 @@ const {AlmostThereFactory} = require('./almosttheremodule/almost-there-module.js
 const {DebugWebViewsFactory} = require('./debugwebviews/debug-web-views.js')
 const {FullWindowCanvasFactory} = require('./fullwindowcanvasmodule/full-window-canvas-module.js')
 const {LoadingFactory} = require('./loadingmodule/loading-module.js')
+const {PlayCanvasFactory} = require('./playcanvas/playcanvas.js')
 const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     DebugWebViews: DebugWebViewsFactory(),
     FullWindowCanvas: FullWindowCanvasFactory(),
     Loading: LoadingFactory(),
+    PlayCanvas: PlayCanvasFactory(),
     RuntimeError: RuntimeErrorFactory(),
   },
 }

@@ -53,6 +53,7 @@ function create() {
     camPermissionsFailedSamsung_ = document.getElementById("cameraPermissionsErrorSamsung")
     deviceMotionErrorApple_ = document.getElementById("deviceMotionErrorApple")
     userPromptError_ = document.getElementById("userPromptError")
+    cameraSelectionWorldTrackingError_ = document.getElementById("cameraSelectionWorldTrackingError")
     motionPermissionsErrorApple_ = document.getElementById("motionPermissionsErrorApple")
   }
 
@@ -208,6 +209,19 @@ function create() {
                 error.permission === XR8.XrPermissions.permissions().DEVICE_ORIENTATION) {
               // This only happens if motion or orientation are requestable permissions (iOS 13+)
               promptUserToChangeBrowserMotionSettings()
+              return
+            }
+          }
+          if (error.type === 'configuration') {
+            if (error.source === 'reality' && error.err === 'slam-front-camera-unsupported') {
+              // User is attemping to use Front camera without disabling world tracking
+              hideLoadingScreen(false)
+              document.getElementById('camera_mode_world_tracking_error').innerHTML = error.message
+              cameraSelectionWorldTrackingError_.classList.remove('hidden')
+
+              // Stop camera processing.
+              XR.pause()
+              XR.stop()
               return
             }
           }
