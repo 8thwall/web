@@ -4,9 +4,9 @@
 
 To get started go to https://playcanvas.com/the8thwall and fork one of our sample projects:
 
-* AR World Tracking Starter Kit: An application to get you started quickly creating AR world tracking applications in PlayCanvas.
+* [AR World Tracking Starter Kit](https://playcanvas.com/project/631719/overview/ar-world-tracking-starter-kit): An application to get you started quickly creating AR world tracking applications in PlayCanvas.
 
-* AR Image Tracking Starter Kit: An application to get you started quickly creating AR image tracking applications in PlayCanvas.
+* [AR Image Tracking Starter Kit](https://playcanvas.com/project/631721/overview/ar-image-tracking-starter-kit): An application to get you started quickly creating AR image tracking applications in PlayCanvas.
 
 ## Add your App Key
 
