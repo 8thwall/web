@@ -105,7 +105,6 @@ function create() {
   }
 
   const onCameraStatusChange = ({status, video}) => {
-    console.log(`onCameraStatusChange: ${status}`)
     if (status !== 'hasVideo') {
       return
     }
