@@ -19,5 +19,6 @@ module.exports = {
         use: 'html-loader',
       }
     ]
-  }
+  },
+  mode: 'production'
 }

@@ -133,6 +133,26 @@
   height: 5vh;
 }
 
+#cameraSelectionWorldTrackingError {
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  text-align: center;
+  color: black;
+  font-size: 3.7vh;
+  background-color: white;
+  padding: 3vh 0;
+}
+
+.error-text-header {
+  font-family: 'Varela-Round', sans-serif;
+  font-size: 16pt;
+  color: #323232;
+  letter-spacing: .37;
+  line-height: 23pt;
+}
+
 .loading-error-header {
   font-size: 3.5vh;
   flex: 0 0 auto;

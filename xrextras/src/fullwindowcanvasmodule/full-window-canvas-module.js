@@ -10,45 +10,144 @@ const FullWindowCanvasFactory = () => {
 
 function create() {
   let canvas_ = null
+  const vsize_ = {}
+  let orientation_ = 0
+
+  const canvasStyle_ = {
+    width: '100%',
+    height: '100%',
+    margin: '0px',
+    padding: '0px',
+    border: '0px',
+    display: 'block',
+  }
+
+  const bodyStyle_ = {
+    width: '100%',
+    height: '100%',
+    margin: '0px',
+    padding: '0px',
+    border: '0px',
+  }
 
   // Update the size of the camera feed canvas to fill the screen.
-  const fillScreenWithCanvas = ({orientation}) => {
-    const ww = window.innerWidth
-    const wh = window.innerHeight
+  const fillScreenWithCanvas = () => {
+    if (!canvas_) { return }
+
+    // Get the pixels of the browser window.
+    const uww = window.innerWidth
+    const uwh = window.innerHeight
+    const ww = uww * devicePixelRatio
+    const wh = uwh * devicePixelRatio
 
     // Wait for orientation change to take effect before handline resize.
-    if (((orientation == 0 || orientation == 180) && ww > wh)
-      || ((orientation == 90 || orientation == -90) && wh > ww)) {
-      window.requestAnimationFrame(() => fillScreenWithCanvas({orientation}))
+    if (((orientation_ == 0 || orientation_ == 180) && ww > wh)
+      || ((orientation_ == 90 || orientation_ == -90) && wh > ww)) {
+      window.requestAnimationFrame(fillScreenWithCanvas)
       return
     }
 
+    // Compute the portrait-orientation aspect ratio of the browser window.
+    const ph = Math.max(ww, wh)
+    const pw = Math.min(ww, wh)
+    const pa = ph / pw
+
+    // Compute the portrait-orientation dimensions of the video.
+    const pvh = Math.max(vsize_.w, vsize_.h)
+    const pvw = Math.min(vsize_.w, vsize_.h)
+
+    // Compute the cropped dimensions of a video that fills the screen, assuming that width is
+    // cropped.
+    let ch = pvh
+    let cw = Math.round(pvh / pa)
+
+    // Figure out if we should have cropped from the top, and if so, compute a new cropped video
+    // dimension.
+    if (cw > pvw) {
+      cw = pvw
+      ch = Math.round(pvw * pa)
+    }
+
+    // If the video has more pixels than the screen, set the canvas size to the screen pixel
+    // resolution.
+    if (cw > pw || ch > ph) {
+      cw = pw
+      ch = ph
+    }
+
+    // Switch back to a landscape aspect ratio if required.
+    if (ww > wh) {
+      let tmp = cw
+      cw = ch
+      ch = tmp
+    }
+
     // Set the canvas geometry to the new window size.
-    canvas_.width = ww
-    canvas_.height = wh
+    Object.assign(canvas_.style, canvasStyle_)
+    canvas_.width = cw
+    canvas_.height = ch
+
+    // on iOS, rotating from portrait to landscape back to portrait can lead to a situation where
+    // address bar is hidden and the content doesn't fill the screen. Scroll back up to the top in
+    // this case. In chrome this has no effect. We need to scroll to something that's not our
+    // scroll position, so scroll to 0 or 1 depending on the current position.
+    setTimeout(() => window.scrollTo(0, (window.scrollY + 1) % 2), 300)
+  }
+
+  const updateVideoSize = ({videoWidth, videoHeight}) => {
+    vsize_.w = videoWidth
+    vsize_.h = videoHeight
+  }
+
+  const onVideoSizeChange = ({videoWidth, videoHeight}) => {
+    updateVideoSize({videoWidth, videoHeight})
+    fillScreenWithCanvas()
+  }
+
+  const onCameraStatusChange = ({status, video}) => {
+    console.log(`onCameraStatusChange: ${status}`)
+    if (status !== 'hasVideo') {
+      return
+    }
+    updateVideoSize(video)
+  }
+
+  const onCanvasSizeChange = () => {
+    fillScreenWithCanvas()
+  }
+
+  const onUpdate = () => {
+    if (canvas_.style.width === canvasStyle_.width
+      && canvas_.style.height === canvasStyle_.height) {
+      return
+    }
+    fillScreenWithCanvas()
   }
 
   const onStart = ({canvas, orientation}) => {
     canvas_ = canvas
+    orientation_ = orientation
     const body = document.getElementsByTagName('body')[0]
-
-    body.style.margin = '0px'
-    body.style.width = '100%'
-    body.style.height = '100%'
+    Object.assign(body.style, bodyStyle_)
 
     body.appendChild(canvas_)
-    fillScreenWithCanvas({orientation})
+    fillScreenWithCanvas()
   }
 
   const onDeviceOrientationChange = ({orientation}) => {
-    fillScreenWithCanvas({orientation})
+    orientation_ = orientation
+    fillScreenWithCanvas()
   }
 
   const pipelineModule = () => {
     return {
       name: 'fullwindowcanvas',
       onStart,
+      onCameraStatusChange,
       onDeviceOrientationChange,
+      onVideoSizeChange,
+      onCanvasSizeChange,
+      onUpdate,
     }
   }
 
