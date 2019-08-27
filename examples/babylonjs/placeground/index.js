@@ -84,7 +84,7 @@ const placeObjectTouchHandler = (e) => {
 const startScene = () => {
   const canvas = document.getElementById('renderCanvas')
 
-  engine = new BABYLON.Engine(canvas, true, { stencil: true, preserveDrawingBuffer: true })
+  engine = new BABYLON.Engine(canvas, true, { stencil: true, preserveDrawingBuffer: true }, true)
   engine.enableOfflineSupport = false
 
   scene = new BABYLON.Scene(engine)
@@ -93,7 +93,7 @@ const startScene = () => {
   initXrScene({ scene, camera }) // Add objects to the scene and set starting camera position.
 
   // Connect the camera to the XR engine and show camera feed
-  camera.addBehavior(XR.Babylonjs.xrCameraBehavior())
+  camera.addBehavior(XR.Babylonjs.xrCameraBehavior(), true)
 
   canvas.addEventListener('touchstart', placeObjectTouchHandler, true)  // Add touch listener.
 
