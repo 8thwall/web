@@ -4,6 +4,7 @@ Example 8th Wall Web projects using three.js:
 
 * [Tap to place](https://github.com/8thwall/web/tree/master/examples/threejs/placeground) - This interactive example allows the user to grow trees on the ground by tapping. This showcases raycasting, instantiating objects, importing 3D models, and animation.
 * [8i hologram](https://github.com/8thwall/web/tree/master/examples/threejs/8i-hologram) - This example illustrates how to integrate an 8i hologram (www.8i.com) into an 8th Wall Web experience.
+* [Custom Pipeline Module](https://github.com/8thwall/web/tree/master/examples/threejs/custom-pipeline-module) - Custom three.js pipeline module example.
 
 Tap to place | 8i hologram
 :----------: | :---------:
