@@ -6,6 +6,8 @@ This example uses image targets to display information about jellyfish on a flye
 
 ![flyer](./flyer.jpg)
 
+[Try the live demo here](https://8th.io/d6teq)
+
 ## Uploading to Console
 
 To link the image targets to your app key, you will need to upload (and enable autoload) each image to your project in the 8th Wall Console at www.8thwall.com.
