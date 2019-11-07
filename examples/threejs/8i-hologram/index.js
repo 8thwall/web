@@ -76,11 +76,11 @@ const EightIPipelineModule = () => {
     //Special 8i Stuff
     ENVSummary = JSON.stringify(EightI.Env)
     if (wasmSupported) {
-      EightI.Env.registerFileURL("libeighti.wasm", "https://player.cdn.8i.com/interface/1.4/libeighti.wasm")
-      EightI.Env.registerFileURL("libeighti.wast", "https://player.cdn.8i.com/interface/1.4/libeighti.wast")
-      EightI.Env.registerFileURL("libeighti.temp.asm.js", "https://player.cdn.8i.com/interface/1.4/libeighti.temp.asm.js")
+      EightI.Env.registerFileURL("libeighti.wasm", "https://player.8i.com/interface/1.4/libeighti.wasm")
+      EightI.Env.registerFileURL("libeighti.wast", "https://player.8i.com/interface/1.4/libeighti.wast")
+      EightI.Env.registerFileURL("libeighti.temp.asm.js", "https://player.8i.com/interface/1.4/libeighti.temp.asm.js")
       let script = document.createElement('script')
-      script.src = "https://player.cdn.8i.com/interface/1.4/libeighti.js"
+      script.src = "https://player.8i.com/interface/1.4/libeighti.js"
       document.body.append(script)
       console.log('Web Assembly is available')
     } else {
