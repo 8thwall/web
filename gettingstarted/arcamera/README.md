@@ -3,8 +3,9 @@
 ## Your first AR Camera.
 
 To get started with 8th Wall AR Cameras, you will need to:
-* Create 8th Wall account at https://console.8thwall.com with an AR Camera workspace (Free or Pro).
-* Create a new camera at https://console.8thwall.com/cameras/new
+* Create 8th Wall account at https://www.8thwall.com
+* Add an AR Camera workspace: https://www.8thwall.com/docs/web/#create-workspace
+* Create a new camera
 * Upload your GLB model file (or use one of the ones below).
 * Place model as desired and then publish.
 * View your camera at the generated link on your mobile phone, or scan the generated QR code on your phone.
@@ -23,4 +24,4 @@ Preview | File | Link (mobile only) | Scan Link
 
 For detailed instructions on creating or exporting .glb files and their requirements for AR Camera, please see:
 
-https://8thwall.com/glb.html
+https://www.8thwall.com/glb.html

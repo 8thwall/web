@@ -9,7 +9,7 @@ Built entirely using standards-compliant JavaScript and WebGL, 8th Wall Web is a
 # Resources
 
 * [Getting Started Guide](https://github.com/8thwall/web/tree/master/gettingstarted)
-* [Documentation](https://docs.8thwall.com/web)
+* [Documentation](https://www.8thwall.com/docs/web/)
 * [8th Wall Website](https://www.8thwall.com)
 
 * [Serving projects locally](https://github.com/8thwall/web/tree/master/serve) - A "serve" script that will run a local https webserver on your development computer. Useful for development and testing of 8th Wall Web projects.

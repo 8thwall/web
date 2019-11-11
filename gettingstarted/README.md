@@ -3,11 +3,11 @@
 ## Download and run sample projects
 
 To get started with 8th Wall web development, you will need to:
-* Create 8th Wall account at https://console.8thwall.com with a Web Developer workspace (Free or Pro).
-* Create an app key that allows access to 8th Wall's Javascript at https://console.8thwall.com/web
+* Create 8th Wall account at https://www.8thwall.com
+* Create a new project and copy your App Key (see https://www.8thwall.com/docs/web/#start-new-project)
 * Download the source code from this repo, and replace the app key in the source with your app key.
 * Serve the source code on your local network over https, for example using the provided serve script.
-* Authorize access to your app key on your phone with a dev token (Free and Pro) or your domain (Pro only).
+* Authorize access to your app key on your phone with via device authorization (Free plan) or your domain (Agency or Business plans).
 * Connect to your sever from your phone, accept certificate warnings and camera permissions.
 
 ## What you should see
@@ -22,6 +22,6 @@ or scan on phone:<br> ![QR1](../images/qr-gettingstarted_xr3js.png) | or scan on
 
 ## Further reading
 
-For a detailed tutorial on getting started with 8th Wall Web sample projects, please refer to Getting Started section of the 8th Wall Web documentation:
+For a detailed tutorial on getting started with 8th Wall Web sample projects, please refer to the Quick Start Guide (Self Hosting) section of the 8th Wall documentation:
 
-https://docs.8thwall.com/web/#tutorial
+https://www.8thwall.com/docs/web/#quick-start-guide-self-hosting
