@@ -10,5 +10,5 @@ Example 8th Wall Web projects using three.js:
 Tap to place | 8i hologram | Flyer
 :----------: | :---------: | :---:
 ![tapplace-threejs-screenshot](../../images/screenshot-tap.jpg) | ![8i-threejs-screenshot](../../images/screenshot-8i.jpg) | ![threejs-flyer-screenshot](../../images/screenshot-flyer.jpg)
-[Try Demo (mobile)](https://8th.io/x87d7) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/threejs_8i) | [Try Demo (mobile)](https://8th.io/d6teq)
+[Try Demo (mobile)](https://templates.8thwall.app/placeground-threejs) | [Try Demo (mobile)](https://templates.8thwall.app/hologram-8i-threejs) | [Try Demo (mobile)](https://templates.8thwall.app/flyer-threejs)
 or scan on phone:<br> ![QR1](../../images/qr-threejs-placeground.png) | or scan on phone:<br> ![QR2](../../images/qr-threejs-8i.png) | or scan on phone:<br> ![QR3](../../images/qr-threejs-flyer.png)

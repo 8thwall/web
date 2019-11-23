@@ -4,7 +4,7 @@ This example uses image targets to show information about paintings in AR. This 
 
 ![artgallery-screenshot](../../../images/screenshot-artgallery.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_artgallery)
+[Try the live demo here](https://templates.8thwall.app/artgallery-aframe)
 
 
 ![artgallery](./gallery.jpg)

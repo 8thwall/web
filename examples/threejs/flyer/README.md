@@ -6,7 +6,7 @@ This example uses image targets to display information about jellyfish on a flye
 
 ![flyer](./flyer.jpg)
 
-[Try the live demo here](https://8th.io/d6teq)
+[Try the live demo here](https://templates.8thwall.app/flyer-threejs)
 
 ## Uploading to Console
 

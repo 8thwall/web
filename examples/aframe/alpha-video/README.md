@@ -9,7 +9,7 @@ Check out the component [here](https://github.com/nikolaiwarner/aframe-chromakey
 Use this image target to test:
 ![outside](targets/outside.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_alpha_video)
+[Try the live demo here](https://templates.8thwall.app/alpha-video-aframe)
 
 or scan on phone:
 ![QR](../../../images/qr-alpha-video.png)

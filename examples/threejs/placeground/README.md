@@ -4,7 +4,7 @@ This interactive example allows the user to grow trees on the ground by tapping.
 
 ![tapplace-threejs-screenshot](../../../images/screenshot-tap.jpg)
 
-[Try the live demo here](https://8th.io/x87d7)
+[Try the live demo here](https://templates.8thwall.app/placeground-threejs)
 
 ## Overview
 

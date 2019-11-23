@@ -4,4 +4,4 @@ This example allows the user to capture photo evidence of a UFO abduction. This 
 
 ![capture-screenshot](../../../images/screenshot-capture.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_capturephoto)
+[Try the live demo here](https://templates.8thwall.app/capturephoto-aframe)

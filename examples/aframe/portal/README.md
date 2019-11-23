@@ -4,4 +4,4 @@ This example shows off the popular portal illusion in web AR using three.js mate
 
 ![portal-screenshot](../../../images/screenshot-portal.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_portal)
+[Try the live demo here](https://templates.8thwall.app/portal-aframe)

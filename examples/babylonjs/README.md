@@ -7,5 +7,5 @@ Example 8th Wall Web projects using Babylon.js:
 Tap to place 
 :----------: 
 ![tapplace-screenshot](../../images/screenshot-tap.jpg)
-[Try Demo (mobile)](https://apps.8thwall.com/8thWall/babylonjs_placeground) 
+[Try Demo (mobile)](https://templates.8thwall.app/placeground-babylonjs) 
 or scan on phone:<br> ![QR1](../../images/qr-babylonjs-placeground.png) 
