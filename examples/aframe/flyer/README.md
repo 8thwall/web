@@ -4,7 +4,7 @@ This example uses image targets to display information about jellyfish on a flye
 
 ![artgallery-screenshot](../../../images/screenshot-flyer.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_flyer)
+[Try the live demo here](https://templates.8thwall.app/flyer-aframe)
 
 
 ![flyer](./flyer.jpg)

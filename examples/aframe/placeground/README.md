@@ -4,7 +4,7 @@ This interactive example allows the user to grow trees on the ground by tapping.
 
 ![tapplace-screenshot](../../../images/screenshot-tap.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_placeground)
+[Try the live demo here](https://templates.8thwall.app/placeground-aframe)
 
 ## tap-place component
 

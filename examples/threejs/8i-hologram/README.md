@@ -4,7 +4,7 @@ This example illustrates how to integrate an 8i hologram (www.8i.com) into an 8t
 
 ![tapplace-threejs-screenshot](../../../images/screenshot-8i.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/threejs_8i)
+[Try the live demo here](https://templates.8thwall.app/hologram-8i-threejs)
 
 ## Overview
 

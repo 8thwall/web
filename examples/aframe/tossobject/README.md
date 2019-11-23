@@ -4,4 +4,4 @@ This interactive example lets the user tap the screen to toss tomatoes. When the
 
 ![toss-screenshot](../../../images/screenshot-toss.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_tossobject)
+[Try the live demo here](https://templates.8thwall.app/tossobject-aframe)

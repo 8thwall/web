@@ -4,4 +4,4 @@ This interactive example allows the user to position, scale, and rotate an objec
 
 ![manipulate-screenshot](../../../images/screenshot-manipulate.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_manipulate)
+[Try the live demo here](https://templates.8thwall.app/manipulate-aframe)

@@ -4,4 +4,4 @@ This interactive example allows the user to position, scale, rotate, and change 
 
 ![manipulate-screenshot](../../../images/screenshot-animation.jpg)
 
-[Try the live demo here](https://apps.8thwall.com/8thWall/aframe_animation)
+[Try the live demo here](https://templates.8thwall.app/animation-mixer-aframe)

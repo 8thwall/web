@@ -19,5 +19,5 @@ The examples here illustrate the underlying framework that powers 8th Wall Web:
 Camera Feed | QR Code | Simple Shaders
 :----------: | :---------: | :----:
 ![camerafeed-screenshot](../../images/screenshot-camerafeed.png) | ![qrcode-screenshot](../../images/screenshot-qrcode.png) | ![simpleshaders-screenshot](../../images/screenshot-simpleshaders.png)
-[Try Demo (mobile)](https://apps.8thwall.com/8thWall/camerapipeline_camerafeed) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/camerapipeline_qrcode) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/camerapipeline_simpleshaders)
+[Try Demo (mobile)](https://templates.8thwall.app/camerapipeline-camerafeed) | [Try Demo (mobile)](https://templates.8thwall.app/camerapipeline-qrcode) | [Try Demo (mobile)](https://templates.8thwall.app/camerapipeline-simpleshaders)
 or scan on phone:<br> ![QR1](../../images/qr-camerapipeline_camerafeed.png) | or scan on phone:<br> ![QR2](../../images/qr-camerapipeline_qrcode.png) | or scan on phone:<br> ![QR3](../../images/qr-camerapipeline_simpleshaders.png)
