@@ -41,7 +41,7 @@ const qrdisplayPipelineModule = () => {
   // if the window is touched anywhere, navigate to the URL that was detected.
   window.addEventListener('touchstart', () => {
     if (!url.href || !url.href.startsWith('http')) { return }
-    XR.pause()
+    XR8.pause()
     url.innerHTML = `Navigating to ${url.href}`
     window.location.href = url.href
   })
@@ -96,10 +96,10 @@ const qrdisplayPipelineModule = () => {
 }
 
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.CameraPixelArray.pipelineModule({ luminance: true, maxDimension: 640 }),  // Provides pixels.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    XR8.CameraPixelArray.pipelineModule({ luminance: true, maxDimension: 640 }),  // Provides pixels.
+    XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -110,7 +110,7 @@ const onxrloaded = () => {
   ])
 
   // Request camera permissions and run the camera.
-  XR.run({canvas: document.getElementById('camerafeed')})
+  XR8.run({canvas: document.getElementById('camerafeed')})
 }
 
 // Show loading screen before the full XR library has been loaded.

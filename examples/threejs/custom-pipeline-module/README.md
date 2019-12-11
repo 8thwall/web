@@ -2,9 +2,9 @@
 
 8th Wall Web provides a built-in pipeline module that interfaces with the three.js environment and lifecycle.
 
-For advanced users who would like to customize their three.js configuration, the example `customThreejsPipelineModule.js` more-or-less replicates what `XR.Threejs.pipelineModule()` does and can be used as a starting point for customization.
+For advanced users who would like to customize their three.js configuration, the example `customThreejsPipelineModule.js` more-or-less replicates what `XR8.Threejs.pipelineModule()` does and can be used as a starting point for customization.
 
-You would use this custom module instead of `XR.Threejs.pipelineModule()`
+You would use this custom module instead of `XR8.Threejs.pipelineModule()`
 
 ## Example
 
@@ -50,10 +50,10 @@ index.js:
 const myThreejsModule = customThreejsPipelineModule()
 
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    myThreejsModule, // Custom three.js pipeline module. Replaces XR.Threejs.pipelineModule()
-    XR.XrController.pipelineModule(),            // Enables SLAM tracking.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
+    XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
+    myThreejsModule, // Custom three.js pipeline module. Replaces XR8.Threejs.pipelineModule()
+    XR8.XrController.pipelineModule(),           // Enables SLAM tracking.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -63,7 +63,7 @@ const onxrloaded = () => {
   ])
 
   // Open the camera and start running the camera run loop.
-  XR.run({canvas: document.getElementById('camerafeed')})
+  XR8.run({canvas: document.getElementById('camerafeed')})
 }
 
 // Show loading screen before the full XR library has been loaded.

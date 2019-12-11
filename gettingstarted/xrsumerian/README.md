@@ -29,7 +29,7 @@ async function loadAndStartScene() {
   window.sumerian.SystemBus.addListener('xrerror', (params) => {
     // Dismiss loading screen and display error
   })
-  window.XR.Sumerian.addXRWebSystem(world)
+  window.XR8.Sumerian.addXRWebSystem(world)
   AwsXR.start("scene1")
 }
 ```

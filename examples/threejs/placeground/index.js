@@ -46,7 +46,7 @@ const placegroundScenePipelineModule = () => {
     model.scene.rotation.set(0.0, yDegrees, 0.0)
     model.scene.position.set(pointX, 0.0, pointZ)
     model.scene.scale.set(scale.x, scale.y, scale.z)
-    XR.Threejs.xrScene().scene.add(model.scene)
+    XR8.Threejs.xrScene().scene.add(model.scene)
 
     new TWEEN.Tween(scale)
       .to(endScale, animationMillis)
@@ -71,7 +71,7 @@ const placegroundScenePipelineModule = () => {
     // Call XrController.recenter() when the canvas is tapped with two fingers. This resets the
     // AR camera to the position specified by XrController.updateCameraProjectionMatrix() above.
     if (e.touches.length == 2) {
-      XR.XrController.recenter()
+      XR8.XrController.recenter()
     }
 
     if (e.touches.length > 2) {
@@ -79,7 +79,7 @@ const placegroundScenePipelineModule = () => {
     }
 
     // If the canvas is tapped with one finger and hits the "surface", spawn an object.
-    const {scene, camera} = XR.Threejs.xrScene()
+    const {scene, camera} = XR8.Threejs.xrScene()
 
     // calculate tap position in normalized device coordinates (-1 to +1) for both components.
     tapPosition.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1
@@ -101,10 +101,10 @@ const placegroundScenePipelineModule = () => {
     name: 'placeground',
 
     // onStart is called once when the camera feed begins. In this case, we need to wait for the
-    // XR.Threejs scene to be ready before we can access it to add content. It was created in
-    // XR.Threejs.pipelineModule()'s onStart method.
+    // XR8.Threejs scene to be ready before we can access it to add content. It was created in
+    // XR8.Threejs.pipelineModule()'s onStart method.
     onStart: ({canvas, canvasWidth, canvasHeight}) => {
-      const {scene, camera} = XR.Threejs.xrScene()  // Get the 3js sceen from xr3js.
+      const {scene, camera} = XR8.Threejs.xrScene()  // Get the 3js sceen from xr3js.
 
       initXrScene({ scene, camera }) // Add objects to the scene and set starting camera position.
 
@@ -118,7 +118,7 @@ const placegroundScenePipelineModule = () => {
       }
 
       // Sync the xr controller's 6DoF position and camera paremeters with our scene.
-      XR.XrController.updateCameraProjectionMatrix({
+      XR8.XrController.updateCameraProjectionMatrix({
         origin: camera.position,
         facing: camera.quaternion,
       })
@@ -127,11 +127,11 @@ const placegroundScenePipelineModule = () => {
 }
 
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    XR.Threejs.pipelineModule(),                 // Creates a ThreeJS AR Scene.
-    XR.XrController.pipelineModule(),            // Enables SLAM tracking.
+    XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
+    XR8.Threejs.pipelineModule(),                // Creates a ThreeJS AR Scene.
+    XR8.XrController.pipelineModule(),           // Enables SLAM tracking.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -141,7 +141,7 @@ const onxrloaded = () => {
   ])
 
   // Open the camera and start running the camera run loop.
-  XR.run({canvas: document.getElementById('camerafeed')})
+  XR8.run({canvas: document.getElementById('camerafeed')})
 }
 
 // Show loading screen before the full XR library has been loaded.
