@@ -29,7 +29,7 @@ const placeObjectTouchHandler = (e) => {
   // Call XrController.recenter() when the canvas is tapped with two fingers. This resets the
   // AR camera to the position specified by XrController.updateCameraProjectionMatrix() above.
   if (e.touches.length == 2) {
-    XR.XrController.recenter()
+    XR8.XrController.recenter()
   }
 
   if (e.touches.length > 2) {
@@ -93,7 +93,7 @@ const startScene = () => {
   initXrScene({ scene, camera }) // Add objects to the scene and set starting camera position.
 
   // Connect the camera to the XR engine and show camera feed
-  camera.addBehavior(XR.Babylonjs.xrCameraBehavior(), true)
+  camera.addBehavior(XR8.Babylonjs.xrCameraBehavior(), true)
 
   canvas.addEventListener('touchstart', placeObjectTouchHandler, true)  // Add touch listener.
 
@@ -109,7 +109,7 @@ const startScene = () => {
 }
 
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.

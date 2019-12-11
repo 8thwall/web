@@ -62,7 +62,7 @@ const nextbuttonPipelineModule = () => {
 
   const nextShader = () => {
     // Reconfigure the texture renderer pipline module to use the next shader.
-    XR.GlTextureRenderer.configure({fragmentSource: fragmentShaders[idx]})
+    XR8.GlTextureRenderer.configure({fragmentSource: fragmentShaders[idx]})
     idx = (idx + 1) % fragmentShaders.length
   }
 
@@ -95,9 +95,9 @@ const nextbuttonPipelineModule = () => {
 }
 
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -107,7 +107,7 @@ const onxrloaded = () => {
   ])
 
   // Request camera permissions and run the camera.
-  XR.run({canvas: document.getElementById('camerafeed')})
+  XR8.run({canvas: document.getElementById('camerafeed')})
 }
 
 // Show loading screen before the full XR library has been loaded.

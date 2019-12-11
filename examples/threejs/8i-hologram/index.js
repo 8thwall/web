@@ -72,7 +72,7 @@ const EightIPipelineModule = () => {
   // Populates some object into an XR scene and sets the initial camera position. The scene and
   // camera come from xr3js, and are only available in the camera loop lifecycle onStart() or later.
   const initXrScene = ({scene, camera}) => {
-  
+
     //Special 8i Stuff
     ENVSummary = JSON.stringify(EightI.Env)
     if (wasmSupported) {
@@ -113,7 +113,7 @@ const EightIPipelineModule = () => {
     // Call XrController.recenter() when the canvas is tapped with two fingers. This resets the
     // AR camera to the position specified by XrController.updateCameraProjectionMatrix() above.
     if (e.touches.length == 2) {
-      XR.XrController.recenter()
+      XR8.XrController.recenter()
     }
   }
 
@@ -122,12 +122,12 @@ const EightIPipelineModule = () => {
     name: '8thWall-8i',
 
     // onStart is called once when the camera feed begins. In this case, we need to wait for the
-    // XR.Threejs scene to be ready before we can access it to add content. It was created in
-    // XR.Threejs.pipelineModule()'s onStart method.
+    // XR8.Threejs scene to be ready before we can access it to add content. It was created in
+    // XR8.Threejs.pipelineModule()'s onStart method.
     onStart: ({canvas, canvasWidth, canvasHeight}) => {
 
       // Get the 3js scene from xr3js.
-      const {scene, camera, renderer} = XR.Threejs.xrScene()
+      const {scene, camera, renderer} = XR8.Threejs.xrScene()
 
       theScene = scene
       theRenderer = renderer
@@ -146,7 +146,7 @@ const EightIPipelineModule = () => {
       }
 
       // Sync the xr controller's 6DoF position and camera paremeters with our scene.
-      XR.XrController.updateCameraProjectionMatrix({
+      XR8.XrController.updateCameraProjectionMatrix({
         origin: camera.position,
         facing: camera.quaternion,
       })
@@ -164,7 +164,7 @@ const EightIPipelineModule = () => {
         EightI.Env.update()
         // Update asset.
         const assetState = theAsset.getState();
-      
+
         //Play 8i asset when ready
         if(!assetState.isInitialising() && !assetState.isPlaying()) {
           theAsset.play()
@@ -177,7 +177,7 @@ const EightIPipelineModule = () => {
         theViewport.setDimensions(0, 0,
           window.innerWidth * window.devicePixelRatio,
           window.innerHeight * window.devicePixelRatio)
-          
+
         theViewport.setViewMatrix(theCamera.matrixWorldInverse)
         theViewport.setProjMatrix(theCamera.projectionMatrix)
 
@@ -194,11 +194,11 @@ const EightIPipelineModule = () => {
 }
 
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    XR.Threejs.pipelineModule(),                 // Creates a ThreeJS AR Scene.
-    XR.XrController.pipelineModule(),            // Enables SLAM tracking.
+    XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
+    XR8.Threejs.pipelineModule(),                // Creates a ThreeJS AR Scene.
+    XR8.XrController.pipelineModule(),           // Enables SLAM tracking.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -208,7 +208,7 @@ const onxrloaded = () => {
   ])
 
   // Open the camera and start running the camera run loop.
-  XR.run({canvas: document.getElementById('camerafeed')})
+  XR8.run({canvas: document.getElementById('camerafeed')})
 }
 
 // Show loading screen before the full XR library has been loaded.

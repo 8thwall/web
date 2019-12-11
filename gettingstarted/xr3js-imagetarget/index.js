@@ -93,15 +93,15 @@ const imageFramePipelineModule = () => {
   // Grab a handle to the threejs scene and set the camera position on pipeline startup.
   const onStart = ({canvasWidth, canvasHeight}) => {
     // Get the 3js sceen from xr3js.
-    const {camera} = XR.Threejs.xrScene()
-    scene = XR.Threejs.xrScene().scene
+    const {camera} = XR8.Threejs.xrScene()
+    scene = XR8.Threejs.xrScene().scene
 
     // Set the initial camera position relative to the scene we just laid out. This must be at a
     // height greater than y=0.
     camera.position.set(0, 3, 0)
 
     // Sync the xr controller's 6DoF position and camera paremeters with our scene.
-    XR.XrController.updateCameraProjectionMatrix({
+    XR8.XrController.updateCameraProjectionMatrix({
       origin: camera.position,
       facing: camera.quaternion,
     })
@@ -113,8 +113,8 @@ const imageFramePipelineModule = () => {
     name: 'targetframes',
 
     // onStart is called once when the camera feed begins. In this case, we need to wait for the
-    // XR.Threejs scene to be ready before we can access it to add content. It was created in
-    // XR.Threejs.pipelineModule()'s onStart method.
+    // XR8.Threejs scene to be ready before we can access it to add content. It was created in
+    // XR8.Threejs.pipelineModule()'s onStart method.
     onStart,
 
     // Listeners are called right after the processing stage that fired them. This guarantees that
@@ -130,12 +130,12 @@ const imageFramePipelineModule = () => {
 const onxrloaded = () => {
   // If your app only interacts with image targets and not the world, disabling world tracking can
   // improve speed.
-  XR.xrController().configure({disableWorldTracking: true})
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.xrController().configure({disableWorldTracking: true})
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    XR.Threejs.pipelineModule(),                 // Creates a ThreeJS AR Scene.
-    XR.XrController.pipelineModule(),            // Enables SLAM tracking.
+    XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
+    XR8.Threejs.pipelineModule(),                // Creates a ThreeJS AR Scene.
+    XR8.XrController.pipelineModule(),           // Enables SLAM tracking.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
@@ -145,7 +145,7 @@ const onxrloaded = () => {
   ])
 
   // Open the camera and start running the camera run loop.
-  XR.run({canvas: document.getElementById('camerafeed')})
+  XR8.run({canvas: document.getElementById('camerafeed')})
 }
 
 // Show loading screen before the full XR library has been loaded.
