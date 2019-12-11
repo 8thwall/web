@@ -103,8 +103,8 @@ function create() {
     }
     hideLoadingScreen(false)
 
-    XR.pause()
-    XR.stop()
+    XR8.pause()
+    XR8.stop()
   }
 
   const promptUserToChangeBrowserMotionSettings = () => {
@@ -112,29 +112,29 @@ function create() {
     window.removeEventListener('message', iframeMotionListener)
 
     // Device orientation permissions only need to be requested on iOS.
-    if (XR.XrDevice.deviceEstimate().os !== 'iOS') {
+    if (XR8.XrDevice.deviceEstimate().os !== 'iOS') {
       return
     }
 
     // Device orientation permissions only need to be requested if they're required.
-    if (XR.XrPermissions) {
-      const permissions = XR.XrPermissions.permissions()
-      const requiredPermissions = XR.requiredPermissions()
+    if (XR8.XrPermissions) {
+      const permissions = XR8.XrPermissions.permissions()
+      const requiredPermissions = XR8.requiredPermissions()
       if (!requiredPermissions.has(permissions.DEVICE_MOTION)
         && !requiredPermissions.has(permissions.DEVICE_ORIENTATION)) {
         return
       }
     }
 
-    if (XR.XrDevice.deviceEstimate().osVersion.startsWith('12')) {
+    if (XR8.XrDevice.deviceEstimate().osVersion.startsWith('12')) {
       deviceMotionErrorApple_.classList.remove('hidden')
     } else {
       motionPermissionsErrorApple_.classList.remove('hidden')
     }
 
     hideLoadingScreen(false)
-    XR.pause()
-    XR.stop()
+    XR8.pause()
+    XR8.stop()
   }
 
   const checkLoaded = () => {
@@ -173,7 +173,7 @@ function create() {
         showLoading()
       },
       onCameraStatusChange: ({status}) => {
-        if (!XR.XrDevice.isDeviceBrowserCompatible()) {
+        if (!XR8.XrDevice.isDeviceBrowserCompatible()) {
           return
         }
         if (status == 'requesting') {
@@ -220,8 +220,8 @@ function create() {
               cameraSelectionWorldTrackingError_.classList.remove('hidden')
 
               // Stop camera processing.
-              XR.pause()
-              XR.stop()
+              XR8.pause()
+              XR8.stop()
               return
             }
           }
@@ -247,7 +247,7 @@ function create() {
     waitingOnReality_ = true
 
     if (args && args.onxrloaded) {
-      window.XR ? args.onxrloaded() : window.addEventListener('xrloaded', args.onxrloaded)
+      window.XR8 ? args.onxrloaded() : window.addEventListener('xrloaded', args.onxrloaded)
     }
   }
 
