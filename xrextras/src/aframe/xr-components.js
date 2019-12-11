@@ -7,16 +7,16 @@ const xrComponents = () => {
     init: function() {
       const load = () => {
         this.data.url && XRExtras.AlmostThere.configure({url: this.data.url})
-        XR.addCameraPipelineModule(XRExtras.AlmostThere.pipelineModule())
+        XR8.addCameraPipelineModule(XRExtras.AlmostThere.pipelineModule())
       }
-      window.XRExtras && window.XR
+      window.XRExtras && window.XR8
         ? load()
         : window.addEventListener('xrandextrasloaded', load, {once: true})
     }
   }
 
   // Display loading screen.
-  const onxrloaded = () => { XR.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
+  const onxrloaded = () => { XR8.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
   const loadingComponent = {
     init: function() {
       let aframeLoaded = false
@@ -33,8 +33,8 @@ const xrComponents = () => {
   // Show an error-handling scene on error.
   const runtimeErrorComponent = {
     init: function() {
-      const load = () => { XR.addCameraPipelineModule(XRExtras.RuntimeError.pipelineModule()) }
-      window.XRExtras && window.XR
+      const load = () => { XR8.addCameraPipelineModule(XRExtras.RuntimeError.pipelineModule()) }
+      window.XRExtras && window.XR8
         ? load()
         : window.addEventListener('xrandextrasloaded', load, {once: true})
     }
@@ -245,16 +245,187 @@ const xrComponents = () => {
   }
 
   const oneFingerRotateComponent = {
+    schema: {
+      factor: {default: 6}
+    },
     init: function () {
       this.handleEvent = this.handleEvent.bind(this)
       this.el.sceneEl.addEventListener('onefingermove', this.handleEvent)
-      this.el.setAttribute('class', 'cantap')
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
     },
     remove: function () {
       this.el.sceneEl.removeEventListener('onefingermove', this.handleEvent)
     },
     handleEvent: function (event) {
-      this.el.object3D.rotation.y += event.detail.positionChange.x * 6
+      this.el.object3D.rotation.y += event.detail.positionChange.x * this.data.factor
+    }
+  }
+
+  const twoFingerRotateComponent = {
+    schema: {
+      factor: {default: 5}
+    },
+    init: function() {
+      this.handleEvent = this.handleEvent.bind(this)
+      this.el.sceneEl.addEventListener('twofingermove', this.handleEvent)
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
+    },
+    remove: function() {
+      this.el.sceneEl.removeEventListener('twofingermove', this.handleEvent)
+    },
+    handleEvent: function(event) {
+      this.el.object3D.rotation.y += event.detail.positionChange.x * this.data.factor
+    }
+  }
+
+  const pinchScaleComponent = {
+    schema: {
+      min: {default: .33},
+      max: {default: 3},
+      scale: {default: 0},  // If scale is set to zero here, the object's initial scale is used.
+    },
+    init: function() {
+      const s = this.data.scale
+      this.initialScale = (s && {x: s, y: s, z: s}) || this.el.object3D.scale.clone()
+      this.scaleFactor = 1
+      this.handleEvent = this.handleEvent.bind(this)
+      this.el.sceneEl.addEventListener('twofingermove', this.handleEvent)
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
+    },
+    remove: function() {
+      this.el.sceneEl.removeEventListener('twofingermove', this.handleEvent)
+    },
+    handleEvent: function(event) {
+      this.scaleFactor *= 1 + event.detail.spreadChange / event.detail.startSpread
+      this.scaleFactor = Math.min(Math.max(this.scaleFactor, this.data.min), this.data.max)
+
+      this.el.object3D.scale.x = this.scaleFactor * this.initialScale.x
+      this.el.object3D.scale.y = this.scaleFactor * this.initialScale.y
+      this.el.object3D.scale.z = this.scaleFactor * this.initialScale.z
+    }
+  }
+
+  const holdDragComponent = {
+    schema: {
+      cameraId: {default: 'camera'},
+      groundId: {default: 'ground'},
+      dragDelay: {default: 300 },
+
+    },
+    init: function() {
+      this.camera = document.getElementById(this.data.cameraId)
+      this.threeCamera = this.camera.getObject3D('camera')
+      this.ground = document.getElementById(this.data.groundId)
+
+      this.internalState = {
+        fingerDown: false,
+        dragging: false,
+        distance: 0,
+        startDragTimeout: null,
+        raycaster: new THREE.Raycaster(),
+      }
+
+      this.fingerDown = this.fingerDown.bind(this)
+      this.startDrag = this.startDrag.bind(this)
+      this.fingerMove = this.fingerMove.bind(this)
+      this.fingerUp = this.fingerUp.bind(this)
+
+      this.el.addEventListener('mousedown', this.fingerDown)
+      this.el.sceneEl.addEventListener('onefingermove', this.fingerMove)
+      this.el.sceneEl.addEventListener('onefingerend', this.fingerUp)
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
+    },
+    tick: function() {
+      if (this.internalState.dragging) {
+        let desiredPosition = null
+        if (this.internalState.positionRaw) {
+
+          const screenPositionX = this.internalState.positionRaw.x / document.body.clientWidth * 2 - 1
+          const screenPositionY = this.internalState.positionRaw.y / document.body.clientHeight * 2 - 1
+          const screenPosition = new THREE.Vector2(screenPositionX, -screenPositionY)
+
+          this.threeCamera = this.threeCamera || this.camera.getObject3D('camera')
+
+          this.internalState.raycaster.setFromCamera(screenPosition, this.threeCamera)
+          const intersects = this.internalState.raycaster.intersectObject(this.ground.object3D, true)
+
+          if (intersects.length > 0) {
+            const intersect = intersects[0]
+            this.internalState.distance = intersect.distance
+            desiredPosition = intersect.point
+          }
+        }
+
+        if (!desiredPosition) {
+          desiredPosition = this.camera.object3D.localToWorld(new THREE.Vector3(0, 0, -this.internalState.distance))
+        }
+
+        desiredPosition.y = 1
+        this.el.object3D.position.lerp(desiredPosition, 0.2)
+      }
+    },
+    remove: function() {
+      this.el.removeEventListener('mousedown', this.fingerDown)
+      this.el.scene.removeEventListener('onefingermove', this.fingerMove)
+      this.el.scene.removeEventListener('onefingerend', this.fingerUp)
+      if (this.internalState.fingerDown) {
+        this.fingerUp()
+      }
+    },
+    fingerDown: function(event) {
+      this.internalState.fingerDown = true
+      this.internalState.startDragTimeout = setTimeout(this.startDrag, this.data.dragDelay)
+      this.internalState.positionRaw = event.detail.positionRaw
+    },
+    startDrag: function(event) {
+        if (!this.internalState.fingerDown ) {
+          return
+        }
+        this.internalState.dragging = true
+        this.internalState.distance = this.el.object3D.position.distanceTo(this.camera.object3D.position)
+      },
+    fingerMove: function(event) {
+      this.internalState.positionRaw = event.detail.positionRaw
+    },
+    fingerUp: function(event) {
+      this.internalState.fingerDown = false
+      clearTimeout(this.internalState.startDragTimeout)
+
+      this.internalState.positionRaw = null
+
+      if (this.internalState.dragging) {
+        const endPosition = this.el.object3D.position.clone()
+        this.el.setAttribute('animation__drop', {
+          property: 'position',
+          to: `${endPosition.x} 0 ${endPosition.z}`,
+          dur: 300,
+          easing: 'easeOutQuad',
+        })
+      }
+      this.internalState.dragging = false
+    }
+  }
+
+  const attachComponent = {
+    schema: {
+      target: {default: '' },
+      offset: {default: '0 0 0'},
+    },
+    update: function() {
+      const targetElement = document.getElementById(this.data.target)
+      if (!targetElement) {
+        return
+      }
+      this.target = targetElement.object3D
+      this.offset = this.data.offset.split(' ').map(n => Number(n))
+    },
+    tick: function() {
+      if (!this.target) {
+        return
+      }
+      const [x, y, z] = this.offset
+      this.el.object3D.position.set(
+        this.target.position.x + x, this.target.position.y + y, this.target.position.z + z)
     }
   }
 
@@ -305,6 +476,10 @@ const xrComponents = () => {
     'xrextras-named-image-target': namedImageTargetComponent,
     'xrextras-gesture-detector': gestureDetectorComponent,
     'xrextras-one-finger-rotate': oneFingerRotateComponent,
+    'xrextras-two-finger-rotate': twoFingerRotateComponent,
+    'xrextras-pinch-scale': pinchScaleComponent,
+    'xrextras-hold-drag': holdDragComponent,
+    'xrextras-attach': attachComponent,
     'xrextras-play-video': playVideoComponent,
     'xrextras-log-to-screen': logToScreenComponent,
   }

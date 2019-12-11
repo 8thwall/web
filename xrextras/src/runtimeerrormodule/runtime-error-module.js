@@ -37,8 +37,8 @@ const create = () => {
         document.getElementById('error_msg_unknown').classList.remove('hidden')
 
         // Stop camera processing.
-        XR.pause()
-        XR.stop()
+        XR8.pause()
+        XR8.stop()
       }
     }
   }

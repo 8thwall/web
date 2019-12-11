@@ -32,11 +32,11 @@ function create() {
       redirectLinks[i].textContent = redirectUrl
     }
 
-    const reasons = XR.XrDevice.incompatibleReasons()
-    const details = XR.XrDevice.incompatibleReasonDetails()
-    const device = XR.XrDevice.deviceEstimate()
+    const reasons = XR8.XrDevice.incompatibleReasons()
+    const details = XR8.XrDevice.incompatibleReasonDetails()
+    const device = XR8.XrDevice.deviceEstimate()
 
-    if (reasons.includes(XR.XrDevice.IncompatibilityReasons.UNSUPPORTED_BROWSER)) {
+    if (reasons.includes(XR8.XrDevice.IncompatibilityReasons.UNSUPPORTED_BROWSER)) {
       if (device.os == 'iOS') {
         if (details.inAppBrowserType == 'Safari') {
           showId('error_msg_open_in_safari')
@@ -51,7 +51,7 @@ function create() {
       }
     }
 
-    if (reasons.includes(XR.XrDevice.IncompatibilityReasons.MISSING_WEB_ASSEMBLY)) {
+    if (reasons.includes(XR8.XrDevice.IncompatibilityReasons.MISSING_WEB_ASSEMBLY)) {
       if (device.os == 'iOS') {
         showId('error_msg_web_assembly_ios')
         return
@@ -88,7 +88,7 @@ function create() {
       return false
     }
 
-    if (XR.XrDevice.isDeviceBrowserCompatible()) {
+    if (XR8.XrDevice.isDeviceBrowserCompatible()) {
       // Everything is ok.
       return true
     }
@@ -96,8 +96,8 @@ function create() {
     showAlmostThere()
     shown = true
 
-    XR.pause()
-    XR.stop()
+    XR8.pause()
+    XR8.stop()
     return false
   }
 

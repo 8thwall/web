@@ -151,8 +151,8 @@ function create() {
   }
 
   return {
-    // Creates a camera pipeline module that, when installed, keeps the canvas specified on XR.run()
-    // to cover the whole window.
+    // Creates a camera pipeline module that, when installed, keeps the canvas specified on
+    // XR8.run() to cover the whole window.
     pipelineModule,
   }
 }

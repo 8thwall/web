@@ -10,7 +10,7 @@ const AFrameFactory = () => {
   return xrextrasAframe
 }
 
-const onxrloaded = () => { XR.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
+const onxrloaded = () => { XR8.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
 
 function create() {
   let registered = false
@@ -37,14 +37,14 @@ function create() {
 
   // If XR or XRExtras load before AFrame, we need to manually register their AFrame components.
   const ensureAFrameComponents = () => {
-    window.XR       && window.AFRAME.registerComponent('xrweb', XR.AFrame.xrwebComponent())
+    window.XR8       && window.AFRAME.registerComponent('xrweb', XR8.AFrame.xrwebComponent())
     window.XRExtras && window.XRExtras.AFrame.registerXrExtrasComponents()
   }
 
   // If XR and XRExtras aren't loaded, wait for them.
   const ensureXrAndExtras = () => {
     const eventnames = []
-    window.XR       || eventnames.push('xrloaded')
+    window.XR8       || eventnames.push('xrloaded')
     window.XRExtras || eventnames.push('xrextrasloaded')
     return Promise.all(eventnames.map(waitEventPromise))
   }
@@ -110,7 +110,7 @@ const eagerload = () => {
     if (attr == 'xrextras-almost-there') {
       const redirectMatch = new RegExp('url:([^;]*)').exec(attrs.item(a).value)
       redirectMatch && window.XRExtras.AlmostThere.configure({url: redirectMatch[1]})
-      window.XR
+      window.XR8
         ? window.XRExtras.AlmostThere.checkCompatibility()
         : window.addEventListener('xrloaded', window.XRExtras.AlmostThere.checkCompatibility)
     }
