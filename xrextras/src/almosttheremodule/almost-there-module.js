@@ -44,6 +44,12 @@ function create() {
         } else if (details.inAppBrowserType == 'Ellipsis') {
           showId('error_msg_open_in_safari')
           showId('apple_tap_to_open_safari_hint')
+        } else if (details.inAppBrowser == 'Instagram') {
+          showId('error_msg_open_in_safari')
+          showId('apple_tap_top_right_to_open_safari_hint')
+        } else if (details.inAppBrowser == 'Snapchat') {
+          showId('error_msg_open_in_safari')
+          showId('apple_tap_to_open_safari_hint_snap')
         } else {
           showId('error_msg_apple_almost_there')
         }

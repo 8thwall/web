@@ -27,6 +27,24 @@
   height: 72px;
 }
 
+.apple-safari-hint-snap {
+  position: fixed;
+  bottom: 10%;
+  right: 10%;
+  height: 72px;
+}
+
+.apple-top-safari-hint {
+  position: fixed;
+  top: 3%;
+  right: 6%;
+  height: 36px;
+  -moz-transform: scale(-1, -1);
+  -o-transform: scale(-1, -1);
+  -webkit-transform: scale(-1, -1);
+  transform: scale(-1, -1);
+}
+
 .desktop-home-link {
   padding-top: 5px;
   padding-bottom: 5px;
