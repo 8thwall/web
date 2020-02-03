@@ -5,7 +5,20 @@
 
 #almostthereContainer {
   z-index: 820;
-  background-color: #FFFFFF;
+  background-color: #101118;
+}
+
+#qrcode {
+  background-color: white;
+  margin: 0 auto;
+  width: 250px;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+#qrcode>svg {
+  width: 100%;
+  display: block;
 }
 
 .absolute-fill {
@@ -20,23 +33,45 @@
   display: none !important;
 }
 
-.apple-safari-hint {
-  position: fixed;
-  bottom: 3%;
-  right: 8%;
-  height: 72px;
-}
-
-.apple-safari-hint-snap {
-  position: fixed;
-  bottom: 10%;
-  right: 10%;
-  height: 72px;
-}
-
-.apple-top-safari-hint {
+.arrow-top-corner {
   position: fixed;
   top: 3%;
+  right: 1.5%;
+  height: 36px;
+}
+
+.arrow-top-close {
+  position: fixed;
+  top: 3%;
+  right: 12.5%;
+  height: 36px;
+}
+
+.arrow-bottom-close {
+  position: fixed;
+  bottom: 3%;
+  right: 15%;
+  height: 36px;
+  -moz-transform: scale(-1, -1);
+  -o-transform: scale(-1, -1);
+  -webkit-transform: scale(-1, -1);
+  transform: scale(-1, -1);
+}
+
+.arrow-bottom-corner {
+  position: fixed;
+  bottom: 3%;
+  right: 2%;
+  height: 36px;
+  -moz-transform: scale(-1, -1);
+  -o-transform: scale(-1, -1);
+  -webkit-transform: scale(-1, -1);
+  transform: scale(-1, -1);
+}
+
+.arrow-bottom-snap {
+  position: fixed;
+  bottom: 12%;
   right: 6%;
   height: 36px;
   -moz-transform: scale(-1, -1);
@@ -45,23 +80,53 @@
   transform: scale(-1, -1);
 }
 
-.desktop-home-link {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  background-color:rgba(173, 80, 255, 0.2);
-  -webkit-user-select: all;  /* Chrome 49+ */
-  -moz-user-select: all;     /* Firefox 43+ */
-  -ms-user-select: all;      /* No support yet */
-  user-select: all;
-  pointer-events: auto;
+.circle-snap {
+  position: fixed;
+  bottom: 2%;
+  right: 4%;
+  height: 50px;
+}
+
+.app-header-img {
+  position: fixed;
+  width: 100vw;
+  max-width: 500px;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.app-header-img.unknown {
+  position: fixed;
+  width: 100vw;
+  max-width: 500px;
+  left: 50%;
+  top: 43%;
+  transform: translateX(-50%) translateY(-57%);
+}
+
+.poweredby-img {
+  width: 35vw;
+  max-width: 200px;
+  position: fixed;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.poweredby-img.desktop {
+  width: 200px;
+  bottom: 5%;
 }
 
 .error-text-outer-container {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#error_msg_open_in_safari {
+  background-color: #101118;
 }
 
 .error-margin-top-5 {
@@ -73,30 +138,124 @@
 }
 
 .error-text-container {
-  flex: 0 0 auto;
   text-align: center;
-  width: 90%;
+  width: 100%;
 }
 
-.error-text-header {
-  font-family: 'Varela-Round', sans-serif;
-  font-size: 18pt;
-  color: #323232;
+.open-header-top {
+  font-family: 'Nunito-SemiBold', sans-serif;
+  color: white;
   letter-spacing: .37;
-  line-height: 23pt;
+  font-size: 1em;
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.open-header-bottom {
+  font-family: 'Nunito-SemiBold', sans-serif;
+  color: white;
+  letter-spacing: .37;
+  font-size: 1em;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.open-header-unknown {
+  font-family: 'Nunito-SemiBold', sans-serif;
+  color: white;
+  letter-spacing: .37;
+  font-size: 1em;
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.desktop-message {
+  font-family: 'Nunito-SemiBold', sans-serif;
+  margin: 0 auto;
+  margin-top: 1vh;
+  width: 500px;
+  color: white;
+  font-size: 24pt;
+  line-height: 1em;
+}
+
+.desktop-hint {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14pt;
+  color: #fff !important;
+  line-height: 2em;
+  margin-top: 2vh;
+  letter-spacing: .37;
+}
+
+.desktop-home-link {
+  font-family: 'Nunito-SemiBold', sans-serif;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  color: white;
+  background-color: #464766;
+  -webkit-user-select: all;
+  /* Chrome 49+ */
+  -moz-user-select: all;
+  /* Firefox 43+ */
+  -ms-user-select: all;
+  /* No support yet */
+  user-select: all;
+  pointer-events: auto;
+}
+
+.desktop-home-link.mobile {
+  position: fixed;
+  width: 100vw;
+  font-size: 1.1em;
+  font-weight: 800;
+  border-radius: 0px;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.copy-link-btn {
+  position: fixed;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Nunito-SemiBold', sans-serif;
+  font-weight: 800;
+  font-size: 1.1em;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  border: none;
+  background-color: #AD50FF;
+  padding: 6px 13px;
+  border-radius: 10px;
+}
+
+.error-copy-link-copied {
+  background-color: #8083A2 !important;
 }
 
 .error-text-detail {
-  font-family: 'Varela-Round', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14pt;
-  color: #323232;
+  color: #ffffff;
   letter-spacing: .37;
   line-height: 23pt;
 }
 
 .error-text-hint {
-  font-family: 'Raleway-Regular', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 14pt;
-  color: #A8A8BA;
+  color: #fff !important;
   letter-spacing: .37;
 }

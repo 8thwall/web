@@ -14,16 +14,24 @@ const AlmostThereFactory = () => {
 }
 
 function create() {
-  let shown = false
+  let rootNode = null
   let customRedirectUrl
   const showId = id => {
     document.getElementById(id).classList.remove('hidden')
   }
 
+  const hideAlmostThere = () => {
+    if (!rootNode) {
+      return
+    }
+    rootNode.parentNode.removeChild(rootNode)
+    rootNode = null
+  }
+
   const showAlmostThere = () => {
     const e = document.createElement('template')
     e.innerHTML = html.trim()
-    const rootNode = e.content.firstChild
+    rootNode = e.content.firstChild
     document.getElementsByTagName('body')[0].appendChild(rootNode)
 
     const redirectUrl = customRedirectUrl || window.location.href
@@ -36,22 +44,65 @@ function create() {
     const details = XR8.XrDevice.incompatibleReasonDetails()
     const device = XR8.XrDevice.deviceEstimate()
 
+    const headerImgSrc = document.querySelector('meta[name="og:image"]').content
+    if (headerImgSrc == null) {
+      headerImgSrc = 'https://cdn.8thwall.com/web/img/almostthere/v2/safari-fallback.png'
+    }
+    Array.from(document.querySelectorAll('.app-header-img')).forEach(img => img.src = headerImgSrc)
+
+    const cBtn = document.getElementById('error_copy_link_btn')
+    cBtn.addEventListener("click", () => {
+      var dummy = document.createElement('input')
+      document.body.appendChild(dummy)
+      dummy.value = redirectUrl
+      dummy.select()
+      document.execCommand('copy')
+      document.body.removeChild(dummy)
+
+      cBtn.innerHTML = "Copied!"
+      cBtn.classList.add('error-copy-link-copied')
+    })
+
     if (reasons.includes(XR8.XrDevice.IncompatibilityReasons.UNSUPPORTED_BROWSER)) {
-      if (device.os == 'iOS') {
+      if (device.os === 'iOS') {
         if (details.inAppBrowserType == 'Safari') {
           showId('error_msg_open_in_safari')
           showId('apple_open_safari_hint')
-        } else if (details.inAppBrowserType == 'Ellipsis') {
-          showId('error_msg_open_in_safari')
-          showId('apple_tap_to_open_safari_hint')
-        } else if (details.inAppBrowser == 'Instagram') {
-          showId('error_msg_open_in_safari')
-          showId('apple_tap_top_right_to_open_safari_hint')
-        } else if (details.inAppBrowser == 'Snapchat') {
-          showId('error_msg_open_in_safari')
-          showId('apple_tap_to_open_safari_hint_snap')
         } else {
-          showId('error_msg_apple_almost_there')
+          switch (details.inAppBrowser) {
+            case 'Instagram':
+            case 'Facebook':
+            case 'WeChat':
+            case 'LinkedIn':
+            case 'QQ':
+            case 'Sino Weibo':
+              showId('error_msg_open_in_safari')
+              showId('error_text_header_top')
+              showId('top_corner_open_safari')
+              break;
+            case 'Facebook Messenger':
+            case 'Kakao Talk':
+            case 'Naver':
+              showId('error_msg_open_in_safari')
+              showId('error_text_header_bottom')
+              showId('bottom_corner_open_safari')
+              break;
+            case 'Line':
+            case 'Mozilla Firefox Focus':
+              showId('error_msg_open_in_safari')
+              showId('error_text_header_top')
+              showId('top_close_open_safari')
+              break;
+            case 'Snapchat':
+              showId('error_msg_open_in_safari')
+              showId('error_text_header_bottom')
+              showId('snap_arrow')
+              showId('snap_circle')
+              break;
+            default:
+              showId('error_unknown_webview')
+              break;
+          }
         }
         return
       }
@@ -69,7 +120,8 @@ function create() {
     }
 
     if (device.os == 'iOS') {
-      showId('error_msg_apple_almost_there')
+      showId('error_unknown_webview')
+      showId('error_text_header_unknown')
       return
     }
 
@@ -82,15 +134,15 @@ function create() {
     showId('error_msg_device')
     const scriptElem = document.createElement("script")
     scriptElem.type = "text/javascript"
-    scriptElem.src = "https://cdn.8thwall.com/web/share/qrcode8.js"
+    scriptElem.src = "https://cdn.8thwall.com/web/share/qrcode8-1.1.0.js"
     scriptElem.onload = () => {
-      document.getElementById('qrcode').innerHTML = qrcode8.generateQRHtml(redirectUrl)
+      document.getElementById('qrcode').innerHTML = qrcode8.generateQR8Svg(redirectUrl, 250, 80)
     }
     document.getElementById("almostthereContainer").appendChild(scriptElem)
   }
 
   const checkCompatibility = () => {
-    if (shown) {
+    if (rootNode) {
       return false
     }
 
@@ -100,7 +152,6 @@ function create() {
     }
 
     showAlmostThere()
-    shown = true
 
     XR8.pause()
     XR8.stop()
@@ -123,7 +174,7 @@ function create() {
     }
   }
 
-  const configure = ({url}) => {
+  const configure = ({ url }) => {
     if (url !== undefined) {
       customRedirectUrl = url
     }
@@ -133,6 +184,7 @@ function create() {
     pipelineModule,
     checkCompatibility,
     configure,
+    hideAlmostThere,
   }
 }
 

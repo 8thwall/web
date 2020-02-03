@@ -4,67 +4,64 @@
     <div class="error-text-outer-container">
       <div class="error-text-container error-margin-top-20">
         <div id="qrcode"></div>
-        <br/>
-        <div class="error-text-header">
-          <span style="font-size:24pt;line-height:20pt;">
-            Hey! Looks like you're on a desktop.
+        <br />
+        <div class="desktop-message">
+          <span>
+            To view, open camera on smartphone and scan code
           </span>
         </div>
-        <div class="error-text-hint">
-          <span style="font-size:15pt;line-height:50pt;letter-spacing:-.21;color:#323232">
-            For the augmented reality experience, scan this code
-          </span>
-        </div>
-        <div class="error-text-hint">
-          <span style="font-size:15pt;line-height:20pt;letter-spacing:-.21;color:#323232">
-            or visit <span class="desktop-home-link"></span>
+        <div class="desktop-hint">
+          <span style="font-size:15pt;line-height:20pt;letter-spacing:-.21;">
+            or visit <br /><span class="desktop-home-link"></span><br />
             on a smartphone or tablet.
           </span>
         </div>
+        <img class="poweredby-img desktop" src="//cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg">
       </div>
     </div>
   </div>
 
   <!--iOS webview, reachable from button press -->
-  <div id="error_msg_open_in_safari" class="hidden">
+  <div id="error_msg_open_in_safari" class="hidden absolute-fill">
     <div class="error-text-outer-container">
       <div class="error-text-container error-margin-top-5">
-        <p><img src="//cdn.8thwall.com/web/img/almostthere/v1/safari-icon.png"></p>
-        <div class="error-text-header">You're almost there!</div>
-        <div class="error-text-detail">
-          To view this experience, please open in Safari.
-        </div>
-        <br/>
-        <img id="apple_open_safari_hint"
-          src="//cdn.8thwall.com/web/img/almostthere/v1/open-in-safari.png"
-          class="apple-safari-hint hidden"/>
-        <img id="apple_tap_to_open_safari_hint"
-          src="//cdn.8thwall.com/web/img/almostthere/v1/tap-to-open-in-safari.png"
-          class="apple-safari-hint hidden"/>
-        <img id="apple_tap_top_right_to_open_safari_hint"
-          src="//cdn.8thwall.com/web/img/loading/v1/arrow.png"
-          class="apple-top-safari-hint hidden"/>
-        <img id="apple_tap_to_open_safari_hint_snap"
-          src="//cdn.8thwall.com/web/img/almostthere/v1/tap-to-open-in-safari.png"
-          class="apple-safari-hint-snap hidden"/>
+        <span id="error_text_header_top" class="hidden open-header-top">
+          <h2>Open in Safari<br /> to view AR</h2>
+        </span>
+        <span id="error_text_header_bottom" class="hidden open-header-bottom">
+          <h2>Open in Safari<br /> to view AR</h2>
+        </span>
+        <img class="app-header-img">
+        <img class="poweredby-img" src="//cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg">
+        <br />
+        <img id="top_corner_open_safari" src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg"
+          class="arrow-top-corner hidden" />
+        <img id="top_close_open_safari" src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg"
+          class="arrow-top-close hidden" />
+        <img id="bottom_corner_open_safari" src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg"
+          class="arrow-bottom-corner hidden" />
+        <img id="bottom_close_open_safari" src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg"
+          class="arrow-bottom-close hidden" />
+        <img id="snap_circle" src="//cdn.8thwall.com/web/img/almostthere/v2/snap-circle.svg"
+          class="circle-snap hidden" />
+        <img id="snap_arrow" src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg"
+          class="arrow-bottom-snap hidden" />
       </div>
     </div>
   </div>
 
   <!--iOS webview, requires copy/paste of link -->
-  <div id="error_msg_apple_almost_there" class="hidden">
+  <div id="error_unknown_webview" class="hidden">
     <div class="error-text-outer-container">
       <div class="error-text-container error-margin-top-5">
-        <p><img src="//cdn.8thwall.com/web/img/almostthere/v1/safari-icon.png"></p>
-        <div class="error-text-header">You're almost there!</div>
-        <div class="error-text-detail">
-          To view this experience, please open in Safari.
-        </div>
-        <br/>
-        <p><span class="desktop-home-link"></span></p>
-        <div id="apple_copy_hint" class="error-text-hint">
-          Open your Safari browser and paste.
-        </div>
+        <span id="error_text_header_unknown" class="open-header-unknown">
+          <h2>Open in Safari<br /> to view AR</h2>
+        </span>
+        <img id="app_img" class="app-header-img unknown">
+        <br />
+        <span id="app_link" class="desktop-home-link mobile"></span>
+        <button id="error_copy_link_btn" class="copy-link-btn">Copy Link</button>
+        <img class="poweredby-img" src="//cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg">
       </div>
     </div>
   </div>
@@ -103,7 +100,7 @@
           To view this experience on your Android device, please open in Google Chrome or your
           native browser.
         </div>
-        <br/>
+        <br />
         <p><span class="desktop-home-link"></span></p>
         <div id="android_copy_hint" class="error-text-hint">Open your browser and paste.</div>
       </div>

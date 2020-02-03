@@ -12,12 +12,22 @@ const xrComponents = () => {
       window.XRExtras && window.XR8
         ? load()
         : window.addEventListener('xrandextrasloaded', load, {once: true})
+    },
+    remove: function() {
+      XRExtras.AlmostThere.hideAlmostThere()
+      XR8.removeCameraPipelineModule('almostthere')
     }
   }
 
   // Display loading screen.
   const onxrloaded = () => { XR8.addCameraPipelineModule(XRExtras.Loading.pipelineModule()) }
   const loadingComponent = {
+    schema: {
+      loadBackgroundColor: {default: ''},
+      cameraBackgroundColor: {default: ''},
+      loadImage: {default: ''},
+      loadAnimation: {default: ''}
+    },
     init: function() {
       let aframeLoaded = false
       this.el.addEventListener('loaded', () => {aframeLoaded = true})
@@ -27,6 +37,23 @@ const xrComponents = () => {
         XRExtras.Loading.showLoading({onxrloaded})
       }
       window.XRExtras ? load() : window.addEventListener('xrextrasloaded', load, {once: true})
+
+      const loadImg = document.querySelector('#loadImage')
+
+      document.querySelector('#loadBackground').style.backgroundColor = this.data.loadBackgroundColor
+      document.querySelector('#requestingCameraPermissions').style.backgroundColor = this.data.cameraBackgroundColor
+
+      if(this.data.loadImage != '') {
+        loadImg.src = document.querySelector(this.data.loadImage).src
+      }      
+
+      if(this.data.loadAnimation != '') {
+        loadImg.classList.remove('spin')
+        loadImg.classList.add(this.data.loadAnimation)
+      }            
+    },
+    remove: function() {
+      XR8.removeCameraPipelineModule('loading')
     }
   }
 
@@ -37,6 +64,10 @@ const xrComponents = () => {
       window.XRExtras && window.XR8
         ? load()
         : window.addEventListener('xrandextrasloaded', load, {once: true})
+    },
+    remove: function() {
+      XRExtras.RuntimeError.hideRuntimeError()
+      XR8.removeCameraPipelineModule('error')
     }
   }
 
@@ -310,7 +341,6 @@ const xrComponents = () => {
       cameraId: {default: 'camera'},
       groundId: {default: 'ground'},
       dragDelay: {default: 300 },
-
     },
     init: function() {
       this.camera = document.getElementById(this.data.cameraId)
@@ -366,8 +396,8 @@ const xrComponents = () => {
     },
     remove: function() {
       this.el.removeEventListener('mousedown', this.fingerDown)
-      this.el.scene.removeEventListener('onefingermove', this.fingerMove)
-      this.el.scene.removeEventListener('onefingerend', this.fingerUp)
+      this.el.sceneEl.removeEventListener('onefingermove', this.fingerMove)
+      this.el.sceneEl.removeEventListener('onefingerend', this.fingerUp)
       if (this.internalState.fingerDown) {
         this.fingerUp()
       }
