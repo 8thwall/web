@@ -15,6 +15,15 @@ const RuntimeErrorFactory = () => {
 
 const create = () => {
   let started = false
+  let rootNode = null
+  const hideRuntimeError = () => {
+    if (!rootNode) {
+      return
+    }
+
+    rootNode.parentNode.removeChild(rootNode)
+    rootNode = null
+  }
   const pipelineModule = () => {
     return {
       name: 'error',
@@ -24,7 +33,7 @@ const create = () => {
         if (!started) { return }
 
         // Only add the error message once.
-        if (document.getElementById('error_msg_unknown')) { return }
+        if (rootNode) { return }
 
         // Log the error to the console to help with debugging.
         console.log('[RuntimeError] XR caught an error; stopping:')
@@ -33,20 +42,23 @@ const create = () => {
         // Show the error message.
         const e = document.createElement('template')
         e.innerHTML = html.trim()
-        document.getElementsByTagName('body')[0].appendChild(e.content.firstChild)
+
+        rootNode = e.content.firstChild
+        document.getElementsByTagName('body')[0].appendChild(rootNode)
         document.getElementById('error_msg_unknown').classList.remove('hidden')
 
         // Stop camera processing.
         XR8.pause()
         XR8.stop()
-      }
+      },
     }
   }
 
   return {
     // Adds a pipeline module that displays an error image and stops the camera
     // feed when an error is encountered after the camera starts running.
-    pipelineModule
+    pipelineModule,
+    hideRuntimeError,
   }
 }
 

@@ -6,6 +6,8 @@ const {LoadingFactory} = require('./loadingmodule/loading-module.js')
 const {PlayCanvasFactory} = require('./playcanvas/playcanvas.js')
 const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
 
+require('./common.css')
+
 module.exports = {
   XRExtras: {
     AFrame: AFrameFactory(),

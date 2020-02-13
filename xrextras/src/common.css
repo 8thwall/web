@@ -1,0 +1,104 @@
+* {
+  font-family: inherit;
+  box-sizing: inherit;
+}
+
+.absolute-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.error-text-outer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-text-container {
+  flex: 0 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.error-text-header {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16pt;
+  color: white;
+  letter-spacing: .37;
+  line-height: 23pt;
+}
+
+.xrextras-old-style .error-text-header {
+  color: #323232;
+}
+
+.error-text-hint {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14pt;
+  color: #A8A8BA;
+  letter-spacing: .37;
+}
+
+.error-text-detail {
+  font-family: 'Nunito', sans-serif;
+  font-size: 14pt;
+  color: white;
+}
+
+.xrextras-old-style .error-text-detail {
+  color: #323232;
+}
+
+.error-margin-top-5 {
+  margin-top: 5vh;
+}
+
+.error-margin-top-20 {
+  margin-top: 20vh;
+}
+
+.desktop-home-link {
+  font-family: 'Nunito-SemiBold', sans-serif;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  color: white;
+  background-color: #464766;
+  -webkit-user-select: all;
+  /* Chrome 49+ */
+  -moz-user-select: all;
+  /* Firefox 43+ */
+  -ms-user-select: all;
+  /* No support yet */
+  user-select: all;
+  pointer-events: auto;
+}
+
+.xrextras-old-style .desktop-home-link {
+  color: #323232;
+  background-color:rgba(173, 80, 255, 0.2);
+}
+
+.desktop-home-link.mobile {
+  position: fixed;
+  width: 100vw;
+  font-size: 1.1em;
+  font-weight: 800;
+  border-radius: 0px;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.xrextras-old-style .foreground-image {
+  filter: invert(1);
+}
