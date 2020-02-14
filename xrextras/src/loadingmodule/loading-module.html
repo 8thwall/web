@@ -2,32 +2,39 @@
   <!--Loading screen-->
   <div id="loadBackground" class="absolute-fill">
     <div id="loadImageContainer" class="absolute-fill">
-      <img src="//cdn.8thwall.com/web/img/loading/v1/eight.png" id="loadImage" class="rotate-center" />
+      <img src="//cdn.8thwall.com/web/img/loading/v2/load-grad.png" id="loadImage" class="spin" />
+      <img class='foreground-image poweredby-img'
+        src="//cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg" />
     </div>
   </div>
 
   <!--Camera Permissions-->
-  <div id="requestingCameraPermissions" class="hidden" />
-    <img id="requestingCameraIcon" src="//cdn.8thwall.com/web/img/loading/v1/camera-purple.png" />
-    Tap "Allow" so we can<br>augment your reality.
+  <div id="requestingCameraPermissions" class="hidden">
+    <img id="requestingCameraIcon" src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
+    Tap 'Allow' to access AR
   </div>
 
   <!--Permission error, iOS-->
-  <div id="cameraPermissionsErrorApple" class="absolute-fill hidden" />
-    Refresh the page to enable<br>your camera for AR
-    <img id="cameraPermissionsErrorAppleArrow" src="//cdn.8thwall.com/web/img/loading/v1/arrow.png" />
-    <img id="cameraPermissionsErrorAppleReloadCamera" src="//cdn.8thwall.com/web/img/loading/v1/reload-camera.png" />
+  <div id="cameraPermissionsErrorApple" class="absolute-fill hidden">
+    <img class='foreground-image' id="cameraPermissionsErrorAppleReloadCamera"
+      src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
+    <p id="cameraPermissionsErrorAppleMessage">
+      Refresh the page to enable camera access for AR
+    </p>
+    <img class='foreground-image' id="cameraPermissionsErrorAppleArrow"
+      src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg" />
   </div>
 
   <!--Permission error, Android-->
   <div id="cameraPermissionsErrorAndroid" class="absolute-fill hidden">
     <div id="cameraPermissionsCameraIcon">
-      <img src="//cdn.8thwall.com/web/img/loading/v1/camera-purple.png" />
+      <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
     </div>
     <div class="loading-error-header">Let's enable your camera</div>
     <ol class="loading-error-instructions">
-      <li>Tap the <img src="//cdn.8thwall.com/web/img/loading/v1/ellipsis.png"> in the top right</li>
-      <li>Tap <span class="highlight">Settings</li>
+      <li>Tap the <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/dots.svg"> in the top right
+      </li>
+      <li>Tap Settings</li>
       <li class="chrome-instruction hidden">
         <span class="highlight">Site settings</span>
       </li>
@@ -57,19 +64,48 @@
       </li>
     </ol>
     <div class="loading-error-footer">
-      <img src="//cdn.8thwall.com/web/img/loading/v1/reload.png" />
-      Then, reload the page to experience some AR magic!
+      <img class='foreground-image' style="transform: rotate(130deg);"
+        src="//cdn.8thwall.com/web/img/loading/v2/reload.svg" />
+      Then, reload the page for AR!
     </div>
   </div>
 
-    <!--iOS devicemotion sensor is disabled -->
+  <div id="linkOutViewAndroid" class="absolute-fill hidden">
+    <div class="error-text-outer-container">
+      <div class="error-text-container error-margin-top-5">
+        <img id="app_img" class="app-header-img unknown">
+        <br />
+        <a id="open_browser_android" class="start-ar-button">Start AR</a>
+        <img class="foreground-image poweredby-img" src="//cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg">
+      </div>
+    </div>
+  </div>
+
+  <div id="copyLinkViewAndroid" class="absolute-fill hidden">
+    <div class="error-text-outer-container">
+      <div class="error-text-container error-margin-top-5">
+        <span id="error_text_header_unknown" class="open-header-unknown">
+          <h2>Open in Browser<br /> to view AR</h2>
+        </span>
+        <img id="app_img" class="app-header-img unknown">
+        <br />
+        <span id="app_link" class="desktop-home-link mobile"></span>
+        <button id="copy_link_android" class="copy-link-btn">Copy Link</button>
+        <img class="foreground-image poweredby-img" src="//cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg">
+      </div>
+    </div>
+  </div>
+
+  <!--iOS devicemotion sensor is disabled -->
   <div id="deviceMotionErrorApple" class="absolute-fill hidden">
     <div class="loading-error-header">Let's enable your motion sensors</div>
     <ol class="loading-error-instructions">
-      <li>Open <img src="https://cdn.8thwall.com/web/img/loading/v1/settings-icon-ios.png" style="max-height: 4vh"><b>Settings</b></li>
-      <li>Select <img src="https://cdn.8thwall.com/web/img/loading/v1/safari-icon.png" style="max-height: 4vh"><b>Safari</b></li>
+      <li>Open <img src="https://cdn.8thwall.com/web/img/loading/v1/settings-icon-ios.png"
+          style="max-height: 4vh"><b>Settings</b></li>
+      <li>Select <img src="https://cdn.8thwall.com/web/img/loading/v1/safari-icon.png"
+          style="max-height: 4vh"><b>Safari</b></li>
       <li>Enable <span class="highlight">Motion&nbsp;&amp;&nbsp;Orientation Access</span></li>
-      <li>Reload the page <img src="//cdn.8thwall.com/web/img/loading/v1/reload.png"></li>
+      <li>Reload the page <img class="foreground-image" style="transform: rotate(130deg);" src="//cdn.8thwall.com/web/img/loading/v2/reload.svg"></li>
     </ol>
     <!-- Empty footer to take up space -->
     <div class="loading-error-footer"></div>
@@ -77,7 +113,7 @@
 
   <div id="userPromptError" class="permission-error absolute-fill hidden">
     <h1>Permissions were denied.</h1>
-    <p>You need to accept permissions to continue.</p>
+    <p>You need to accept motion permissions to continue.</p>
     <button id="reloadButton" class="main-button" onClick="window.location.reload()">Refresh</button>
   </div>
 
