@@ -36,7 +36,6 @@ const recordVisit = () => {
   const key = numVisitsKey()
   const numVisits = parseInt(localStorage.getItem(key)) || 0
   localStorage.setItem(key, (numVisits + 1).toString())
-  visitRecorded_ = true
 }
 
 const recordInstallPromptDismissed = () => {
