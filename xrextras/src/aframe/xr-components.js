@@ -509,6 +509,73 @@ const xrComponents = () => {
     },
   }
 
+  const pwaInstallerComponent = {
+    schema: {
+      name: {default: null},
+      iconSrc: {default: null},
+      installTitle: {default: null},
+      installSubtitle: {default: null},
+      installButtonText: {default: null},
+      iosInstallText: {default: null},
+      delayAfterDismissalMillis: {default: null, type: 'int'},
+      minNumVisits: {default: null, type: 'int'},
+    },
+    init() {
+      const load = () => {
+        const {
+          name,
+          iconSrc,
+          installTitle,
+          installSubtitle,
+          installButtonText,
+          iosInstallText,
+          delayAfterDismissalMillis,
+          minNumVisits
+        } = this.data
+        const config = {
+          promptConfig: {},
+          displayConfig: {}
+        }
+        if (name) {
+          config.displayConfig.name = name
+        }
+        if (iconSrc) {
+          config.displayConfig.iconSrc = iconSrc
+        }
+        if (installTitle) {
+          config.displayConfig.installTitle = installTitle
+        }
+        if (installSubtitle) {
+          config.displayConfig.installSubtitle = installSubtitle
+        }
+        if (installButtonText) {
+          config.displayConfig.installButtonText = installButtonText
+        }
+        if (iosInstallText) {
+          config.displayConfig.iosInstallText = iosInstallText
+        }
+        if (delayAfterDismissalMillis || delayAfterDismissalMillis === 0) {
+          config.promptConfig.delayAfterDismissalMillis = delayAfterDismissalMillis
+        }
+        if (minNumVisits || minNumVisits === 0) {
+          config.promptConfig.minNumVisits = minNumVisits
+        }
+
+        if (Object.keys(config.promptConfig).length || Object.keys(config.displayConfig).length) {
+          XRExtras.PwaInstaller.configure(config)
+        }
+        XR8.addCameraPipelineModule(XRExtras.PwaInstaller.pipelineModule())
+      }
+
+      window.XRExtras && window.XR8
+        ? load()
+        : window.addEventListener('xrandextrasloaded', load, {once: true})
+    },
+    remove() {
+      XR8.removeCameraPipelineModule('pwa-installer')
+    },
+  }
+
   return {
     'xrextras-almost-there': almostThereComponent,
     'xrextras-loading': loadingComponent,
@@ -524,6 +591,7 @@ const xrComponents = () => {
     'xrextras-attach': attachComponent,
     'xrextras-play-video': playVideoComponent,
     'xrextras-log-to-screen': logToScreenComponent,
+    'xrextras-pwa-installer': pwaInstallerComponent,
   }
 }
 

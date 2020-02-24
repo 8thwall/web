@@ -5,6 +5,7 @@ const {FullWindowCanvasFactory} = require('./fullwindowcanvasmodule/full-window-
 const {LoadingFactory} = require('./loadingmodule/loading-module.js')
 const {PlayCanvasFactory} = require('./playcanvas/playcanvas.js')
 const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
+const {PwaInstallerFactory} = require('./pwainstallermodule/pwa-installer-module.js')
 
 require('./common.css')
 
@@ -17,5 +18,6 @@ module.exports = {
     Loading: LoadingFactory(),
     PlayCanvas: PlayCanvasFactory(),
     RuntimeError: RuntimeErrorFactory(),
+    PwaInstaller: PwaInstallerFactory(),
   },
 }
