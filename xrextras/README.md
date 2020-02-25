@@ -141,6 +141,7 @@ Quick Reference:
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
+    XRExtras.PwaInstaller.pipelineModule(),      // Displays a prompt to add to home screen.
   ])
 ```
 
@@ -153,6 +154,7 @@ browser window across device orientation changes, etc.
 * Loading.pipelineModule(): Displays a loading overlay and camera permissions prompt while
 libraries are loading, and while the camera is starting up.
 * RuntimeError.pipelineModule(): Shows an error image when an error occurs at runtime.
+* PwaInstaller.pipelineModule(): Displays a prompt to add to home screen.
 
 ### AFrame Components
 
