@@ -291,6 +291,7 @@ function create() {
           case 'Snapchat':
           case 'Sino Weibo':
           case 'Pinterest':
+          case 'WeChat':
             displayCopyLinkView()
             break
           case undefined:
