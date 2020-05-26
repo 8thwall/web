@@ -24,6 +24,7 @@ function create() {
   let numUpdates_ = 0
   let waitingOnReality_ = false
   let needsCookie_ = false
+  let runConfig_ = null
   const ua = navigator.userAgent
   let cancelCameraTimeout
 
@@ -258,11 +259,12 @@ function create() {
         checkLoaded()
       }
     },
-    onBeforeRun: () => {
+    onBeforeRun: (args) => {
+      runConfig_ = args && args.config
       showLoading()
     },
     onCameraStatusChange: ({status}) => {
-      if (!XR8.XrDevice.isDeviceBrowserCompatible()) {
+      if (!XR8.XrDevice.isDeviceBrowserCompatible(runConfig_)) {
         return
       }
       if (status === 'requesting') {

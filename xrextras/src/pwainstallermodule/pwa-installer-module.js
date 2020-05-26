@@ -68,6 +68,7 @@ const create = () => {
   let rootNode_ = null
   let pendingDisplayPromptId_ = null
   let displayAllowed_ = false
+  let runConfig_ = null
 
   // Overridable functions
   let shouldDisplayInstallPrompt_ = shouldDisplayInstallPrompt
@@ -77,7 +78,8 @@ const create = () => {
   function pipelineModule () {
     return {
       name: 'pwa-installer',
-      onBeforeRun: () => {
+      onBeforeRun: (args) => {
+        runConfig_ = args && args.config
         setDisplayAllowed(false)
       },
       onAttach: () => {
@@ -131,7 +133,7 @@ const create = () => {
     rootNode_ = e.content.firstChild
 
     // Display appropriate install action.
-    const installActionNode = XR8.XrDevice.deviceEstimate().os === 'Android'
+    const installActionNode = XR8.XrDevice.deviceEstimate().os !== 'iOS'
       ? rootNode_.querySelector('#android-install-action')
       : rootNode_.querySelector('#ios-install-action')
     installActionNode.classList.remove('hidden')
@@ -210,11 +212,11 @@ const create = () => {
 
   function shouldDisplayInstallPrompt(promptConfig, lastDismissalMillis, numVisits) {
     // Incompatible devices shouldn't have the option to install.
-    if (!XR8.XrDevice.isDeviceBrowserCompatible()) {
+    if (!XR8.XrDevice.isDeviceBrowserCompatible(runConfig_)) {
       return false
     }
 
-    const requiresPromptEvent = XR8.XrDevice.deviceEstimate().os === 'Android'
+    const requiresPromptEvent = XR8.XrDevice.deviceEstimate().os !== 'iOS'
     if (requiresPromptEvent && !installEvent_) {
       return false
     }

@@ -30,6 +30,16 @@ function create() {
     border: '0px',
   }
 
+  const isCompatibleMobile = () =>
+    XR8.XrDevice.isDeviceBrowserCompatible({allowedDevices: XR8.XrConfig.device().MOBILE})
+
+  const onWindowResize = () => {
+    if (isCompatibleMobile()) {
+      return
+    }
+    fillScreenWithCanvas()
+  }
+
   // Update the size of the camera feed canvas to fill the screen.
   const fillScreenWithCanvas = () => {
     if (!canvas_) { return }
@@ -40,9 +50,10 @@ function create() {
     const ww = uww * devicePixelRatio
     const wh = uwh * devicePixelRatio
 
-    // Wait for orientation change to take effect before handline resize.
-    if (((orientation_ == 0 || orientation_ == 180) && ww > wh)
-      || ((orientation_ == 90 || orientation_ == -90) && wh > ww)) {
+    // Wait for orientation change to take effect before handling resize on mobile phones only.
+    const displayOrientationMismatch = ((orientation_ == 0 || orientation_ == 180) && ww > wh)
+      || ((orientation_ == 90 || orientation_ == -90) && wh > ww)
+    if (displayOrientationMismatch && isCompatibleMobile()) {
       window.requestAnimationFrame(fillScreenWithCanvas)
       return
     }
@@ -123,14 +134,25 @@ function create() {
     fillScreenWithCanvas()
   }
 
-  const onStart = ({canvas, orientation}) => {
+  const onAttach = ({canvas, orientation, videoWidth, videoHeight}) => {
     canvas_ = canvas
     orientation_ = orientation
     const body = document.getElementsByTagName('body')[0]
     Object.assign(body.style, bodyStyle_)
 
     body.appendChild(canvas_)
+
+    window.addEventListener('resize', onWindowResize)
+    updateVideoSize({videoWidth, videoHeight})
     fillScreenWithCanvas()
+  }
+
+  const onDetach = () => {
+    canvas_ = null
+    orientation_ = 0
+    delete vsize_.w
+    delete vsize_.h
+    window.removeEventListener('resize', onWindowResize)
   }
 
   const onDeviceOrientationChange = ({orientation}) => {
@@ -141,7 +163,8 @@ function create() {
   const pipelineModule = () => {
     return {
       name: 'fullwindowcanvas',
-      onStart,
+      onAttach,
+      onDetach,
       onCameraStatusChange,
       onDeviceOrientationChange,
       onVideoSizeChange,

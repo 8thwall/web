@@ -3,9 +3,12 @@ const {AlmostThereFactory} = require('./almosttheremodule/almost-there-module.js
 const {DebugWebViewsFactory} = require('./debugwebviews/debug-web-views.js')
 const {FullWindowCanvasFactory} = require('./fullwindowcanvasmodule/full-window-canvas-module.js')
 const {LoadingFactory} = require('./loadingmodule/loading-module.js')
+const {PauseOnBlurFactory} = require('./pauseonblurmodule/pauseonblur.js')
 const {PlayCanvasFactory} = require('./playcanvas/playcanvas.js')
-const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
 const {PwaInstallerFactory} = require('./pwainstallermodule/pwa-installer-module.js')
+const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
+const {StatsFactory} = require('./statsmodule/stats.js')
+const {ThreeExtrasFactory} = require('./three/three-extras.js')
 
 require('./common.css')
 
@@ -16,8 +19,11 @@ module.exports = {
     DebugWebViews: DebugWebViewsFactory(),
     FullWindowCanvas: FullWindowCanvasFactory(),
     Loading: LoadingFactory(),
+    PauseOnBlur: PauseOnBlurFactory(),
     PlayCanvas: PlayCanvasFactory(),
-    RuntimeError: RuntimeErrorFactory(),
     PwaInstaller: PwaInstallerFactory(),
+    RuntimeError: RuntimeErrorFactory(),
+    Stats: StatsFactory(),
+    ThreeExtras: ThreeExtrasFactory(),
   },
 }
