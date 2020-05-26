@@ -1,4 +1,5 @@
 const {xrComponents} = require('./xr-components.js')
+const {xrPrimitives} = require('./xr-primitives.js')
 
 let xrextrasAframe = null
 
@@ -57,6 +58,9 @@ function create() {
   const registerComponents = (components) =>
     Object.keys(components).map(k => AFRAME.registerComponent(k, components[k]))
 
+  const registerPrimitives = (primitives) =>
+    Object.keys(primitives).map(k => AFRAME.registerPrimitive(k, primitives[k]))
+
   // Load the 8th Wall preferred version of AFrame at runtime ensuring that xr components are added.
   const loadAFrameForXr = (args) => {
     const {version = 'latest', components = {}} = args || {}
@@ -78,6 +82,7 @@ function create() {
     registered = true
 
     registerComponents(xrComponents())
+    registerPrimitives(xrPrimitives())
   }
 
   // Eagerly try to register the aframe components, if aframe has already loaded.
@@ -102,23 +107,48 @@ const eagerload = () => {
   }
   const attrs = scene.attributes
 
-  // In some iOS webviews, AFRAME is never properly loaded. We need to recover from this by
-  // expressly triggering a compatibility check (which will fail in these cases) regardless of
-  // whether the camera framework is successfully run.
+  let foundAlmostThere = false
+  let foundLoading = false
+  let redirectUrl = null
+  let runConfig = null
+
+  // Eagerly inspect the dom, and trigger loading or almost there modules early if appropriate.
   Object.keys(attrs).forEach(a => {
     const attr = attrs.item(a).name
     if (attr == 'xrextras-almost-there') {
+      foundAlmostThere = true
       const redirectMatch = new RegExp('url:([^;]*)').exec(attrs.item(a).value)
-      redirectMatch && window.XRExtras.AlmostThere.configure({url: redirectMatch[1]})
-      window.XR8
-        ? window.XRExtras.AlmostThere.checkCompatibility()
-        : window.addEventListener('xrloaded', window.XRExtras.AlmostThere.checkCompatibility)
+      if (redirectMatch) {
+        redirectUrl = redirectMatch[1]
+      }
     }
 
     if (attr == 'xrextras-loading') {
-      window.XRExtras.Loading.showLoading({onxrloaded})
+      foundLoading = true
+    }
+
+    if (attr === 'xrweb' || attr === 'xrface') {
+      const allowedDevicesMatch = new RegExp('allowedDevices:([^;]*)').exec(attrs.item(a).value)
+      if (allowedDevicesMatch) {
+        runConfig = {allowedDevices: allowedDevicesMatch[1].trim()}
+      }
     }
   })
+
+  if (foundAlmostThere) {
+    if (redirectUrl) {
+      window.XRExtras.AlmostThere.configure({url: redirectUrl})
+    }
+
+    window.XR8
+      ? window.XRExtras.AlmostThere.checkCompatibility(runConfig)
+      : window.addEventListener(
+        'xrloaded', () => window.XRExtras.AlmostThere.checkCompatibility(runConfig))
+  }
+
+  if (foundLoading) {
+    window.XRExtras.Loading.showLoading({onxrloaded})
+  }
 }
 
 const oldonload = window.onload

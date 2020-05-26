@@ -15,6 +15,7 @@ const AlmostThereFactory = () => {
 
 function create() {
   let rootNode = null
+  let runConfig_ = null
   let customRedirectUrl
   const showId = (id) => {
     document.getElementById(id).classList.remove('hidden')
@@ -28,7 +29,7 @@ function create() {
     rootNode = null
   }
 
-  const showAlmostThere = () => {
+  const showAlmostThere = (runConfig) => {
     const e = document.createElement('template')
     e.innerHTML = html.trim()
     rootNode = e.content.firstChild
@@ -40,8 +41,8 @@ function create() {
       redirectLinks[i].textContent = redirectUrl
     }
 
-    const reasons = XR8.XrDevice.incompatibleReasons()
-    const details = XR8.XrDevice.incompatibleReasonDetails()
+    const reasons = XR8.XrDevice.incompatibleReasons(runConfig)
+    const details = XR8.XrDevice.incompatibleReasonDetails(runConfig)
     const device = XR8.XrDevice.deviceEstimate()
 
     const ogTag = document.querySelector('meta[name="og:image"]')
@@ -144,17 +145,17 @@ function create() {
     document.getElementById('almostthereContainer').appendChild(scriptElem)
   }
 
-  const checkCompatibility = () => {
+  const checkCompatibility = (runConfig) => {
     if (rootNode) {
       return false
     }
 
-    if (XR8.XrDevice.isDeviceBrowserCompatible()) {
+    if (XR8.XrDevice.isDeviceBrowserCompatible(runConfig)) {
       // Everything is ok.
       return true
     }
 
-    showAlmostThere()
+    showAlmostThere(runConfig)
 
     XR8.pause()
     XR8.stop()
@@ -163,15 +164,18 @@ function create() {
 
   const pipelineModule = () => ({
     name: 'almostthere',
+    onBeforeRun: (args) => {
+      runConfig_ = args && args.config
+    },
     onCameraStatusChange: () => {
-      if (!checkCompatibility()) {
+      if (!checkCompatibility(runConfig_)) {
         // Throwing an error here allows other pipeline modules to react in their onException
         // methods.
         throw Error('Device or browser incompatible with XR.')
       }
     },
     onException: () => {
-      checkCompatibility()
+      checkCompatibility(runConfig_)
     },
   })
 
