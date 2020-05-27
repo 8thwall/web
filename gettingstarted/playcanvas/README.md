@@ -8,6 +8,8 @@ To get started go to https://playcanvas.com/the8thwall and fork one of our sampl
 
 * [AR Image Tracking Starter Kit](https://playcanvas.com/project/631721/overview/ar-image-tracking-starter-kit): An application to get you started quickly creating AR image tracking applications in PlayCanvas.
 
+* [AR Face Tracking Starter Kit](https://playcanvas.com/project/687674/overview/ar-face-effects-starter-kit): An application to get you started quickly creating AR face effect applications in PlayCanvas.
+
 ## Add your App Key
 
 Go to Settings -> External Scripts
