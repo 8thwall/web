@@ -65,7 +65,8 @@ FaceController.prototype.initialize = function() {
 
   // After XR has fully loaded, open the camera feed and start displaying AR.
   const runOnLoad = ({pcCamera, pcApp}, extramodules) => () => {
-    const config = {allowedDevices: XR8.XrConfig.device().ANY}
+    const config = {allowedDevices: XR8.XrConfig.device().ANY,
+                    cameraConfig: {direction: XR8.XrConfig.camera().FRONT}}
     XR8.PlayCanvas.runFaceEffects({pcCamera, pcApp}, extramodules, config)
     XR8.FaceController.configure({
       meshGeometry: ['face'],
