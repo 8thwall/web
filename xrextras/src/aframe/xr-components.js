@@ -1,3 +1,7 @@
+/* globals XRExtras */
+
+const {ensureXrAndExtras} = require('./ensure')
+
 const xrComponents = () => {
   // Display 'almost there' flows.
   const almostThereComponent = {
@@ -530,11 +534,11 @@ const xrComponents = () => {
           installButtonText,
           iosInstallText,
           delayAfterDismissalMillis,
-          minNumVisits
+          minNumVisits,
         } = this.data
         const config = {
           promptConfig: {},
-          displayConfig: {}
+          displayConfig: {},
         }
         if (name) {
           config.displayConfig.name = name
@@ -577,7 +581,7 @@ const xrComponents = () => {
   }
 
   const pauseOnBlurComponent = {
-    init: function() {
+    init() {
       const scene = this.el.sceneEl
       const blur = () => scene.pause()
       const focus = () => scene.play()
@@ -590,16 +594,16 @@ const xrComponents = () => {
         onDetach: () => {
           window.removeEventListener('blur', blur)
           window.removeEventListener('focus', focus)
-        }
+        },
       })
     },
-    remove: function() {
+    remove() {
       XR8.removeCameraPipelineModule('pauseonbluraframe')
     },
   }
 
   const faceAnchorComponent = {
-    init: function () {
+    init() {
       let id_ = null
       this.el.object3D.visible = false
 
@@ -623,7 +627,7 @@ const xrComponents = () => {
       this.el.sceneEl.addEventListener('xrfacefound', show)
       this.el.sceneEl.addEventListener('xrfaceupdated', show)
       this.el.sceneEl.addEventListener('xrfacelost', hide)
-    }
+    },
   }
 
   const resourceComponent = {
@@ -650,9 +654,9 @@ const xrComponents = () => {
       normals: {type: 'string'},
       roughness: {type: 'string'},
       alpha: {type: 'string'},
-      opacity: {default: 1.0}
+      opacity: {default: 1.0},
     },
-    init: function () {
+    init() {
       this.el.object3D.visible = false
       this.el.material = XRExtras.ThreeExtras.pbrMaterial({
         tex: srcFromAttr(this.el.sceneEl, this.data.tex),
@@ -669,9 +673,9 @@ const xrComponents = () => {
     schema: {
       tex: {type: 'string'},
       alpha: {type: 'string'},
-      opacity: {default: 1.0}
+      opacity: {default: 1.0},
     },
-    init: function () {
+    init() {
       this.el.object3D.visible = false
       this.el.material = XRExtras.ThreeExtras.basicMaterial({
         tex: srcFromAttr(this.el.sceneEl, this.data.tex),
@@ -686,9 +690,9 @@ const xrComponents = () => {
       video: {type: 'string'},
       alpha: {type: 'string'},
       autoplay: {type: 'bool', default: true},
-      opacity: {default: 1.0}
+      opacity: {default: 1.0},
     },
-    init: function () {
+    init() {
       const video = document.querySelector(this.data.video)
       this.el.object3D.visible = false
       this.el.material = XRExtras.ThreeExtras.videoMaterial({
@@ -707,7 +711,7 @@ const xrComponents = () => {
     schema: {
       'material-resource': {type: 'string'},
     },
-    init: function () {
+    init() {
       this.headMesh = null
       this.el.object3D.visible = false
 
@@ -743,7 +747,7 @@ const xrComponents = () => {
       this.el.sceneEl.addEventListener('xrfaceupdated', show)
       this.el.sceneEl.addEventListener('xrfacelost', hide)
     },
-    update: function() {
+    update() {
       if (!this.headMesh) {
         return
       }
@@ -757,14 +761,14 @@ const xrComponents = () => {
         material = new THREE.MeshBasicMaterial({color: '#7611B6', opacity: 0.5, transparent: true})
       }
       this.headMesh.mesh.material = material
-    }
+    },
   }
 
   const faceAttachmentComponent = {
     schema: {
       'point': {type: 'string', default: 'forehead'},
     },
-    init: function () {
+    init() {
       let id_ = null
       this.el.object3D.visible = false
 
@@ -797,7 +801,7 @@ const xrComponents = () => {
     schema: {
       color: {type: 'string', default: '#2D2E43'},
     },
-    init: function() {
+    init() {
       this.el.sceneEl.emit('hidecamerafeed')
       this.firstTick = true
       // If there is not a skybox in the scene, add one with the specified color.
@@ -807,7 +811,7 @@ const xrComponents = () => {
         this.el.sceneEl.appendChild(this.skyEl)
       }
     },
-    tick: function() {
+    tick() {
       if (!this.firstTick) {
         return
       }
@@ -817,17 +821,17 @@ const xrComponents = () => {
       this.firstTick = false
       this.el.sceneEl.emit('hidecamerafeed')
     },
-    remove: function() {
+    remove() {
       this.el.sceneEl.emit('showcamerafeed')
       // Remove the skybox if we added one.
       if (this.skyEl) {
         this.el.sceneEl.removeChild(this.skyEl)
       }
-    }
+    },
   }
 
   const hiderMaterialComponent = {
-    init: function() {
+    init() {
       const hiderMaterial = new THREE.MeshStandardMaterial()
       hiderMaterial.colorWrite = false
 
@@ -845,7 +849,86 @@ const xrComponents = () => {
 
       applyHiderMaterial(this.el.getObject3D('mesh'))
       this.el.addEventListener(
-        'model-loaded', () => applyHiderMaterial(this.el.getObject3D('mesh')))
+        'model-loaded', () => applyHiderMaterial(this.el.getObject3D('mesh'))
+      )
+    },
+  }
+
+  const captureButtonComponent = {
+    schema: {
+      captureMode: {default: 'standard'},
+    },
+    init() {
+      ensureXrAndExtras().then(() => {
+        if (this.removed) {
+          return
+        }
+        this.added = true
+        XRExtras.MediaRecorder.initRecordButton()
+        XRExtras.MediaRecorder.setCaptureMode(this.data.captureMode)
+      })
+    },
+    update() {
+      if (this.added) {
+        XRExtras.MediaRecorder.setCaptureMode(this.data.captureMode)
+      }
+    },
+    remove() {
+      this.removed = true
+      if (this.added) {
+        XRExtras.MediaRecorder.removeRecordButton()
+      }
+    },
+  }
+
+  const capturePreviewComponent = {
+    // This schema must be duplicated to mappings xr-primitives.js
+    schema: {
+      actionButtonShareText: {default: ''},
+      actionButtonViewText: {default: ''},
+    },
+    init() {
+      ensureXrAndExtras().then(() => {
+        if (!this.removed) {
+          this.added = true
+          XRExtras.MediaRecorder.initMediaPreview(this.data)
+        }
+      })
+    },
+    remove() {
+      this.removed = true
+      if (this.added) {
+        XRExtras.MediaRecorder.removeMediaPreview()
+      }
+    },
+  }
+
+  const captureConfigComponent = {
+    // This schema must be duplicated to mappings xr-primitives.js
+    schema: {
+      enableEndCard: {type: 'boolean'},
+      shortLink: {type: 'string'},
+      coverImageUrl: {type: 'string'},
+      footerImageUrl: {type: 'string'},
+      maxDurationMs: {type: 'int'},
+      endCardCallToAction: {type: 'string'},
+      maxDimension: {type: 'int'},
+      watermarkImageUrl: {type: 'string'},
+      watermarkMaxWidth: {type: 'number'},
+      watermarkMaxHeight: {type: 'number'},
+      watermarkLocation: {type: 'string'},
+      fileNamePrefix: {type: 'string'},
+    },
+    update() {
+      const config = {}
+      Object.keys(this.data).forEach((key) => {
+        // Ignore value if not specified
+        if (this.attrValue[key] !== undefined) {
+          config[key] = this.data[key]
+        }
+      })
+
+      XRExtras.MediaRecorder.configure(config)
     },
   }
 
@@ -875,6 +958,9 @@ const xrComponents = () => {
     'xrextras-face-attachment': faceAttachmentComponent,
     'xrextras-hide-camera-feed': hideCameraFeedComponent,
     'xrextras-hider-material': hiderMaterialComponent,
+    'xrextras-capture-button': captureButtonComponent,
+    'xrextras-capture-preview': capturePreviewComponent,
+    'xrextras-capture-config': captureConfigComponent,
   }
 }
 

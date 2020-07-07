@@ -6,11 +6,11 @@ const xrPrimitives = () => {
   }
   const resourcePrimitive = {
     defaultComponents: {
-      'xrextras-resource': {}
+      'xrextras-resource': {},
     },
     mappings: {
       src: 'xrextras-resource.src',
-    }
+    },
 
   }
 
@@ -25,7 +25,7 @@ const xrPrimitives = () => {
       roughness: 'xrextras-pbr-material.roughness',
       alpha: 'xrextras-pbr-material.alpha',
       opacity: 'xrextras-pbr-material.opacity',
-    }
+    },
   }
 
   const basicMaterialPrimitive = {
@@ -36,7 +36,7 @@ const xrPrimitives = () => {
       tex: 'xrextras-basic-material.tex',
       alpha: 'xrextras-basic-material.alpha',
       opacity: 'xrextras-basic-material.opacity',
-    }
+    },
   }
 
   const videoMaterialPrimitive = {
@@ -48,7 +48,7 @@ const xrPrimitives = () => {
       alpha: 'xrextras-video-material.alpha',
       autoplay: 'xrextras-video-material.autoplay',
       opacity: 'xrextras-video-material.opacity',
-    }
+    },
   }
 
   const faceMeshPrimitive = {
@@ -57,7 +57,7 @@ const xrPrimitives = () => {
     },
     mappings: {
       'material-resource': 'xrextras-face-mesh.material-resource',
-    }
+    },
   }
 
   const faceAttachmentPrimitive = {
@@ -66,7 +66,46 @@ const xrPrimitives = () => {
     },
     mappings: {
       point: 'xrextras-face-attachment.point',
-    }
+    },
+  }
+
+  const captureButtonPrimitive = {
+    defaultComponents: {
+      'xrextras-capture-button': {},
+    },
+    mappings: {
+      'capture-mode': 'xrextras-capture-button.captureMode',
+    },
+  }
+
+  const capturePreviewPrimitive = {
+    defaultComponents: {
+      'xrextras-capture-preview': {},
+    },
+    mappings: {
+      'action-button-view-text': 'xrextras-capture-preview.actionButtonViewText',
+      'action-button-share-text': 'xrextras-capture-preview.actionButtonShareText',
+    },
+  }
+
+  const captureConfigPrimitive = {
+    defaultComponents: {
+      'xrextras-capture-config': {},
+    },
+    mappings: {
+      'enable-end-card': 'xrextras-capture-config.enableEndCard',
+      'short-link': 'xrextras-capture-config.shortLink',
+      'cover-image-url': 'xrextras-capture-config.coverImageUrl',
+      'footer-image-url': 'xrextras-capture-config.footerImageUrl',
+      'max-duration-ms': 'xrextras-capture-config.maxDurationMs',
+      'end-card-call-to-action': 'xrextras-capture-config.endCardCallToAction',
+      'max-dimension': 'xrextras-capture-config.maxDimension',
+      'watermark-image-url': 'xrextras-capture-config.watermarkImageUrl',
+      'watermark-max-width': 'xrextras-capture-config.watermarkMaxWidth',
+      'watermark-max-height': 'xrextras-capture-config.watermarkMaxHeight',
+      'watermark-location': 'xrextras-capture-config.watermarkLocation',
+      'file-name-prefix': 'xrextras-capture-config.fileNamePrefix',
+    },
   }
 
   return {
@@ -77,6 +116,9 @@ const xrPrimitives = () => {
     'xrextras-video-material': videoMaterialPrimitive,
     'xrextras-face-mesh': faceMeshPrimitive,
     'xrextras-face-attachment': faceAttachmentPrimitive,
+    'xrextras-capture-button': captureButtonPrimitive,
+    'xrextras-capture-preview': capturePreviewPrimitive,
+    'xrextras-capture-config': captureConfigPrimitive,
   }
 }
 
