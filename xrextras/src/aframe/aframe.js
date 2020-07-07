@@ -1,5 +1,6 @@
 const {xrComponents} = require('./xr-components.js')
 const {xrPrimitives} = require('./xr-primitives.js')
+const {ensureXrAndExtras} = require('./ensure')
 
 let xrextrasAframe = null
 
@@ -19,35 +20,22 @@ function create() {
   // NOTE: new versions of 8frame should be added in descending order, so that the latest version
   // is always in position 1.
   const allowed8FrameVersions = ['latest', '0.9.0', '0.8.2']
-  const LATEST_8FRAME = allowed8FrameVersions[1]  // The 'latest' version of 8frame.
+  const LATEST_8FRAME = allowed8FrameVersions[1] // The 'latest' version of 8frame.
 
   // Check that the requested version of AFrame has a corresponding 8Frame implementation.
-  const checkAllowed8FrameVersions = (version) => new Promise((resolve, reject) =>
-    allowed8FrameVersions.includes(version)
-      ? resolve(version === 'latest' ? LATEST_8FRAME : version)
-      : reject(`${version} is an unsupported AFrame version: (${JSON.stringify(allowedVersions)})`))
+  const checkAllowed8FrameVersions = version => new Promise((resolve, reject) => (allowed8FrameVersions.includes(version)
+    ? resolve(version === 'latest' ? LATEST_8FRAME : version)
+    : reject(`${version} is an unsupported AFrame version: (${JSON.stringify(allowedVersions)})`)))
 
   // Load an external javascript resource in a promise that resolves when the javascript has loaded.
-  const loadJsPromise = url => new Promise((resolve, reject) =>
-    document.head.appendChild(Object.assign(
-      document.createElement('script'), {async: true, onload: resolve, onError: reject, src: url})))
-
-  // Get a promise that resolves when an event with the given name has been dispacted to the window.
-  const waitEventPromise = eventname =>
-    new Promise((resolve) => window.addEventListener(eventname, resolve, {once: true}))
+  const loadJsPromise = url => new Promise((resolve, reject) => document.head.appendChild(Object.assign(
+    document.createElement('script'), {async: true, onload: resolve, onError: reject, src: url}
+  )))
 
   // If XR or XRExtras load before AFrame, we need to manually register their AFrame components.
   const ensureAFrameComponents = () => {
-    window.XR8       && window.AFRAME.registerComponent('xrweb', XR8.AFrame.xrwebComponent())
+    window.XR8 && window.AFRAME.registerComponent('xrweb', XR8.AFrame.xrwebComponent())
     window.XRExtras && window.XRExtras.AFrame.registerXrExtrasComponents()
-  }
-
-  // If XR and XRExtras aren't loaded, wait for them.
-  const ensureXrAndExtras = () => {
-    const eventnames = []
-    window.XR8       || eventnames.push('xrloaded')
-    window.XRExtras || eventnames.push('xrextrasloaded')
-    return Promise.all(eventnames.map(waitEventPromise))
   }
 
   // Register a map of component-name -> component, e.g.
@@ -55,11 +43,9 @@ function create() {
   //   'component-1': component1,
   //   'component-2': component2,
   // }
-  const registerComponents = (components) =>
-    Object.keys(components).map(k => AFRAME.registerComponent(k, components[k]))
+  const registerComponents = components => Object.keys(components).map(k => AFRAME.registerComponent(k, components[k]))
 
-  const registerPrimitives = (primitives) =>
-    Object.keys(primitives).map(k => AFRAME.registerPrimitive(k, primitives[k]))
+  const registerPrimitives = primitives => Object.keys(primitives).map(k => AFRAME.registerPrimitive(k, primitives[k]))
 
   // Load the 8th Wall preferred version of AFrame at runtime ensuring that xr components are added.
   const loadAFrameForXr = (args) => {
@@ -113,7 +99,7 @@ const eagerload = () => {
   let runConfig = null
 
   // Eagerly inspect the dom, and trigger loading or almost there modules early if appropriate.
-  Object.keys(attrs).forEach(a => {
+  Object.keys(attrs).forEach((a) => {
     const attr = attrs.item(a).name
     if (attr == 'xrextras-almost-there') {
       foundAlmostThere = true
@@ -143,7 +129,8 @@ const eagerload = () => {
     window.XR8
       ? window.XRExtras.AlmostThere.checkCompatibility(runConfig)
       : window.addEventListener(
-        'xrloaded', () => window.XRExtras.AlmostThere.checkCompatibility(runConfig))
+        'xrloaded', () => window.XRExtras.AlmostThere.checkCompatibility(runConfig)
+      )
   }
 
   if (foundLoading) {

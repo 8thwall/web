@@ -1,0 +1,136 @@
+.recorder-container {
+  position: fixed;
+  width: 25vmin;
+  height: 25vmin;
+  max-width: 10em;
+  max-height: 10em;
+  bottom: 3vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  transition: 0.5s opacity;
+}
+
+#recorder-button {
+  display: block;
+  border: none;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  color: transparent;
+  top: 0;
+  left: 0;
+  transform-origin: 50% 50%;
+  transform: scale(0.6);
+  transition: 0.3s border-radius, 0.3s transform;
+  width: 100%;
+  height: 100%;
+}
+
+.progress-container {
+  display: block;
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(0.9);
+  transition: 0.3s transform, 0.3s opacity;
+}
+
+.progress-track, .progress-bar, .loading-circle {
+  fill: transparent;
+  stroke-width: 3;
+}
+
+.progress-track {
+  stroke: white;
+}
+
+.progress-bar {
+  opacity: 0;
+  transition: 0;
+  transform-origin: 50% 50%;
+  stroke: white;
+  transform: rotate(-90deg);
+  stroke-dasharray: 100.531 100.531;
+  stroke-dashoffset: 100;
+}
+
+.recording .progress-container, .loading .progress-container {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.recording .progress-track, .loading .progress-track {
+  transition: 0.8s stroke;
+  stroke: #fff5;
+}
+
+.recording .progress-bar {
+  opacity: 1;
+}
+
+.active #recorder-button {
+  transform: scale(0.5);
+}
+
+.active:not(.fixed-mode) #recorder-button {
+  background: #fff5;
+}
+
+.fixed-mode #recorder-button {
+  border-radius: 15%;
+  transform: scale(0.42);
+}
+
+.flash-element {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  opacity: 0;
+  transition: 0.6s opacity;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.flash-element.flashing {
+  transition: 0s opacity;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 100;
+}
+
+.loading-circle {
+  stroke-dasharray: 25 25 25 25;
+  stroke-dashoffset: 0;
+  stroke: white;
+  opacity: 0;
+  transform-origin: 50% 50%;
+}
+
+@keyframes record-button-spin {
+  0% {
+  transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+.loading .loading-circle {
+  animation: record-button-spin 1.1s linear infinite both;
+  opacity: 1;
+}
+
+.fade-container {
+  opacity: 0;
+  pointer-events: none;
+}

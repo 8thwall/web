@@ -9,6 +9,7 @@ const {PwaInstallerFactory} = require('./pwainstallermodule/pwa-installer-module
 const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
 const {StatsFactory} = require('./statsmodule/stats.js')
 const {ThreeExtrasFactory} = require('./three/three-extras.js')
+const {MediaRecorder} = require('./mediarecorder/mediarecorder.js')
 
 require('./common.css')
 
@@ -25,5 +26,6 @@ module.exports = {
     RuntimeError: RuntimeErrorFactory(),
     Stats: StatsFactory(),
     ThreeExtras: ThreeExtrasFactory(),
+    MediaRecorder,
   },
 }

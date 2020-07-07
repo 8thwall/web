@@ -1,0 +1,137 @@
+/* Preview Container */
+
+#previewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  z-index: 30;
+  opacity: 0.0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+#previewContainer.fade-in {
+  transition: 0.5s opacity;
+  opacity: 1;
+}
+
+#videoPreview, #imagePreview {
+  display: none;
+  max-width: 90vw;
+  max-height: calc(88vh - 12vmin);
+  border-radius: 10px;
+  border: 1vmin solid white;
+  background-color: white;
+}
+
+.icon-button img, #videoPreview, #imagePreview {
+  filter: drop-shadow(0 0 2px #333);
+}
+
+.video-preview #videoPreview {
+  display: block;
+}
+
+.image-preview #imagePreview {
+  display: block;
+}
+
+/* Top Bar */
+
+.top-bar {
+  position: relative;
+  flex: 1 0 0;
+}
+
+.preview-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon-button {
+  padding: 4vmin;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+.icon-button img {
+  display: block;
+  height: 7.5vmin;
+}
+
+#toggleMuteButton, #closePreviewButton {
+  position: absolute;
+  z-index: 1;
+}
+
+#toggleMuteButton {
+  left: 0;
+  bottom: 0;
+  display: none;
+}
+
+.video-preview #toggleMuteButton {
+  display: block;
+}
+
+#closePreviewButton {
+  top: 0;
+  right: 0;
+}
+
+/* Bottom Bar */
+
+.bottom-bar {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 0 5vmin;
+}
+
+.style-reset {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.style-reset:focus { outline:0; }
+
+#actionButton {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: 'Nunito', sans-serif;
+  text-align: right;
+  color: white;
+  background-color: #AD50FF;
+  border-radius: 0.5em;
+  font-size: 5vmin;
+  min-width: 3.25em;
+}
+
+#actionButton img {
+  height: 0.8em;
+  margin-left: 0.4em;
+}
+
+#previewContainer:not(.downloaded) .show-after-download {
+  display: none;
+}
