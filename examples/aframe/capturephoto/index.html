@@ -10,7 +10,7 @@
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/xrextras -->
-    <script defer src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+    <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
     <script defer src="//cdn.8thwall.com/web/aframe/aframe-animation-component-5.1.2.min.js"></script>
 
     <!-- 8thWall Web - Replace the app key here with your own app key -->
@@ -28,12 +28,12 @@
     </div>
 
     <a-scene
-      xrweb
+      photo-mode
       xrextras-almost-there
       xrextras-loading
       xrextras-runtime-error
       xrextras-tap-recenter
-      photo-mode>
+      xrweb>
 
       <!-- We can define assets here to be loaded when A-Frame initializes -->
       <a-assets>

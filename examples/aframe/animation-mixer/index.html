@@ -12,7 +12,7 @@
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/xrextras -->
-    <script defer src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+    <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
     <script src="gesture-detector.js"></script>
     <script src="hold-drag.js"></script>
@@ -49,12 +49,12 @@
     <div class="nextbutton" id="nextbutton">Next &gt;</div>
 
     <a-scene
-      xrweb
       next-button
       gesture-detector
       xrextras-almost-there
       xrextras-loading
-      xrextras-runtime-error>
+      xrextras-runtime-error
+      xrweb>
 
       <!-- We can define assets here to be loaded when A-Frame initializes -->
       <a-assets>
