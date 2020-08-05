@@ -918,17 +918,47 @@ const xrComponents = () => {
       watermarkMaxHeight: {type: 'number'},
       watermarkLocation: {type: 'string'},
       fileNamePrefix: {type: 'string'},
+      requestMic: {type: 'string'},
+      excludeSceneAudio: {type: 'boolean', default: true},
+    },
+    init() {
+      this.includeSceneAudio = this.includeSceneAudio.bind(this)
     },
     update() {
-      const config = {}
+      const config = {
+        audioContext: THREE.AudioContext.getContext(),
+        configureAudioOutput: this.includeSceneAudio,
+      }
+
       Object.keys(this.data).forEach((key) => {
         // Ignore value if not specified
         if (this.attrValue[key] !== undefined) {
-          config[key] = this.data[key]
+          if (key === 'excludeSceneAudio') {
+            config.configureAudioOutput = this.data[key] ? null : this.includeSceneAudio
+          } else {
+            config[key] = this.data[key]
+          }
         }
       })
 
       XRExtras.MediaRecorder.configure(config)
+    },
+    includeSceneAudio({microphoneInput, audioProcessor}) {
+      const audioContext = audioProcessor.context
+
+      // A-Frame scenes have only one listener
+      const listener = this.el.sceneEl.audioListener
+
+      // This connects the A-Frame audio to the audioProcessor so that all sound effects initialized
+      // are part of the recorded video's audio.
+      listener.gain.connect(audioProcessor)
+      // This connects the A-Frame audio to the hardware output.  That way, the user can also hear
+      // the sound effects during the experience
+      listener.gain.connect(audioContext.destination)
+
+      // you must return a node at the end.  This node is connected to the audioProcessor
+      // automatically inside MediaRecorder
+      return microphoneInput
     },
   }
 
