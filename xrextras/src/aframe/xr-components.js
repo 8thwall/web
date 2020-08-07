@@ -919,7 +919,7 @@ const xrComponents = () => {
       watermarkLocation: {type: 'string'},
       fileNamePrefix: {type: 'string'},
       requestMic: {type: 'string'},
-      excludeSceneAudio: {type: 'boolean', default: true},
+      excludeSceneAudio: {type: 'boolean', default: false},
     },
     init() {
       this.includeSceneAudio = this.includeSceneAudio.bind(this)
@@ -927,17 +927,25 @@ const xrComponents = () => {
     update() {
       const config = {
         audioContext: THREE.AudioContext.getContext(),
-        configureAudioOutput: this.includeSceneAudio,
+      }
+
+      // A-Frame is not like HTML where if you add a boolean property by itself, it defaults to
+      // true. However, we want the following cases to exclude the scene audio:
+      //   1) <xrextras-capture-config exclude-scene-audio></xrextras-capture-config>
+      //   2) <xrextras-capture-config exclude-scene-audio="true"></xrextras-capture-config>
+      // In the first case, where the property doesn't have an explicit value, the value isn't true
+      // for A-Frame but is instead ''.  That's why we are handling '' to represent that we want to
+      // exclude the scene audio from the recording.
+      if (this.data['excludeSceneAudio'] || this.attrValue['excludeSceneAudio'] === '') {
+        config.configureAudioOutput = null
+      } else {
+        config.configureAudioOutput = this.includeSceneAudio
       }
 
       Object.keys(this.data).forEach((key) => {
         // Ignore value if not specified
-        if (this.attrValue[key] !== undefined) {
-          if (key === 'excludeSceneAudio') {
-            config.configureAudioOutput = this.data[key] ? null : this.includeSceneAudio
-          } else {
-            config[key] = this.data[key]
-          }
+        if (this.attrValue[key] !== undefined && key !== 'excludeSceneAudio') {
+          config[key] = this.data[key]
         }
       })
 
@@ -946,15 +954,19 @@ const xrComponents = () => {
     includeSceneAudio({microphoneInput, audioProcessor}) {
       const audioContext = audioProcessor.context
 
-      // A-Frame scenes have only one listener
-      const listener = this.el.sceneEl.audioListener
+      // if the scene doesn't have any audio, then we'll create the listener for the scene.
+      // That way, if they add sounds later, it will still connect without the user having to
+      // re-call this function.
+      if (!this.el.sceneEl.audioListener) {
+        this.el.sceneEl.audioListener = new THREE.AudioListener();
+      }
 
       // This connects the A-Frame audio to the audioProcessor so that all sound effects initialized
       // are part of the recorded video's audio.
-      listener.gain.connect(audioProcessor)
+      this.el.sceneEl.audioListener.gain.connect(audioProcessor)
       // This connects the A-Frame audio to the hardware output.  That way, the user can also hear
       // the sound effects during the experience
-      listener.gain.connect(audioContext.destination)
+      this.el.sceneEl.audioListener.gain.connect(audioContext.destination)
 
       // you must return a node at the end.  This node is connected to the audioProcessor
       // automatically inside MediaRecorder
