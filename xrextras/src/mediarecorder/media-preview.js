@@ -160,8 +160,17 @@ const initMediaPreview = (options = {}) => {
   const actionButtonText = document.getElementById('actionButtonText')
   const actionButtonImg = document.getElementById('actionButtonImg')
 
-  // Presence of canShare indicates Share API level 2 which supports files
-  if (navigator.canShare) {
+  const tmpFile = new File([new Blob()], 'tmp.mp4', {
+    type: 'video/mp4',
+    lastModified: Date.now(),
+  })
+
+  const shareTestObj = {
+    files: [tmpFile],
+  }
+
+  // Check if Web Share API Level 2 is supported
+  if (navigator.canShare && navigator.canShare(shareTestObj)) {
     actionButtonText.textContent = options.actionButtonShareText || 'Share'
     actionButtonImg.src = '//cdn.8thwall.com/web/img/mediarecorder/share-v1.svg'
     actionButton.addEventListener('click', share)
