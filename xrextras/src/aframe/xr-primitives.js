@@ -106,7 +106,63 @@ const xrPrimitives = () => {
       'watermark-location': 'xrextras-capture-config.watermarkLocation',
       'file-name-prefix': 'xrextras-capture-config.fileNamePrefix',
       'request-mic': 'xrextras-capture-config.requestMic',
-      'exclude-scene-audio': 'xrextras-capture-config.excludeSceneAudio',
+      'include-scene-audio': 'xrextras-capture-config.includeSceneAudio',
+      'exclude-scene-audio': 'xrextras-capture-config.excludeSceneAudio', // deprecated
+    },
+  }
+
+  const namedImageTargetPrimitive = {
+    defaultComponents: {
+      'xrextras-named-image-target': {},
+    },
+    mappings: {
+      name: 'xrextras-named-image-target.name',
+    },
+  }
+
+  const targetMeshPrimitive = {
+    defaultComponents: {
+      'xrextras-target-mesh': {},
+    },
+    mappings: {
+      'material-resource': 'xrextras-target-mesh.material-resource',
+      'target-geometry': 'xrextras-target-mesh.geometry',
+      'height': 'xrextras-target-mesh.height',
+      'width': 'xrextras-target-mesh.width',
+    },
+  }
+
+  const curvedTargetContainerPrimitive = {
+    defaultComponents: {
+      'xrextras-curved-target-container': {},
+    },
+    mappings: {
+      'color': 'xrextras-curved-target-container.color',
+      'width': 'xrextras-curved-target-container.width',
+      'height': 'xrextras-curved-target-container.height',
+    },
+  }
+
+  const targetVideoFadePrimitive = {
+    defaultComponents: {
+      'xrextras-target-video-fade': {},
+    },
+    mappings: {
+      'video': 'xrextras-target-video-fade.video',
+      'width': 'xrextras-target-video-fade.width',
+      'height': 'xrextras-target-video-fade.height',
+    },
+  }
+
+  const targetVideoSoundPrimitive = {
+    defaultComponents: {
+      'xrextras-target-video-sound': {},
+    },
+    mappings: {
+      'video': 'xrextras-target-video-sound.video',
+      'thumb': 'xrextras-target-video-sound.thumb',
+      'width': 'xrextras-target-video-sound.width',
+      'height': 'xrextras-target-video-sound.height',
     },
   }
 
@@ -121,6 +177,11 @@ const xrPrimitives = () => {
     'xrextras-capture-button': captureButtonPrimitive,
     'xrextras-capture-preview': capturePreviewPrimitive,
     'xrextras-capture-config': captureConfigPrimitive,
+    'xrextras-curved-target-container': curvedTargetContainerPrimitive,
+    'xrextras-named-image-target': namedImageTargetPrimitive,
+    'xrextras-target-mesh': targetMeshPrimitive,
+    'xrextras-target-video-fade': targetVideoFadePrimitive,
+    'xrextras-target-video-sound': targetVideoSoundPrimitive,
   }
 }
 
