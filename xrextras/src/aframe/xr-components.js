@@ -88,6 +88,25 @@ const xrComponents = () => {
     },
   }
 
+  // Display stats.
+  const statsComponent = {
+    init: function() {
+      this.loadModule = () => { XR8.addCameraPipelineModule(XRExtras.Stats.pipelineModule()) }
+      if (window.XRExtras && window.XR8) {
+        this.loadModule()
+      } else {
+        this.xrEventListenerAdded = true
+        window.addEventListener('xrandextrasloaded', this.loadModule, {once: true})
+      }
+    },
+    remove: function() {
+      if (this.xrEventListenerAdded) {
+        window.removeEventListener('xrandextrasloaded', this.loadModule, {once: true})
+      }
+      XR8.removeCameraPipelineModule('stats')
+    },
+  }
+
   // Recenter the scene when the screen is tapped.
   const tapRecenterComponent = {
     init() {
@@ -138,8 +157,8 @@ const xrComponents = () => {
     },
   }
 
-  // Updates a single a-entity to track the image target with the given name (specified in 8th
-  // wall console).
+  // Updates a single a-entity to track the image target with the given name (specified in 8th wall
+  // console).
   const namedImageTargetComponent = {
     schema: {
       name: {type: 'string'},
@@ -147,10 +166,45 @@ const xrComponents = () => {
     init() {
       const {object3D} = this.el
       const {name} = this.data
+      const geometry = {}
       object3D.visible = false
 
-      const showImage = ({detail}) => {
-        if (name != detail.name) {
+      const checkGeometry = (newGeometry) => {
+        let needsUpdate = false
+
+        const fields = [
+          'type',
+          'height',
+          'radiusTop',
+          'radiusBottom',
+          'arcLengthRadians',
+          'arcStartRadians',
+          'scaledWidth',
+          'scaledHeight',
+        ]
+        fields.forEach((f) => {
+          if (geometry[f] !== newGeometry[f]) {
+            geometry[f] = newGeometry[f]
+            needsUpdate = true
+          }
+        })
+
+        if (needsUpdate) {
+          this.el.emit('xrextrasimagegeometry', geometry, false)
+        }
+      }
+
+      const imageScanning = ({detail}) => {
+        detail.imageTargets.forEach((t) => {
+          if (name !== t.name) {
+            return
+          }
+          checkGeometry(Object.assign({type: t.type}, t.geometry))
+        })
+      }
+
+      const updateImage = ({detail}) => {
+        if (name !== detail.name) {
           return
         }
         object3D.position.copy(detail.position)
@@ -159,15 +213,26 @@ const xrComponents = () => {
         object3D.visible = true
       }
 
-      const hideImage = ({detail}) => {
-        if (name != detail.name) {
+      const showImage = ({detail}) => {
+        if (name !== detail.name) {
           return
         }
+        checkGeometry(detail)
+        updateImage({detail})
+        this.el.emit('xrextrasfound', {}, false)
+      }
+
+      const hideImage = ({detail}) => {
+        if (name !== detail.name) {
+          return
+        }
+        this.el.emit('xrextraslost', {}, false)
         object3D.visible = false
       }
 
+      this.el.sceneEl.addEventListener('xrimagescanning', imageScanning)
       this.el.sceneEl.addEventListener('xrimagefound', showImage)
-      this.el.sceneEl.addEventListener('xrimageupdated', showImage)
+      this.el.sceneEl.addEventListener('xrimageupdated', updateImage)
       this.el.sceneEl.addEventListener('xrimagelost', hideImage)
     },
   }
@@ -919,7 +984,8 @@ const xrComponents = () => {
       watermarkLocation: {type: 'string'},
       fileNamePrefix: {type: 'string'},
       requestMic: {type: 'string'},
-      excludeSceneAudio: {type: 'boolean', default: false},
+      includeSceneAudio: {type: 'boolean', default: true},
+      excludeSceneAudio: {type: 'boolean', default: false}, // deprecated
     },
     init() {
       this.includeSceneAudio = this.includeSceneAudio.bind(this)
@@ -929,22 +995,17 @@ const xrComponents = () => {
         audioContext: THREE.AudioContext.getContext(),
       }
 
-      // A-Frame is not like HTML where if you add a boolean property by itself, it defaults to
-      // true. However, we want the following cases to exclude the scene audio:
-      //   1) <xrextras-capture-config exclude-scene-audio></xrextras-capture-config>
-      //   2) <xrextras-capture-config exclude-scene-audio="true"></xrextras-capture-config>
-      // In the first case, where the property doesn't have an explicit value, the value isn't true
-      // for A-Frame but is instead ''.  That's why we are handling '' to represent that we want to
-      // exclude the scene audio from the recording.
-      if (this.data['excludeSceneAudio'] || this.attrValue['excludeSceneAudio'] === '') {
-        config.configureAudioOutput = null
+      if (this.attrValue.excludeSceneAudio !== undefined) {
+        console.warn('"exclude-scene-audio" has been deprecated in favor of "include-scene-audio"')
+        config.configureAudioOutput = this.data.excludeSceneAudio ? null : this.includeSceneAudio
       } else {
-        config.configureAudioOutput = this.includeSceneAudio
+        config.configureAudioOutput = this.data.includeSceneAudio ? this.includeSceneAudio : null
       }
 
       Object.keys(this.data).forEach((key) => {
         // Ignore value if not specified
-        if (this.attrValue[key] !== undefined && key !== 'excludeSceneAudio') {
+        if (this.attrValue[key] !== undefined &&
+            !['includeSceneAudio', 'excludeSceneAudio'].includes(key)) {
           config[key] = this.data[key]
         }
       })
@@ -958,7 +1019,7 @@ const xrComponents = () => {
       // That way, if they add sounds later, it will still connect without the user having to
       // re-call this function.
       if (!this.el.sceneEl.audioListener) {
-        this.el.sceneEl.audioListener = new THREE.AudioListener();
+        this.el.sceneEl.audioListener = new THREE.AudioListener()
       }
 
       // This connects the A-Frame audio to the audioProcessor so that all sound effects initialized
@@ -974,10 +1035,296 @@ const xrComponents = () => {
     },
   }
 
+  const targetMeshComponent = {
+    schema: {
+      'material-resource': {type: 'string'},
+      'geometry': {type: 'string'},
+      'height': {type: 'number'},
+      'width': {type: 'number'},
+    },
+    init() {
+      this.curvedMesh = null
+
+      const geometry = ['full', 'label'].includes(this.data.geometry) ? this.data.geometry : 'label'
+
+      const updateMesh = ({detail}) => {
+        let material
+
+        if (this.el.getAttribute('material')) {
+          material = this.el.components.material.material
+        } else if (this.data['material-resource']) {
+          material = this.el.sceneEl.querySelector(this.data['material-resource']).material
+        } else {
+          material = new THREE.MeshBasicMaterial(
+            {color: '#7611B6', opacity: 0.5, transparent: true}
+          )
+        }
+
+        const userHeight = this.data.height
+        const userWidth = this.data.width
+
+        const geo = XRExtras.ThreeExtras.createTargetGeometry(
+          detail, geometry === 'full', userHeight, userWidth
+        )
+
+        this.curvedMesh = new THREE.Mesh(geo, material)
+        this.el.setObject3D('mesh', this.curvedMesh)
+
+        this.el.emit('model-loaded')
+      }
+
+      this.el.parentNode.addEventListener('xrextrasimagegeometry', updateMesh)
+    },
+    update() {
+      if (!this.curvedMesh) {
+        return
+      }
+
+      let material
+      if (this.el.getAttribute('material')) {
+        material = this.el.components.material.material
+      } else if (this.data['material-resource']) {
+        material = this.el.sceneEl.querySelector(this.data['material-resource']).material
+      } else {
+        material = new THREE.MeshBasicMaterial({color: '#7611B6', opacity: 0.5, transparent: true})
+      }
+      this.curvedMesh.material = material
+    },
+  }
+
+  const curvedTargetContainerComponent = {
+    schema: {
+      color: {type: 'string', default: '#464766'},
+      height: {type: 'number'},
+      width: {type: 'number'},
+    },
+    init() {
+      const {object3D} = this.el
+
+      let openingMesh = null
+      let topMesh = null
+      let bottomMesh = null
+      let intTopMesh = null
+      let intMesh = null
+      let intBottomMesh = null
+
+      // set interior container color
+      const intColor = this.data.color
+
+      // Similar to ThreeExtras.createTargetGeometry, except the cutout is inverse, and if the
+      // geometry is not full, the cylinders are capped with meshes on top and bottom.
+      const createCurvedContainerGeometry = (geometry, isFull, userHeight, userWidth) => {
+        const length = (2 * Math.PI - geometry.arcLengthRadians) * (userWidth || 1)
+        const open = isFull
+        return new THREE.CylinderGeometry(
+          geometry.radiusTop,
+          geometry.radiusBottom,
+          userHeight ? geometry.height * userHeight : geometry.height,
+          50,
+          1,
+          open,
+          (isFull ? 0.0 : (2 * Math.PI - length) / 2) + Math.PI,
+          isFull ? 2 * Math.PI : length
+        )
+      }
+
+      const createCircleGeometry = (geometry, top) => {
+        const orientation = top ? geometry.radiusTop : geometry.radiusBottom
+        return new THREE.CircleGeometry(orientation, 50)
+      }
+
+      const constructGeometry = ({detail}) => {
+        // create hider CYLINDER - opening
+        const userHeight = this.data.height
+        const userWidth = this.data.width
+
+        const openingEl = document.createElement('a-entity')
+        const openingGeo = createCurvedContainerGeometry(detail, false, userHeight, userWidth)
+
+        const material = new THREE.MeshBasicMaterial({colorWrite: false})
+        openingMesh = new THREE.Mesh(openingGeo, material)
+        openingMesh.rotation.set(0, Math.PI, 0)
+        openingEl.setObject3D('mesh', openingMesh)
+        this.el.appendChild(openingEl)
+
+        const labelHeight = openingMesh.geometry.parameters.height
+
+        // create hider CYLINDER - top
+        const topEl = document.createElement('a-entity')
+        const topGeo = createCurvedContainerGeometry(detail, true, userHeight, userWidth)
+        topMesh = new THREE.Mesh(topGeo, material)
+        topMesh.rotation.set(Math.PI, 0, 0)
+        topEl.setObject3D('mesh', topMesh)
+        topEl.object3D.position.set(0, labelHeight, 0)
+        this.el.appendChild(topEl)
+
+        // create hider CYLINDER - bottom
+        const bottomEl = document.createElement('a-entity')
+        const bottomGeo = createCurvedContainerGeometry(detail, true, userHeight, userWidth)
+        bottomMesh = new THREE.Mesh(bottomGeo, material)
+        bottomMesh.rotation.set(Math.PI, 0, 0)
+        bottomEl.setObject3D('mesh', bottomMesh)
+        bottomEl.object3D.position.set(0, -labelHeight, 0)
+        this.el.appendChild(bottomEl)
+
+        const intBackMat = new THREE.MeshStandardMaterial({color: intColor, side: THREE.BackSide})
+        const intFrontMat = new THREE.MeshStandardMaterial({color: intColor, side: THREE.FrontSide})
+
+        // create interior CIRCLE - top
+        const intTopEl = document.createElement('a-entity')
+        const intTopGeo = createCircleGeometry(detail, true)
+        intTopMesh = new THREE.Mesh(intTopGeo, intFrontMat)
+        intTopMesh.rotation.set(Math.PI / 2, 0, 0)
+        intTopEl.setObject3D('mesh', intTopMesh)
+        intTopEl.object3D.position.set(0, labelHeight / 2, 0)
+        this.el.appendChild(intTopEl)
+
+        // create interior CYLINDER
+        const intEl = document.createElement('a-entity')
+        const intGeo = createCurvedContainerGeometry(detail, true, userHeight, userWidth)
+        intMesh = new THREE.Mesh(intGeo, intBackMat)
+        intMesh.rotation.set(0, Math.PI, 0)
+        intEl.setObject3D('mesh', intMesh)
+        intEl.object3D.position.set(0, 0, 0)
+        intEl.object3D.scale.set(1, 1, 1)
+        this.el.appendChild(intEl)
+
+        // create interior CIRCLE - bottom
+        const intBottomEl = document.createElement('a-entity')
+        const intBottomGeo = createCircleGeometry(detail, false)
+        intBottomMesh = new THREE.Mesh(intBottomGeo, intBackMat)
+        intBottomMesh.rotation.set(Math.PI / 2, 0, 0)
+        intBottomEl.setObject3D('mesh', intBottomMesh)
+        intBottomEl.object3D.position.set(0, -labelHeight / 2, 0)
+        this.el.appendChild(intBottomEl)
+      }
+
+      this.el.parentNode.addEventListener('xrextrasimagegeometry', constructGeometry)
+    },
+  }
+
+  const spinComponent = {
+    schema: {
+      speed: {default: 2000},
+      direction: {default: 'normal'},
+    },
+    init() {
+      const {el} = this
+      el.setAttribute('animation__spin', {
+        property: 'object3D.rotation.y',
+        from: 0,
+        to: 360,
+        dur: this.data.speed,
+        dir: this.data.direction,
+        loop: true,
+        easing: 'linear',
+      })
+    },
+  }
+
+  const targetVideoFadeComponent = {
+    schema: {
+      video: {type: 'string'},
+      height: {type: 'number'},
+      width: {type: 'number'},
+    },
+    init() {
+      const {object3D} = this.el
+      const v = document.querySelector(this.data.video)
+
+      let geomMesh = null
+
+      const constructGeometry = ({detail}) => {
+        const geo = XRExtras.ThreeExtras.createTargetGeometry(
+          detail, false, this.data.height, this.data.width
+        )
+        geomMesh = new THREE.Mesh(geo)
+        this.el.setObject3D('mesh', geomMesh)
+        this.el.setAttribute('material', 'opacity', 0)
+        this.el.setAttribute('material', 'src', v)
+      }
+
+      const foundTarget = () => {
+        v.play()
+        this.el.setAttribute('animation', {
+          property: 'components.material.material.opacity',
+          dur: 800,
+          isRawProperty: true,
+          easing: 'easeInOutQuad',
+          loop: false,
+          to: '1',
+        })
+      }
+
+      const lostTarget = () => {
+        v.pause()
+        v.currentTime = 0
+        this.el.components.material.material.opacity = 0
+        this.el.removeAttribute('animation')
+      }
+
+      this.el.parentNode.addEventListener('xrextrasimagegeometry', constructGeometry)
+      this.el.parentNode.addEventListener('xrextrasfound', foundTarget)
+      this.el.parentNode.addEventListener('xrextraslost', lostTarget)
+    },
+  }
+
+  const targetVideoSoundComponent = {
+    schema: {
+      video: {type: 'string'},
+      thumb: {type: 'string'},
+      height: {type: 'number'},
+      width: {type: 'number'},
+    },
+    init() {
+      const {object3D} = this.el
+      const v = document.querySelector(this.data.video)
+      const p = this.data.thumb && document.querySelector(this.data.thumb)
+      let tapped = false
+      let geomMesh = null
+
+      const constructGeometry = ({detail}) => {
+        const geo = XRExtras.ThreeExtras.createTargetGeometry(
+          detail, false, this.data.height, this.data.width
+        )
+        geomMesh = new THREE.Mesh(geo)
+        this.el.setObject3D('mesh', geomMesh)
+
+        this.el.setAttribute('class', 'cantap')
+        this.el.setAttribute('material', 'src', p || v)
+      }
+
+      this.el.addEventListener('click', () => {
+        if (!tapped) {
+          this.el.setAttribute('material', 'src', v)
+          v.play()
+          tapped = true
+        }
+      })
+
+      const foundTarget = () => {
+        if (tapped) {
+          v.play()
+        }
+      }
+
+      const lostTarget = () => {
+        if (tapped) {
+          v.pause()
+        }
+      }
+
+      this.el.parentNode.addEventListener('xrextrasimagegeometry', constructGeometry)
+      this.el.parentNode.addEventListener('xrextrasfound', foundTarget)
+      this.el.parentNode.addEventListener('xrextraslost', lostTarget)
+    },
+  }
+
   return {
     'xrextras-almost-there': almostThereComponent,
     'xrextras-loading': loadingComponent,
     'xrextras-runtime-error': runtimeErrorComponent,
+    'xrextras-stats': statsComponent,
     'xrextras-tap-recenter': tapRecenterComponent,
     'xrextras-generate-image-targets': generateImageTargetsComponent,
     'xrextras-named-image-target': namedImageTargetComponent,
@@ -1003,6 +1350,11 @@ const xrComponents = () => {
     'xrextras-capture-button': captureButtonComponent,
     'xrextras-capture-preview': capturePreviewComponent,
     'xrextras-capture-config': captureConfigComponent,
+    'xrextras-curved-target-container': curvedTargetContainerComponent,
+    'xrextras-target-mesh': targetMeshComponent,
+    'xrextras-target-video-fade': targetVideoFadeComponent,
+    'xrextras-target-video-sound': targetVideoSoundComponent,
+    'xrextras-spin': spinComponent,
   }
 }
 

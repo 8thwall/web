@@ -133,8 +133,39 @@ const faceMesh = (modelGeometry, material) => {
   }
 }
 
+const createCurvedGeometry = (geometry, isFull, userHeight, userWidth) => {
+  const length = geometry.arcLengthRadians * (userWidth || 1)
+  return new THREE.CylinderGeometry(
+    geometry.radiusTop,
+    geometry.radiusBottom,
+    userHeight ? geometry.height * userHeight : geometry.height,
+    50,
+    1,
+    true,
+    (isFull ? 0.0 : (2 * Math.PI - length) / 2) + Math.PI,
+    isFull ? 2 * Math.PI : length
+  )
+}
+
+const createFlatGeometry = (geometry, userHeight, userWidth) => new THREE.PlaneGeometry(
+  geometry.scaledWidth * (userWidth || 1), geometry.scaledHeight * (userHeight || 1)
+)
+
+const createTargetGeometry = (geometry, isFull, userHeight, userWidth) => {
+  switch (geometry.type) {
+    case 'FLAT':
+      return createFlatGeometry(geometry, userHeight, userWidth)
+    case 'CONICAL':
+    case 'CYLINDRICAL':
+      return createCurvedGeometry(geometry, !!isFull, userHeight, userWidth)
+    default:
+      return null
+  }
+}
+
 const create = () => ({
   basicMaterial,
+  createTargetGeometry,
   faceMesh,
   pbrMaterial,
   videoMaterial,
