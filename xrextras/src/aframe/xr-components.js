@@ -1,4 +1,4 @@
-/* globals XRExtras */
+/* globals XRExtras, XR8 */
 
 const {ensureXrAndExtras} = require('./ensure')
 
@@ -129,11 +129,12 @@ const xrComponents = () => {
       const componentMap = {}
 
       const addComponents = ({detail}) => {
-        detail.imageTargets.forEach(({name, metadata, properties}) => {
+        detail.imageTargets.forEach(({name, type, metadata, properties}) => {
           const el = document.createElement(this.data.primitive)
           el.setAttribute('id', `xrextras-imagetargets-${name}`)
           el.setAttribute('name', name)
-          el.setAttribute('rotated', properties.isRotated ? 'true' : 'false')
+          el.setAttribute('type', type)
+          el.setAttribute('rotated', (properties && properties.isRotated) ? 'true' : 'false')
           el.setAttribute(
             'metadata', (typeof metadata === 'string') ? metadata : JSON.stringify(metadata)
           )
@@ -664,6 +665,31 @@ const xrComponents = () => {
     },
     remove() {
       XR8.removeCameraPipelineModule('pauseonbluraframe')
+    },
+  }
+
+  const pauseOnHiddenComponent = {
+    init() {
+      const scene = this.el.sceneEl
+      const onVisChange = () => {
+        if (document.visibilityState === 'visible') {
+          scene.play()
+        } else {
+          scene.pause()
+        }
+      }
+      XR8.addCameraPipelineModule({
+        name: 'pauseonhiddenaframe',
+        onAttach: () => {
+          document.addEventListener('visibilitychange', onVisChange)
+        },
+        onDetach: () => {
+          document.removeEventListener('visibilitychange', onVisChange)
+        },
+      })
+    },
+    remove() {
+      XR8.removeCameraPipelineModule('pauseonhiddenaframe')
     },
   }
 
@@ -1338,6 +1364,7 @@ const xrComponents = () => {
     'xrextras-log-to-screen': logToScreenComponent,
     'xrextras-pwa-installer': pwaInstallerComponent,
     'xrextras-pause-on-blur': pauseOnBlurComponent,
+    'xrextras-pause-on-hidden': pauseOnHiddenComponent,
     'xrextras-faceanchor': faceAnchorComponent,
     'xrextras-resource': resourceComponent,
     'xrextras-pbr-material': pbrMaterialComponent,

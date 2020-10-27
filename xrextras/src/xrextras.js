@@ -4,6 +4,7 @@ const {DebugWebViewsFactory} = require('./debugwebviews/debug-web-views.js')
 const {FullWindowCanvasFactory} = require('./fullwindowcanvasmodule/full-window-canvas-module.js')
 const {LoadingFactory} = require('./loadingmodule/loading-module.js')
 const {PauseOnBlurFactory} = require('./pauseonblurmodule/pauseonblur.js')
+const {PauseOnHiddenFactory} = require('./pauseonhiddenmodule/pauseonhidden.js')
 const {PlayCanvasFactory} = require('./playcanvas/playcanvas.js')
 const {PwaInstallerFactory} = require('./pwainstallermodule/pwa-installer-module.js')
 const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
@@ -21,6 +22,7 @@ module.exports = {
     FullWindowCanvas: FullWindowCanvasFactory(),
     Loading: LoadingFactory(),
     PauseOnBlur: PauseOnBlurFactory(),
+    PauseOnHidden: PauseOnHiddenFactory(),
     PlayCanvas: PlayCanvasFactory(),
     PwaInstaller: PwaInstallerFactory(),
     RuntimeError: RuntimeErrorFactory(),
