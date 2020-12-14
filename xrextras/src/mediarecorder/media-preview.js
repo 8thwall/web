@@ -70,6 +70,7 @@ const downloadFile = () => {
 const openIosDownload = () => {
   clickAnchor({
     href: IOS_DOWNLOAD_LOCATION + currentFilename,
+    target: '_blank',
   })
 }
 
@@ -110,9 +111,13 @@ const showImagePreview = ({blob}) => {
   currentUrl = URL.createObjectURL(blob)
   currentFilename = `${getFileNamePrefix()}${getTimestamp()}.jpg`
   previewIsImage = true
-  imagePreview.src = currentUrl
-  previewContainer.classList.add('image-preview')
-  showPreview()
+  const reader = new FileReader()
+  reader.readAsDataURL(blob)
+  reader.onloadend = () => {
+    imagePreview.src = reader.result
+    previewContainer.classList.add('image-preview')
+    showPreview()
+  }
 }
 
 const showVideoPreview = ({videoBlob}) => {
@@ -156,15 +161,23 @@ const initMediaPreview = (options = {}) => {
   videoPreview = document.getElementById('videoPreview')
   muteButtonImg = document.getElementById('muteButtonImg')
 
+  const downloadButton = document.getElementById('downloadButton')
   const actionButton = document.getElementById('actionButton')
   const actionButtonText = document.getElementById('actionButtonText')
   const actionButtonImg = document.getElementById('actionButtonImg')
+
+  // Checks for WKWebView's that can't download : https://github.com/eligrey/FileSaver.js/issues/686
+  // TODO(paris): Check for Brave with https://www.ctrl.blog/entry/brave-user-agent-detection.html
+  // Info today: {name: "Mobile Safari", version: "14.0", majorVersion: 14, inAppBrowser: undefined}
+  const isWKWebViewiOS = ['Microsoft Edge', 'Google Chrome', 'Mozilla Firefox Focus', 'Opera Touch',
+    'Pinterest', 'Snapchat', 'Instagram', 'Facebook', 'Facebook Messenger', 'Line', 'LinkedIn',
+    'Naver', 'Baidu'].includes(window.XR8.XrDevice.deviceEstimate().browser.inAppBrowser) ||
+    window.XR8.XrDevice.deviceEstimate().browser.name === 'Firefox'
 
   const tmpFile = new File([new Blob()], 'tmp.mp4', {
     type: 'video/mp4',
     lastModified: Date.now(),
   })
-
   const shareTestObj = {
     files: [tmpFile],
   }
@@ -174,6 +187,10 @@ const initMediaPreview = (options = {}) => {
     actionButtonText.textContent = options.actionButtonShareText || 'Share'
     actionButtonImg.src = '//cdn.8thwall.com/web/img/mediarecorder/share-v1.svg'
     actionButton.addEventListener('click', share)
+  } else if (window.XR8.XrDevice.deviceEstimate().os === 'iOS' && isWKWebViewiOS) {
+    previewContainer.classList.add('disabled-download')
+    actionButton.parentNode.removeChild(actionButton)
+    downloadButton.parentNode.removeChild(downloadButton)
   } else if (window.XR8.XrDevice.deviceEstimate().os === 'iOS') {
     actionButtonText.textContent = options.actionButtonViewText || 'View'
     actionButtonImg.src = '//cdn.8thwall.com/web/img/mediarecorder/view-v1.svg'
@@ -191,7 +208,9 @@ const initMediaPreview = (options = {}) => {
   window.addEventListener('mediarecorder-photocomplete', showImageHandler)
 
   document.getElementById('closePreviewButton').addEventListener('click', closePreview)
-  document.getElementById('downloadButton').addEventListener('click', downloadFile)
+  if (document.getElementById('downloadButton')) {
+    downloadButton.addEventListener('click', downloadFile)
+  }
 
   // Initialize with default configuration
   configure()

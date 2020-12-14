@@ -45,40 +45,52 @@
   transform: translate(-50%, -50%);
 }
 
-#cameraPermissionsErrorApple {
+/* camera and micrphone permission related styles */
+#cameraPermissionsErrorApple, #microphonePermissionsErrorApple {
   background-color: #101118;
 }
 
-.xrextras-old-style #cameraPermissionsErrorApple {
+.xrextras-old-style #cameraPermissionsErrorApple, .xrextras-old-style #microphonePermissionsErrorApple {
   background-color: white;
 }
 
-#cameraPermissionsErrorAppleMessage {
+#cameraPermissionsErrorAppleMessage, #microphonePermissionsErrorAppleMessage {
   font-size: 1.75em;
   text-align: center;
+  max-width: 90vw;
   margin-top: 5vh;
+  margin-left: auto;
+  margin-right: auto;
   color: white;
 }
 
-.xrextras-old-style #cameraPermissionsErrorAppleMessage {
+.xrextras-old-style #cameraPermissionsErrorAppleMessage, .xrextras-old-style #microphonePermissionsErrorAppleMessage {
   color: #323232;
 }
 
-#cameraPermissionsErrorAppleArrow {
-  position: fixed;
-  top: 3%;
-  right: 1.5%;
-  height: 36px;
-}
-
-#cameraPermissionsErrorAppleReloadCamera {
+.permissionIconIos {
   display: block;
   margin: 0 auto;
   margin-top: 17vh;
-  max-width: 20vw;
+  text-align: center;
+}
+.permissionIconIos img {
+  height: 20vw;
+}
+.permissionIconIos img + img {
+  margin-left: 10vw;
 }
 
-#cameraPermissionsErrorAndroid {
+.bottom-message {
+  color: white;
+  padding: 0 5vw;
+  position: absolute;
+  bottom: 10vh;
+  text-align: center;
+  font-size: 1.25em;
+}
+
+#cameraPermissionsErrorAndroid, #microphonePermissionsErrorAndroid {
   padding: 2vh 0;
   display: flex;
   flex-direction: column;
@@ -88,9 +100,11 @@
   background-color: #101118;
 }
 
-.xrextras-old-style #cameraPermissionsErrorAndroid {
+.xrextras-old-style #cameraPermissionsErrorAndroid, .xrextras-old-style #microphonePermissionsErrorAndroid {
   background-color: white;
 }
+
+/* device motion permission related styles */
 
 #deviceMotionErrorApple {
   padding: 3vh 2vh;
@@ -169,13 +183,13 @@
   background-color: #7611b7;
 }
 
-#cameraPermissionsCameraIcon {
+.permissionIcon {
   overflow: hidden;
   flex: 0 0 auto;
   margin-bottom: 2vh;
 }
 
-#cameraPermissionsCameraIcon img {
+.permissionIcon img {
   display: block;
   margin: 0 auto;
   height: 5vh;

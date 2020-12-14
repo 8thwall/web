@@ -132,6 +132,27 @@
   margin-left: 0.4em;
 }
 
+.disabled-download.video-preview #openSafariText {
+  display: block;
+  font-size: 5vmin;
+}
+
+.disabled-download.image-preview #tapAndHoldText {
+  display: block;
+  font-size: 7.5vmin;
+}
+
+#openSafariText, #tapAndHoldText {
+  display: none;
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
+  color: white;
+  filter: drop-shadow(0px 1px 2px #333);
+}
+
 #previewContainer:not(.downloaded) .show-after-download {
   display: none;
 }

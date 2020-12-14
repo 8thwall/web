@@ -34,7 +34,7 @@ function create() {
         stats_.update()
       },
       onDetach: () => {
-        document.body.removeChild(stats_)
+        document.body.removeChild(stats_.dom)
         stats_ = null
       },
     }

@@ -14,20 +14,22 @@
     Tap 'Allow' to access AR
   </div>
 
-  <!--Permission error, iOS-->
+  <!--Permission error, camera, iOS-->
   <div id="cameraPermissionsErrorApple" class="absolute-fill hidden">
-    <img class='foreground-image' id="cameraPermissionsErrorAppleReloadCamera"
-      src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
+    <div class="permissionIconIos">
+      <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
+    </div>
     <p id="cameraPermissionsErrorAppleMessage">
-      Refresh the page to enable camera access for AR
+      Reload the page and enable camera access
     </p>
-    <img class='foreground-image' id="cameraPermissionsErrorAppleArrow"
-      src="//cdn.8thwall.com/web/img/almostthere/v2/xtra-arrow.svg" />
+    <div class='bottom-message'>
+      Ensure camera access is allowed in <span class='wk-app-name'></span> app settings
+    </div>
   </div>
 
-  <!--Permission error, Android-->
+  <!--Permission error, camera, Android-->
   <div id="cameraPermissionsErrorAndroid" class="absolute-fill hidden">
-    <div id="cameraPermissionsCameraIcon">
+    <div class="permissionIcon">
       <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
     </div>
     <div class="loading-error-header">Let's enable your camera</div>
@@ -58,6 +60,68 @@
       <li class="samsung-instruction hidden">
         Press and hold<br>
         <span class="camera-instruction-block domain-view">apps.8thwall.com</span>
+      </li>
+      <li class="samsung-instruction hidden">
+        <span class="highlight" style="color: #1500ba">DELETE</span>
+      </li>
+    </ol>
+    <div class="loading-error-footer">
+      <img class='foreground-image' style="transform: rotate(130deg);"
+        src="//cdn.8thwall.com/web/img/loading/v2/reload.svg" />
+      Then, reload the page for AR!
+    </div>
+  </div>
+
+  <!--Permission error, microphone + camera, iOS-->
+  <div id="microphonePermissionsErrorApple" class="absolute-fill hidden">
+    <div class='permissionIconIos'>
+      <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/camera.svg" />
+      <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/microphone.svg" />
+    </div>
+    <p id="microphonePermissionsErrorAppleMessage">
+      Reload the page and enable camera + microphone access
+    </p>
+    <div class='bottom-message'>
+      Ensure camera + microphone access is allowed in <span class='wk-app-name'></span> app settings
+    </div>
+  </div>
+
+  <!--Permission error, microphone + camera, Android-->
+  <div id="microphonePermissionsErrorAndroid" class="absolute-fill hidden">
+    <div class="permissionIcon">
+      <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/microphone.svg" />
+    </div>
+    <div class="loading-error-header">Let's enable your microphone</div>
+    <ol class="loading-error-instructions">
+      <li>Tap the <img class='foreground-image' src="//cdn.8thwall.com/web/img/loading/v2/dots.svg"> in the top right
+      </li>
+      <li>Tap Settings</li>
+      <li class="chrome-instruction hidden">
+        <span class="highlight">Site settings</span>
+      </li>
+      <li class="chrome-instruction hidden">
+        <span class="highlight">Microphone</span>
+      </li>
+      <li class="chrome-instruction hidden">
+        <span class="highlight">Blocked</span>
+        <br>
+        <span class="microphone-instruction-block domain-view">apps.8thwall.com</span>
+      </li>
+      <li class="chrome-instruction hidden">
+        <span class="microphone-instruction-button">CLEAR & RESET</span>
+      </li>
+      <li class="chrome-instruction hidden">
+        <span class="highlight">Do the same for Camera</span>
+      </li>
+      <li class="samsung-instruction hidden">
+        <span class="highlight">Advanced</span>
+      </li>
+      <li class="samsung-instruction hidden">
+        <span class="highlight">Manage website data</span>
+      </li>
+      <li class="samsung-instruction hidden">
+        Press and hold<br>
+        <span class="microphone-instruction-block domain-view">apps.8thwall.com</span>
       </li>
       <li class="samsung-instruction hidden">
         <span class="highlight" style="color: #1500ba">DELETE</span>
@@ -120,7 +184,7 @@
   <div id="motionPermissionsErrorApple" class="permission-error absolute-fill hidden">
     <h1>Permissions were denied.</h1>
     <p>You've prevented the page from accessing your motion sensors.</p>
-    <p>Please close out of Safari to reenable your motion sensors.</p>
+    <p>Please close <span class='wk-app-name'></span> app to reenable your motion sensors.</p>
   </div>
 
   <div id="cameraSelectionWorldTrackingError" class="permission-error absolute-fill hidden">
@@ -128,4 +192,5 @@
     <div class="error-text-header">Oops, something went wrong!</div>
     <p id="camera_mode_world_tracking_error"></p>
   </div>
+  <div id='debug-message' style='color:#eee; word-break: break-all; position:absolute; top:0'></div>
 </div>
