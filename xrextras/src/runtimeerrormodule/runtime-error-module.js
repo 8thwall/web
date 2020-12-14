@@ -36,8 +36,7 @@ const create = () => {
         if (rootNode) { return }
 
         // Log the error to the console to help with debugging.
-        console.log('[RuntimeError] XR caught an error; stopping:')
-        console.log(error)
+        console.error('[RuntimeError] XR caught an error; stopping.', error)
 
         // Show the error message.
         const e = document.createElement('template')

@@ -32,14 +32,30 @@ const getAppKey = () => {
   }
 }
 
+const localStorageGetItem = (key, defaultValue = null) => {
+  try {
+    return localStorage.getItem(key) || defaultValue
+  } catch (e) {
+    return defaultValue
+  }
+}
+
+const localStorageSetItem = (key, value) => {
+  try {
+    localStorage.setItem(key, value)
+  } catch (e) {
+    // No-op.
+  }
+}
+
 const recordVisit = () => {
   const key = numVisitsKey()
-  const numVisits = parseInt(localStorage.getItem(key)) || 0
-  localStorage.setItem(key, (numVisits + 1).toString())
+  const numVisits = parseInt(localStorageGetItem(key, '0'), 10)
+  localStorageSetItem(key, (numVisits + 1).toString())
 }
 
 const recordInstallPromptDismissed = () => {
-  localStorage.setItem(lastDismissalKey(), new Date().getTime().toString())
+  localStorageSetItem(lastDismissalKey(), new Date().getTime().toString())
 }
 
 const getDefaultIconSrc = () => (
@@ -258,8 +274,8 @@ const create = () => {
       pendingDisplayPromptId_ = null
     }
 
-    const numVisits = parseInt(localStorage.getItem(numVisitsKey())) || 0
-    const lastDismissalMillis = parseInt(localStorage.getItem(lastDismissalKey())) || 0
+    const numVisits = parseInt(localStorageGetItem(numVisitsKey(), '0'), 10)
+    const lastDismissalMillis = parseInt(localStorageGetItem(lastDismissalKey(), '0'), 10)
     if (displayAllowed_ && shouldDisplayInstallPrompt_(promptConfig_, lastDismissalMillis, numVisits)) {
       const config = {
         name: displayConfig_.preferredName(),

@@ -5,6 +5,13 @@ require('!style-loader!css-loader!./loading-module.css')
 
 const html = require('./loading-module.html')
 
+// This is a simplistic check to be used when we have already failed in getting
+// access to the camera. This can be used to differentiate between a permission denial
+// and a lack of camera.
+function hasGetUserMedia() {
+  return navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+}
+
 let loadingModule = null
 
 function create() {
@@ -14,6 +21,8 @@ function create() {
   let camPermissionsRequest_
   let camPermissionsFailedAndroid_
   let camPermissionsFailedApple_
+  let micPermissionsFailedAndroid_
+  let micPermissionsFailedApple_
   let linkOutViewAndroid_
   let copyLinkViewAndroid_
   let userPromptError_
@@ -35,6 +44,14 @@ function create() {
   }
   window.addEventListener('devicemotion', motionListener)
 
+  const getAppNameForDisplay = () => {
+    const deviceInfo = XR8.XrDevice.deviceEstimate()
+    if (deviceInfo.browser.inAppBrowser) {
+      return deviceInfo.browser.inAppBrowser
+    }
+    return deviceInfo.browser.name === 'Mobile Safari' ? '' : deviceInfo.browser.name
+  }
+
   const iframeMotionListener = (event) => {
     if (event.data.deviceOrientation8w || event.data.deviceMotion8w) {
       hasMotionEvents_ = true
@@ -50,6 +67,8 @@ function create() {
     camPermissionsRequest_ = document.getElementById('requestingCameraPermissions')
     camPermissionsFailedAndroid_ = document.getElementById('cameraPermissionsErrorAndroid')
     camPermissionsFailedApple_ = document.getElementById('cameraPermissionsErrorApple')
+    micPermissionsFailedAndroid_ = document.getElementById('microphonePermissionsErrorAndroid')
+    micPermissionsFailedApple_ = document.getElementById('microphonePermissionsErrorApple')
     linkOutViewAndroid_ = document.getElementById('linkOutViewAndroid')
     copyLinkViewAndroid_ = document.getElementById('copyLinkViewAndroid')
     deviceMotionErrorApple_ = document.getElementById('deviceMotionErrorApple')
@@ -82,8 +101,35 @@ function create() {
     camPermissionsRequest_.classList.add('fade-out')
   }
 
-  const promptUserToChangeBrowserSettings = () => {
-    camPermissionsRequest_.classList.add('hidden')
+  const promptUserToChangeBrowserSettingsMicrophone = () => {
+    // We only really handle Android variants (Samsung/Chrome browsers)
+    if (ua.includes('Linux')) {
+      let instructionsToShow
+
+      const domainViews = rootNode_.querySelectorAll('.domain-view')
+      for (let i = 0; i < domainViews.length; i++) {
+        domainViews[i].textContent = window.location.hostname
+      }
+
+      if (navigator.userAgent.includes('SamsungBrowser')) {
+        instructionsToShow = rootNode_.querySelectorAll('.samsung-instruction')
+      } else {
+        instructionsToShow = rootNode_.querySelectorAll('.chrome-instruction')
+      }
+      micPermissionsFailedAndroid_.classList.remove('hidden')
+      instructionsToShow.forEach((instruction) => {
+        instruction.classList.remove('hidden')
+      })
+    } else {
+      // Show permission error for iOS
+      micPermissionsFailedApple_.classList.remove('hidden')
+      micPermissionsFailedApple_.getElementsByClassName('wk-app-name')[0]
+        .innerText = getAppNameForDisplay()
+    }
+  }
+
+  const promptUserToChangeBrowserSettingsCamera = () => {
+    // We only really handle Android variants (Samsung/Chrome browsers)
     if (ua.includes('Linux')) {
       let instructionsToShow
 
@@ -98,11 +144,23 @@ function create() {
         instructionsToShow = rootNode_.querySelectorAll('.chrome-instruction')
       }
       camPermissionsFailedAndroid_.classList.remove('hidden')
-      for (let i = 0; i < instructionsToShow.length; i++) {
-        instructionsToShow[i].classList.remove('hidden')
-      }
+      instructionsToShow.forEach((instruction) => {
+        instruction.classList.remove('hidden')
+      })
     } else {
+      // Show permission error for iOS
       camPermissionsFailedApple_.classList.remove('hidden')
+      camPermissionsFailedApple_.getElementsByClassName('wk-app-name')[0]
+        .innerText = getAppNameForDisplay()
+    }
+  }
+
+  const promptUserToChangeBrowserSettings = (reason) => {
+    camPermissionsRequest_.classList.add('hidden')
+    if (reason === 'NO_MICROPHONE' || reason === 'DENY_MICROPHONE') {
+      promptUserToChangeBrowserSettingsMicrophone()
+    } else {
+      promptUserToChangeBrowserSettingsCamera()
     }
     hideLoadingScreen(false)
 
@@ -198,8 +256,9 @@ function create() {
       deviceMotionErrorApple_.classList.remove('hidden')
     } else {
       motionPermissionsErrorApple_.classList.remove('hidden')
+      motionPermissionsErrorApple_.getElementsByClassName('wk-app-name')[0]
+        .innerText = getAppNameForDisplay()
     }
-
     hideLoadingScreen(false)
     XR8.pause()
     XR8.stop()
@@ -263,17 +322,29 @@ function create() {
       runConfig_ = args && args.config
       showLoading()
     },
-    onCameraStatusChange: ({status}) => {
+    onCameraStatusChange: ({status, config, reason}) => {
       if (!XR8.XrDevice.isDeviceBrowserCompatible(runConfig_)) {
         return
       }
       if (status === 'requesting') {
+        if (config.verbose) {
+          const debugElement = document.getElementById('camera_mode_world_tracking_error')
+          if (debugElement) {
+            debugElement.innerText = JSON.stringify({
+              ua,
+              device: XR8.XrDevice.deviceEstimate(),
+            })
+          }
+        }
+
         const curBrowser = XR8.XrDevice.deviceEstimate().browser.inAppBrowser
         if (curBrowser) {
           cancelCameraTimeout = setTimeout(() => {
-            XR8.pause()
-            XR8.stop()
-            displayAndroidLinkOutView()
+            if (XR8.XrDevice.deviceEstimate().os !== 'iOS') {
+              XR8.pause()
+              XR8.stop()
+              displayAndroidLinkOutView()
+            }
           }, 3000)
         }
         showLoading()
@@ -289,19 +360,35 @@ function create() {
         // wait a few frames for UI to update before dropping load screen.
       } else if (status === 'failed') {
         clearTimeout(cancelCameraTimeout)
-        switch (XR8.XrDevice.deviceEstimate().browser.inAppBrowser) {
-          case 'Snapchat':
-          case 'Sino Weibo':
-          case 'Pinterest':
-          case 'WeChat':
-            displayCopyLinkView()
-            break
-          case undefined:
-            promptUserToChangeBrowserSettings()
-            break
-          default:
-            displayAndroidLinkOutView()
-            break
+        const deviceInfo = XR8.XrDevice.deviceEstimate()
+        if (!hasGetUserMedia()) {
+          displayCopyLinkView()
+        } else {
+          switch (deviceInfo.browser.inAppBrowser) {
+            case 'Sino Weibo':
+            case 'WeChat':
+              displayCopyLinkView()
+              break
+            case undefined:
+            case 'Apple News':
+            case 'Facebook Messenger':
+            case 'Facebook':
+            case 'Google Chrome':
+            case 'Instagram':
+            case 'Line':
+            case 'LinkedIn':
+            case 'Microsoft Edge':
+            case 'Mozilla Firefox Focus':
+            case 'Naver':
+            case 'Opera Touch':
+            case 'Pinterest':
+            case 'Snapchat':
+              promptUserToChangeBrowserSettings(reason)
+              break
+            default:
+              displayAndroidLinkOutView()
+              break
+          }
         }
       }
     },
@@ -330,12 +417,15 @@ function create() {
           if (error.source === 'reality' && error.err === 'slam-front-camera-unsupported') {
             // User is attemping to use Front camera without disabling world tracking
             hideLoadingScreen(false)
-            document.getElementById('camera_mode_world_tracking_error').innerHTML = error.message
-            cameraSelectionError_.classList.remove('hidden')
+            const errorElement = document.getElementById('camera_mode_world_tracking_error')
+            if (errorElement) {
+              errorElement.innerHTML = error.message
+              cameraSelectionError_.classList.remove('hidden')
 
-            // Stop camera processing.
-            XR8.pause()
-            XR8.stop()
+              // Stop camera processing.
+              XR8.pause()
+              XR8.stop()
+            }
             return
           }
         }
