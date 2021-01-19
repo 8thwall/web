@@ -172,6 +172,9 @@ const initMediaPreview = (options = {}) => {
   const isWKWebViewiOS = ['Microsoft Edge', 'Google Chrome', 'Mozilla Firefox Focus', 'Opera Touch',
     'Pinterest', 'Snapchat', 'Instagram', 'Facebook', 'Facebook Messenger', 'Line', 'LinkedIn',
     'Naver', 'Baidu'].includes(window.XR8.XrDevice.deviceEstimate().browser.inAppBrowser) ||
+    ['Microsoft Edge', 'Google Chrome', 'Mozilla Firefox Focus', 'Opera Touch',
+      'Pinterest', 'Snapchat', 'Instagram', 'Facebook', 'Facebook Messenger', 'Line', 'LinkedIn',
+      'Naver', 'Baidu'].includes(window.XR8.XrDevice.deviceEstimate().browser.name) ||
     window.XR8.XrDevice.deviceEstimate().browser.name === 'Firefox'
 
   const tmpFile = new File([new Blob()], 'tmp.mp4', {
