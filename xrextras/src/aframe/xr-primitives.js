@@ -85,6 +85,7 @@ const xrPrimitives = () => {
     mappings: {
       'action-button-view-text': 'xrextras-capture-preview.actionButtonViewText',
       'action-button-share-text': 'xrextras-capture-preview.actionButtonShareText',
+      'finalize-text': 'xrextras-capture-preview.finalizeText',
     },
   }
 

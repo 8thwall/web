@@ -10,11 +10,15 @@ let status = 'waiting'
 let activeTimeout = null
 let isDown = false
 
+// This is used to keep track of if the preview video has been generated, but the final video has
+// not yet completed
+let isWaitingOnFinal = false
+
 let container
 let flashElement
 let progressBar
 
-const clearState = () => {
+const clearDisplayState = () => {
   container.classList.remove('fade-container')
   container.classList.remove('active')
   container.classList.remove('recording')
@@ -27,14 +31,27 @@ const clearState = () => {
   status = 'waiting'
 }
 
+const clearState = () => {
+  clearDisplayState()
+  isWaitingOnFinal = false
+}
+
 const previewOpened = () => {
   // Wait for preview to be shown before clearing the loading state
-  clearState()
+  clearDisplayState()
   container.classList.add('fade-container')
 }
 
 const previewClosed = () => {
-  clearState()
+  // If we're waiting on finalization of the media recording when the preview closes, we can't start
+  // a new recording yet, so the record button must remain in a loading state.
+  if (isWaitingOnFinal) {
+    container.classList.add('loading')
+    container.classList.remove('fade-container')
+    status = 'finalize-blocked'
+  } else {
+    clearState()
+  }
 }
 
 const takeScreenshot = () => {
@@ -91,7 +108,13 @@ const startRecording = () => {
   container.classList.add('recording')
 
   XR8.MediaRecorder.recordVideo({
-    onVideoReady: result => window.dispatchEvent(new CustomEvent('mediarecorder-recordcomplete', {detail: result})),
+    onVideoReady: (result) => {
+      isWaitingOnFinal = false
+      if (status === 'finalize-blocked') {
+        clearState()
+      }
+      window.dispatchEvent(new CustomEvent('mediarecorder-recordcomplete', {detail: result}))
+    },
     onStop: () => showLoading(),
     onError: () => clearState(),
     onProcessFrame: ({elapsedTimeMs, maxRecordingMs, ctx}) => {
@@ -99,6 +122,13 @@ const startRecording = () => {
       progressBar.style.strokeDashoffset = `${100 * timeLeft}`
       drawWatermark(ctx)
     },
+    onPreviewReady: (result) => {
+      isWaitingOnFinal = true
+      window.dispatchEvent(new CustomEvent('mediarecorder-previewready', {detail: result}))
+    },
+    onFinalizeProgress: result => window.dispatchEvent(
+      new CustomEvent('mediarecorder-finalizeprogress', {detail: result})
+    ),
   })
 }
 

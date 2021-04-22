@@ -19,25 +19,39 @@ let currentUrl = null
 let currentFilename = null
 let previewIsImage = false
 let previewInteractableTimeout = null
+let videoPending = false
+let visibleObjectUrl = null
+let afterFinalizeAction = null  // Can be 'share' or 'download'
+let closedWhileFinalizing = false
 
 let previewContainer
 let imagePreview
 let videoPreview
 let muteButtonImg
+let finalizeProgressBar
 
 const clearState = () => {
   currentBlob = null
   if (currentUrl) {
     URL.revokeObjectURL(currentUrl)
   }
+  if (visibleObjectUrl) {
+    URL.revokeObjectURL(visibleObjectUrl)
+  }
   clearTimeout(previewInteractableTimeout)
   previewContainer.style.removeProperty('pointer-events')
+  finalizeProgressBar.value = 0
   currentUrl = null
+  visibleObjectUrl = null
   previewIsImage = false
+  videoPending = false
+  afterFinalizeAction = null
+  closedWhileFinalizing = false
   previewContainer.classList.remove('fade-in')
   previewContainer.classList.remove('image-preview')
   previewContainer.classList.remove('video-preview')
   previewContainer.classList.remove('downloaded')
+  previewContainer.classList.remove('finalize-waiting')
 }
 
 const setMuted = (muted) => {
@@ -51,14 +65,21 @@ const setMuted = (muted) => {
 }
 
 const closePreview = () => {
+  const wasPending = videoPending
   clearState()
   imagePreview.removeAttribute('src')
   videoPreview.pause()
   videoPreview.removeAttribute('src')
   window.dispatchEvent(new CustomEvent('mediarecorder-previewclosed'))
+  closedWhileFinalizing = wasPending
 }
 
 const downloadFile = () => {
+  if (videoPending) {
+    previewContainer.classList.add('finalize-waiting')
+    afterFinalizeAction = 'download'
+    return
+  }
   clickAnchor({
     href: currentUrl,
     download: currentFilename,
@@ -75,6 +96,12 @@ const openIosDownload = () => {
 }
 
 const share = () => {
+  if (videoPending) {
+    previewContainer.classList.add('finalize-waiting')
+    afterFinalizeAction = 'share'
+    return
+  }
+
   const fileToInclude = new File([currentBlob], currentFilename, {
     type: previewIsImage ? 'image/jpeg' : 'video/mp4',
     lastModified: Date.now(),
@@ -150,8 +177,48 @@ const showVideoPreview = ({videoBlob}) => {
   videoPreview.load()
 }
 
-const showVideoHandler = event => showVideoPreview(event.detail)
+const showVideoHandler = (event) => {
+  if (closedWhileFinalizing) {
+    closedWhileFinalizing = false
+    return
+  }
+  if (!videoPending) {
+    showVideoPreview(event.detail)
+    return
+  }
+
+  previewContainer.classList.remove('finalize-waiting')
+  videoPending = false
+  const {videoBlob} = event.detail
+  // Keep a reference to the preview URL so we can revoke it on close
+  visibleObjectUrl = currentUrl
+  currentBlob = videoBlob
+  currentUrl = URL.createObjectURL(videoBlob)
+  currentFilename = `${getFileNamePrefix()}${getTimestamp()}.mp4`
+  switch (afterFinalizeAction) {
+    case 'share':
+      share()
+      break
+    case 'download':
+      downloadFile()
+      break
+    default:
+      // Nothing
+  }
+  afterFinalizeAction = null
+}
+
+const previewVideoHandler = (event) => {
+  showVideoPreview(event.detail)
+  videoPending = true
+}
+
 const showImageHandler = event => showImagePreview(event.detail)
+
+const progressHandler = (event) => {
+  finalizeProgressBar.value = event.detail.progress
+  finalizeProgressBar.max = event.detail.total
+}
 
 const initMediaPreview = (options = {}) => {
   document.body.insertAdjacentHTML('beforeend', htmlContent)
@@ -160,18 +227,18 @@ const initMediaPreview = (options = {}) => {
   imagePreview = document.getElementById('imagePreview')
   videoPreview = document.getElementById('videoPreview')
   muteButtonImg = document.getElementById('muteButtonImg')
+  finalizeProgressBar = document.getElementById('finalizeProgressBar')
 
   const downloadButton = document.getElementById('downloadButton')
   const actionButton = document.getElementById('actionButton')
   const actionButtonText = document.getElementById('actionButtonText')
   const actionButtonImg = document.getElementById('actionButtonImg')
 
-  // Checks for WKWebView's that can't download : https://github.com/eligrey/FileSaver.js/issues/686
-  // TODO(paris): Check for Brave with https://www.ctrl.blog/entry/brave-user-agent-detection.html
-  // Info today: {name: "Mobile Safari", version: "14.0", majorVersion: 14, inAppBrowser: undefined}
+  // Checks for WKWebView's that can't download: https://github.com/eligrey/FileSaver.js/issues/686
   const isWKWebViewiOS = ['Microsoft Edge', 'Google Chrome', 'Mozilla Firefox Focus', 'Opera Touch',
     'Pinterest', 'Snapchat', 'Instagram', 'Facebook', 'Facebook Messenger', 'Line', 'LinkedIn',
-    'Naver', 'Baidu'].includes(window.XR8.XrDevice.deviceEstimate().browser.inAppBrowser) ||
+    'Naver', 'Baidu', 'Brave']
+    .includes(window.XR8.XrDevice.deviceEstimate().browser.inAppBrowser) ||
     window.XR8.XrDevice.deviceEstimate().browser.name === 'Firefox'
 
   const tmpFile = new File([new Blob()], 'tmp.mp4', {
@@ -200,12 +267,16 @@ const initMediaPreview = (options = {}) => {
     actionButton.parentNode.removeChild(actionButton)
   }
 
+  document.getElementById('finalizeText').textContent = options.finalizeText || 'Preparing...'
+
   document.getElementById('toggleMuteButton').addEventListener('click', () => {
     setMuted(!videoPreview.muted)
   })
 
   window.addEventListener('mediarecorder-recordcomplete', showVideoHandler)
   window.addEventListener('mediarecorder-photocomplete', showImageHandler)
+  window.addEventListener('mediarecorder-previewready', previewVideoHandler)
+  window.addEventListener('mediarecorder-finalizeprogress', progressHandler)
 
   document.getElementById('closePreviewButton').addEventListener('click', closePreview)
   if (document.getElementById('downloadButton')) {
@@ -224,8 +295,11 @@ const removeMediaPreview = () => {
   imagePreview = null
   videoPreview = null
   muteButtonImg = null
+  finalizeProgressBar = null
   window.removeEventListener('mediarecorder-recordcomplete', showVideoHandler)
   window.removeEventListener('mediarecorder-photocomplete', showImageHandler)
+  window.removeEventListener('mediarecorder-previewready', previewVideoHandler)
+  window.removeEventListener('mediarecorder-finalizeprogress', progressHandler)
 }
 
 export {
