@@ -977,6 +977,7 @@ const xrComponents = () => {
     schema: {
       actionButtonShareText: {default: ''},
       actionButtonViewText: {default: ''},
+      finalizeText: {default: ''},
     },
     init() {
       ensureXrAndExtras().then(() => {

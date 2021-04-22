@@ -1,3 +1,5 @@
+/* globals THREE */
+
 let threeExtras = null
 
 const ThreeExtrasFactory = () => {
@@ -74,50 +76,51 @@ const videoMaterial = ({opacity, video, alpha}) => {
 }
 
 const faceMesh = (modelGeometry, material) => {
-  const geometry = new THREE.Geometry()
+  const geometry = new THREE.BufferGeometry()
 
-  // fill the geometry with default vertices
-  for (let index = 0; index < modelGeometry.pointsPerDetection; index++) {
-    geometry.vertices.push(new THREE.Vector3())
-  }
+  // Fill geometry with default vertices.
+  const vertices = new Float32Array(modelGeometry.pointsPerDetection * 3)
+  geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
 
-  // add the UVs to the geometry
-  const uvs = []
-  for (let index = 0; index < modelGeometry.uvs.length; ++index) {
-    const uv = modelGeometry.uvs[index]
-    uvs.push(new THREE.Vector2(uv.u, uv.v))
-  }
+  // Fill geometry with default normals.
+  const normals = new Float32Array(modelGeometry.pointsPerDetection * 3)
+  geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3))
 
-  // add the indices to the geometry to connect the vertices
-  const {indices} = modelGeometry
-  for (let i = 0; i < indices.length; i += 1) {
-    const idxs = indices[i]
-    const f = new THREE.Face3(idxs.a, idxs.b, idxs.c)
-    f.vertexNormals[0] = new THREE.Vector3()
-    f.vertexNormals[1] = new THREE.Vector3()
-    f.vertexNormals[2] = new THREE.Vector3()
-    geometry.faces.push(f)
-    geometry.faceVertexUvs[0].push([uvs[idxs.a], uvs[idxs.b], uvs[idxs.c]])
+  // Add the UVs to the geometry.
+  const uvs = new Float32Array(modelGeometry.uvs.length * 2)
+  for (let i = 0; i < modelGeometry.uvs.length; ++i) {
+    uvs[i * 2] = modelGeometry.uvs[i].u
+    uvs[i * 2 + 1] = modelGeometry.uvs[i].v
   }
+  geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+
+  // Add the indices.
+  const indices = new Array(modelGeometry.indices.length * 3)
+  for (let i = 0; i < modelGeometry.indices.length; ++i) {
+    indices[i * 3] = modelGeometry.indices[i].a
+    indices[i * 3 + 1] = modelGeometry.indices[i].b
+    indices[i * 3 + 2] = modelGeometry.indices[i].c
+  }
+  geometry.setIndex(indices)
 
   const mesh = new THREE.Mesh(geometry, material)
 
   const show = ({detail}) => {
-    const {vertices, normals} = detail
+    // Update vertex positions.
+    for (let i = 0; i < detail.vertices.length; ++i) {
+      vertices[i * 3] = detail.vertices[i].x
+      vertices[i * 3 + 1] = detail.vertices[i].y
+      vertices[i * 3 + 2] = detail.vertices[i].z
+    }
+    mesh.geometry.attributes.position.needsUpdate = true
 
-    vertices.forEach((v, index)=> {  // Update the vertices
-      mesh.geometry.vertices[index].x = v.x
-      mesh.geometry.vertices[index].y = v.y
-      mesh.geometry.vertices[index].z = v.z
-    })
-    mesh.geometry.verticesNeedUpdate = true
-
-    mesh.geometry.faces.forEach((face) => {  // Update the normals.
-      face.vertexNormals[0].copy(normals[face.a])
-      face.vertexNormals[1].copy(normals[face.b])
-      face.vertexNormals[2].copy(normals[face.c])
-    })
-    mesh.geometry.normalsNeedUpdate = true
+    // Update vertex normals.
+    for (let i = 0; i < detail.normals.length; ++i) {
+      normals[i * 3] = detail.normals[i].x
+      normals[i * 3 + 1] = detail.normals[i].y
+      normals[i * 3 + 2] = detail.normals[i].z
+    }
+    mesh.geometry.attributes.normal.needsUpdate = true
 
     mesh.visible = true
   }
