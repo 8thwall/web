@@ -19,9 +19,3 @@ xr3js | xraframe | xrbabylonjs | xrsumerian
 ![xr3js-screenshot](../images/screenshot-xr3js.jpg) | ![xraframe-screenshot](../images/screenshot-xraframe.jpg) | ![xrbabylonjs-screenshot](../images/screenshot-xrbabylonjs.jpg) | ![xrsumerian-screenshot](../images/screenshot-xrsumerian.png)
 [Try Demo (mobile)](https://apps.8thwall.com/8thWall/gettingstarted_xr3js) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/gettingstarted_xraframe) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/gettingstarted_xrbabylonjs) | [Try Demo (mobile)](https://apps.8thwall.com/8thWall/gettingstarted_xrsumerian)
 or scan on phone:<br> ![QR1](../images/qr-gettingstarted_xr3js.png) | or scan on phone:<br> ![QR2](../images/qr-gettingstarted_xraframe.png) | or scan on phone:<br> ![QR3](../images/qr-gettingstarted_xrbabylonjs.png) | or scan on phone:<br> ![QR4](../images/qr-gettingstarted_xrsumerian.png)
-
-## Further reading
-
-For a detailed tutorial on getting started with 8th Wall Web sample projects, please refer to the Quick Start Guide (Self Hosting) section of the 8th Wall documentation:
-
-https://www.8thwall.com/docs/web/#quick-start-guide-self-hosting

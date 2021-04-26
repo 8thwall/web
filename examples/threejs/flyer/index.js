@@ -133,7 +133,7 @@ const imageTargetPipelineModule = () => {
 const onxrloaded = () => {
   // If your app only interacts with image targets and not the world, disabling world tracking can
   // improve speed.
-  XR8.xrController().configure({disableWorldTracking: true})
+  XR8.XrController.configure({disableWorldTracking: true})
   XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
     XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.

@@ -17,7 +17,7 @@ xrcontroller.prototype.initialize = function() {
 
   // After XR has fully loaded, open the camera feed and start displaying AR.
   const runOnLoad = ({pcCamera, pcApp}, extramodules) => () => {
-    XR8.xrController().configure({disableWorldTracking})
+    XR8.XrController.configure({disableWorldTracking})
     XR8.PlayCanvas.runXr({pcCamera, pcApp}, extramodules)
   }
 
