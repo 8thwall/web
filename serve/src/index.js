@@ -113,7 +113,7 @@ config.plugins.push(new HtmlWebpackPlugin({
 // enable hot reloading
 if (process.env.NO_RELOAD !== "true") {
   config.entry.app.unshift(path.resolve(__dirname, '..', 'node_modules', 'webpack-dev-server/client/index.js')
-    + `?${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`)
+    + `?${protocol}://${useLocalhost ? 'localhost' : address}:${process.env.PORT || DEFAULT_PORT}`)
   config.devServer = { inline: "true" }
 }
 
