@@ -47,8 +47,10 @@ const customThreejsPipelineModule = () => {
       }
     },
     onCanvasSizeChange: ({canvasWidth, canvasHeight}) => {
-      const {renderer} = scene3
+      const {renderer, camera} = scene3
       renderer.setSize(canvasWidth, canvasHeight)
+      camera.aspect = canvasWidth / canvasHeight
+      camera.updateProjectionMatrix()
     },
     onRender: () => {
       const {scene, renderer, camera} = scene3
