@@ -18,10 +18,10 @@ function create() {
       #else
       #define SHADOW_SAMPLERVS sampler2D
       #endif
-      float getShadowPCF3x3VS(SHADOW_SAMPLERVS shadowMap, vec3 shadowParams);
+      float getShadowPCF3x3(SHADOW_SAMPLERVS shadowMap, vec3 shadowParams);
 
       vec3 getEmission() {
-          float shadow = getShadowPCF3x3VS(light0_shadowMap, light0_shadowParams);
+          float shadow = getShadowPCF3x3(light0_shadowMap, light0_shadowParams);
           dAlpha = 1. - clamp(shadow + 0.5, 0., 1.);
           return -gl_FragColor.rgb;
       }`
