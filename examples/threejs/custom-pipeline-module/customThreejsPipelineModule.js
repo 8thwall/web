@@ -37,7 +37,7 @@ const customThreejsPipelineModule = () => {
       // Fix for broken raycasting in r103 and higher. Related to https://github.com/mrdoob/three.js/pull/15996
       // Note: camera.projectionMatrixInverse wasn't introduced until r96 so check before calling getInverse()
       if (camera.projectionMatrixInverse) {
-        camera.projectionMatrixInverse.getInverse(camera.projectionMatrix)
+        camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert()
       }
       if (rotation) {
         camera.setRotationFromQuaternion(rotation)
