@@ -6,6 +6,8 @@ For advanced users who would like to customize their three.js configuration, the
 
 You would use this custom module instead of `XR8.Threejs.pipelineModule()`
 
+In your code, make sure to replace `XR8.Threejs` references with `myThreejsModule`
+
 ## Example
 
 index.html:
@@ -19,7 +21,7 @@ index.html:
     <link rel="stylesheet" type="text/css" href="index.css">
 
     <!-- THREE.js must be supplied -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/106/three.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js"></script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/tree/master/xrextras -->
