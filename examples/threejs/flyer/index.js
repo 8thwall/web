@@ -1,11 +1,12 @@
-// Copyright (c) 2019 8th Wall, Inc.
+// Copyright (c) 2021 8th Wall, Inc.
+
+/* globals XR8 XRExtras THREE */
+
 const imageTargetPipelineModule = () => {
   const modelFile = 'jellyfish-model.glb'
   const videoFile = 'jellyfish-video.mp4'
 
   const loader = new THREE.GLTFLoader()  // This comes from GLTFLoader.js.
-  const raycaster = new THREE.Raycaster()
-  const tapPosition = new THREE.Vector2()
 
   let model
   let video, videoObj
@@ -13,8 +14,6 @@ const imageTargetPipelineModule = () => {
   // Populates some object into an XR scene and sets the initial camera position. The scene and
   // camera come from xr3js, and are only available in the camera loop lifecycle onStart() or later.
   const initXrScene = ({scene, camera}) => {
-    console.log('initXrScene')
-
     // create the video element
     video = document.createElement('video')
     video.src = videoFile
@@ -49,11 +48,7 @@ const imageTargetPipelineModule = () => {
         scene.add(model)
         // Hide 3D model until image target is detected.
         model.visible = false
-      },
-      // progress handler
-      (xhr) => { console.log(`${(xhr.loaded / xhr.total * 100)}% loaded`) },
-      // error handler
-      (error) => {console.log('Error loading .glb model:', error)}
+      }
     )
 
     // Add soft white light to the scene.
@@ -101,7 +96,12 @@ const imageTargetPipelineModule = () => {
   const onStart = ({canvas}) => {
     const {scene, camera} = XR8.Threejs.xrScene()  // Get the 3js scene from XR
 
-    initXrScene({scene, camera}) // Add content to the scene and set starting camera position.
+    initXrScene({scene, camera})  // Add content to the scene and set starting camera position.
+
+    // prevent scroll/pinch gestures on canvas
+    canvas.addEventListener('touchmove', (event) => {
+      event.preventDefault()
+    })
 
     // Sync the xr controller's 6DoF position and camera paremeters with our scene.
     XR8.XrController.updateCameraProjectionMatrix({
@@ -144,7 +144,7 @@ const onxrloaded = () => {
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
     // Custom pipeline modules.
-    imageTargetPipelineModule(),                  // Draws a frame around detected image targets.
+    imageTargetPipelineModule(),  // Places 3d model and video content over detected image targets.
   ])
 
   // Open the camera and start running the camera run loop.

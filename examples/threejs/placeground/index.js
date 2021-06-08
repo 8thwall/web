@@ -1,12 +1,15 @@
-// Copyright (c) 2018 8th Wall, Inc.
+// Copyright (c) 2021 8th Wall, Inc.
 
 // Returns a pipeline module that initializes the threejs scene when the camera feed starts, and
 // handles subsequent spawning of a glb model whenever the scene is tapped.
+
+/* globals XR8 XRExtras THREE TWEEN */
+
 const placegroundScenePipelineModule = () => {
-  const modelFile = 'tree.glb'                                 // 3D model to spawn at tap
-  const startScale = new THREE.Vector3(0.0001, 0.0001, 0.0001) // Initial scale value for our model
-  const endScale = new THREE.Vector3(0.002, 0.002, 0.002)      // Ending scale value for our model
-  const animationMillis = 750                                  // Animate over 0.75 seconds
+  const modelFile = 'tree.glb'                            // 3D model to spawn at tap
+  const startScale = new THREE.Vector3(0.01, 0.01, 0.01)  // Initial scale value for our model
+  const endScale = new THREE.Vector3(2, 2, 2)             // Ending scale value for our model
+  const animationMillis = 750                             // Animate over 0.75 seconds
 
   const raycaster = new THREE.Raycaster()
   const tapPosition = new THREE.Vector2()
@@ -16,23 +19,33 @@ const placegroundScenePipelineModule = () => {
 
   // Populates some object into an XR scene and sets the initial camera position. The scene and
   // camera come from xr3js, and are only available in the camera loop lifecycle onStart() or later.
-  const initXrScene = ({ scene, camera }) => {
-    console.log('initXrScene')
+  const initXrScene = ({scene, camera, renderer}) => {
+    renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
+    const light = new THREE.DirectionalLight(0xffffff, 1, 100)
+    light.position.set(1, 4.3, 2.5)  // default
+
+    scene.add(light)  // Add soft white light to the scene.
+    scene.add(new THREE.AmbientLight(0x404040, 5))  // Add soft white light to the scene.
+
+    light.shadow.mapSize.width = 1024  // default
+    light.shadow.mapSize.height = 1024  // default
+    light.shadow.camera.near = 0.5  // default
+    light.shadow.camera.far = 500  // default
+    light.castShadow = true
+
     surface = new THREE.Mesh(
-      new THREE.PlaneGeometry( 100, 100, 1, 1 ),
-      new THREE.MeshBasicMaterial({
-        color: 0xffff00,
-        transparent: true,
-        opacity: 0.0,
-        side: THREE.DoubleSide
+      new THREE.PlaneGeometry(100, 100, 1, 1),
+      new THREE.ShadowMaterial({
+        opacity: 0.5,
       })
     )
 
     surface.rotateX(-Math.PI / 2)
     surface.position.set(0, 0, 0)
+    surface.receiveShadow = true
     scene.add(surface)
-
-    scene.add(new THREE.AmbientLight( 0x404040, 5 ))  // Add soft white light to the scene.
 
     // Set the initial camera position relative to the scene we just laid out. This must be at a
     // height greater than y=0.
@@ -40,37 +53,37 @@ const placegroundScenePipelineModule = () => {
   }
 
   const animateIn = (model, pointX, pointZ, yDegrees) => {
-    console.log(`animateIn: ${pointX}, ${pointZ}, ${yDegrees}`)
-    const scale = Object.assign({}, startScale)
+    const scale = {...startScale}
 
     model.scene.rotation.set(0.0, yDegrees, 0.0)
     model.scene.position.set(pointX, 0.0, pointZ)
     model.scene.scale.set(scale.x, scale.y, scale.z)
+    model.scene.children[0].children[0].children[0].castShadow = true
     XR8.Threejs.xrScene().scene.add(model.scene)
 
     new TWEEN.Tween(scale)
       .to(endScale, animationMillis)
-      .easing(TWEEN.Easing.Elastic.Out) // Use an easing function to make the animation smooth.
-      .onUpdate(() => { model.scene.scale.set(scale.x, scale.y, scale.z) })
-      .start() // Start the tween immediately.
+      .easing(TWEEN.Easing.Elastic.Out)  // Use an easing function to make the animation smooth.
+      .onUpdate(() => {
+        model.scene.scale.set(scale.x, scale.y, scale.z)
+      })
+      .start()  // Start the tween immediately.
   }
 
   // Load the glb model at the requested point on the surface.
   const placeObject = (pointX, pointZ) => {
-    console.log(`placing at ${pointX}, ${pointZ}`)
     loader.load(
-      modelFile,                                                              // resource URL.
-      (gltf) => { animateIn(gltf, pointX, pointZ, Math.random() * 360) },     // loaded handler.
-      (xhr) => {console.log(`${(xhr.loaded / xhr.total * 100 )}% loaded`)},   // progress handler.
-      (error) => {console.log('An error happened')}                           // error handler.
+      modelFile,  // resource URL.
+      (gltf) => {
+        animateIn(gltf, pointX, pointZ, Math.random() * 360)
+      }
     )
   }
 
   const placeObjectTouchHandler = (e) => {
-    console.log('placeObjectTouchHandler')
     // Call XrController.recenter() when the canvas is tapped with two fingers. This resets the
     // AR camera to the position specified by XrController.updateCameraProjectionMatrix() above.
-    if (e.touches.length == 2) {
+    if (e.touches.length === 2) {
       XR8.XrController.recenter()
     }
 
@@ -79,11 +92,11 @@ const placegroundScenePipelineModule = () => {
     }
 
     // If the canvas is tapped with one finger and hits the "surface", spawn an object.
-    const {scene, camera} = XR8.Threejs.xrScene()
+    const {camera} = XR8.Threejs.xrScene()
 
     // calculate tap position in normalized device coordinates (-1 to +1) for both components.
     tapPosition.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1
-    tapPosition.y = - (e.touches[0].clientY / window.innerHeight) * 2 + 1
+    tapPosition.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1
 
     // Update the picking ray with the camera and tap position.
     raycaster.setFromCamera(tapPosition, camera)
@@ -91,7 +104,7 @@ const placegroundScenePipelineModule = () => {
     // Raycast against the "surface" object.
     const intersects = raycaster.intersectObject(surface)
 
-    if (intersects.length == 1 && intersects[0].object == surface) {
+    if (intersects.length === 1 && intersects[0].object === surface) {
       placeObject(intersects[0].point.x, intersects[0].point.z)
     }
   }
@@ -103,19 +116,26 @@ const placegroundScenePipelineModule = () => {
     // onStart is called once when the camera feed begins. In this case, we need to wait for the
     // XR8.Threejs scene to be ready before we can access it to add content. It was created in
     // XR8.Threejs.pipelineModule()'s onStart method.
-    onStart: ({canvas, canvasWidth, canvasHeight}) => {
-      const {scene, camera} = XR8.Threejs.xrScene()  // Get the 3js sceen from xr3js.
+    onStart: ({canvas}) => {
+      const {scene, camera, renderer} = XR8.Threejs.xrScene()  // Get the 3js sceen from xr3js.
 
-      initXrScene({ scene, camera }) // Add objects to the scene and set starting camera position.
+      // Add objects to the scene and set starting camera position.
+      initXrScene({scene, camera, renderer})
 
       canvas.addEventListener('touchstart', placeObjectTouchHandler, true)  // Add touch listener.
 
+      // prevent scroll/pinch gestures on canvas
+      canvas.addEventListener('touchmove', (event) => {
+        event.preventDefault()
+      })
+
       // Enable TWEEN animations.
-      animate()
-      function animate(time) {
+      const animate = (time) => {
         requestAnimationFrame(animate)
         TWEEN.update(time)
       }
+
+      animate()
 
       // Sync the xr controller's 6DoF position and camera paremeters with our scene.
       XR8.XrController.updateCameraProjectionMatrix({
