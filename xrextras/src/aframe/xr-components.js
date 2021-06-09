@@ -90,7 +90,28 @@ const xrComponents = () => {
 
   // Display stats.
   const statsComponent = {
-    init: function() {
+    schema: {
+      'version': {default: true},
+    },
+    init() {
+      if (this.data.version === true) {
+        this.el.sceneEl.addEventListener('realityready', () => {
+          const version = XR8.version()
+          this.versionDisplay = document.createElement('h2')
+          Object.assign(this.versionDisplay.style, {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            margin: '0 auto',
+            color: '#1BF6F6',
+            background: '#100C2F',
+            zIndex: 99,
+            fontFamily: 'monospace',
+          })
+          this.versionDisplay.textContent = version
+          document.body.appendChild(this.versionDisplay)
+        })
+      }
       this.loadModule = () => { XR8.addCameraPipelineModule(XRExtras.Stats.pipelineModule()) }
       if (window.XRExtras && window.XR8) {
         this.loadModule()
@@ -99,9 +120,12 @@ const xrComponents = () => {
         window.addEventListener('xrandextrasloaded', this.loadModule, {once: true})
       }
     },
-    remove: function() {
+    remove() {
       if (this.xrEventListenerAdded) {
         window.removeEventListener('xrandextrasloaded', this.loadModule, {once: true})
+      }
+      if (this.versionDisplay) {
+        this.versionDisplay.parentNode.removeChild(this.versionDisplay)
       }
       XR8.removeCameraPipelineModule('stats')
     },
@@ -200,7 +224,7 @@ const xrComponents = () => {
           if (name !== t.name) {
             return
           }
-          checkGeometry(Object.assign({type: t.type}, t.geometry))
+          checkGeometry({type: t.type, ...t.geometry})
         })
       }
 
@@ -364,7 +388,7 @@ const xrComponents = () => {
     init() {
       this.handleEvent = this.handleEvent.bind(this)
       this.el.sceneEl.addEventListener('onefingermove', this.handleEvent)
-      this.el.classList.add('cantap') // Needs "objects: .cantap" attribute on raycaster.
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
     },
     remove() {
       this.el.sceneEl.removeEventListener('onefingermove', this.handleEvent)
@@ -381,7 +405,7 @@ const xrComponents = () => {
     init() {
       this.handleEvent = this.handleEvent.bind(this)
       this.el.sceneEl.addEventListener('twofingermove', this.handleEvent)
-      this.el.classList.add('cantap') // Needs "objects: .cantap" attribute on raycaster.
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
     },
     remove() {
       this.el.sceneEl.removeEventListener('twofingermove', this.handleEvent)
@@ -395,7 +419,7 @@ const xrComponents = () => {
     schema: {
       min: {default: 0.33},
       max: {default: 3},
-      scale: {default: 0}, // If scale is set to zero here, the object's initial scale is used.
+      scale: {default: 0},  // If scale is set to zero here, the object's initial scale is used.
     },
     init() {
       const s = this.data.scale
@@ -403,7 +427,7 @@ const xrComponents = () => {
       this.scaleFactor = 1
       this.handleEvent = this.handleEvent.bind(this)
       this.el.sceneEl.addEventListener('twofingermove', this.handleEvent)
-      this.el.classList.add('cantap') // Needs "objects: .cantap" attribute on raycaster.
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
     },
     remove() {
       this.el.sceneEl.removeEventListener('twofingermove', this.handleEvent)
@@ -423,6 +447,7 @@ const xrComponents = () => {
       cameraId: {default: 'camera'},
       groundId: {default: 'ground'},
       dragDelay: {default: 300},
+      riseHeight: {default: 1},
     },
     init() {
       this.camera = document.getElementById(this.data.cameraId)
@@ -445,7 +470,7 @@ const xrComponents = () => {
       this.el.addEventListener('mousedown', this.fingerDown)
       this.el.sceneEl.addEventListener('onefingermove', this.fingerMove)
       this.el.sceneEl.addEventListener('onefingerend', this.fingerUp)
-      this.el.classList.add('cantap') // Needs "objects: .cantap" attribute on raycaster.
+      this.el.classList.add('cantap')  // Needs "objects: .cantap" attribute on raycaster.
     },
     tick() {
       if (this.internalState.dragging) {
@@ -471,7 +496,7 @@ const xrComponents = () => {
           desiredPosition = this.camera.object3D.localToWorld(new THREE.Vector3(0, 0, -this.internalState.distance))
         }
 
-        desiredPosition.y = 1
+        desiredPosition.y = this.data.riseHeight
         this.el.object3D.position.lerp(desiredPosition, 0.2)
       }
     },
@@ -1012,7 +1037,7 @@ const xrComponents = () => {
       fileNamePrefix: {type: 'string'},
       requestMic: {type: 'string'},
       includeSceneAudio: {type: 'boolean', default: true},
-      excludeSceneAudio: {type: 'boolean', default: false}, // deprecated
+      excludeSceneAudio: {type: 'boolean', default: false},  // deprecated
     },
     init() {
       this.includeSceneAudio = this.includeSceneAudio.bind(this)
