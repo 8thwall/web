@@ -1,10 +1,12 @@
+/* globals AFRAME */
+
 AFRAME.registerComponent('artgalleryframe', {
   schema: {
     name: {type: 'string'},
     rotated: {type: 'bool'},
     metadata: {type: 'string'},
   },
-  init: function () {
+  init() {
     const contents = document.getElementById('contents')
     const container = document.getElementById('container')
 
@@ -32,15 +34,17 @@ AFRAME.registerComponent('artgalleryframe', {
     this.el.appendChild(infoDisplay)
 
     // Use the title of the painting to fetch some info from the Wikipedia API
-    // If a painting doesn't have a Wikipedia article of its own, we use the painter's article via wikiTitle
-    const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${wikiTitle || title}&format=json&prop=extracts&exintro=1&origin=*`
+    // If a painting doesn't have a Wikipedia article of its own, we use the painter's article via
+    // wikiTitle
+    const apiUrl = 'https://en.wikipedia.org/w/api.php?action=query' +
+      `&titles=${wikiTitle || title}&format=json&prop=extracts&exintro=1&origin=*`
     let pageContent
     fetch(apiUrl, {mode: 'cors'})
-    .then(e => e.json())
-    .then(data => {
-      const page = Object.entries(data.query.pages)[0][1]
-      pageContent = `<h1>${page.title}</h1>${page.extract}`
-    })
+      .then(e => e.json())
+      .then((data) => {
+        const page = Object.entries(data.query.pages)[0][1]
+        pageContent = `<h1>${page.title}</h1>${page.extract}`
+      })
 
     const tapTarget = document.createElement('a-box')
     // Image targets are 3:4 so the target is scaled to match
@@ -52,7 +56,7 @@ AFRAME.registerComponent('artgalleryframe', {
     }
     this.el.appendChild(tapTarget)
 
-    tapTarget.addEventListener('click', e => {
+    tapTarget.addEventListener('click', (e) => {
       // Set the innerHTML of our UI element to the data returned by the API
       contents.innerHTML = pageContent
       // Removing the collapsed class from container triggers a CSS transition to show the content
@@ -81,7 +85,7 @@ AFRAME.registerComponent('artgalleryframe', {
     this.el.addEventListener('xrimagefound', showImage)
     this.el.addEventListener('xrimageupdated', showImage)
     this.el.addEventListener('xrimagelost', hideImage)
-  }
+  },
 })
 
 // This component uses the A-Frame text component to display information about a painting
@@ -91,10 +95,11 @@ AFRAME.registerComponent('info-display', {
     artist: {default: ''},
     date: {default: ''},
   },
-  init: function() {
+  init() {
     // Limit title to 20 characters
-    const displayTitle = this.data.title.length > 20 ? `${this.data.title.substring(0, 17)}...` : this.data.title
-    const text = displayTitle + '\n' + this.data.artist + ', ' + this.data.date
+    const displayTitle =
+      this.data.title.length > 20 ? `${this.data.title.substring(0, 17)}...` : this.data.title
+    const text = `${displayTitle}\n${this.data.artist}, ${this.data.date}`
     const textData = {
       align: 'left',
       width: 0.7,
@@ -103,7 +108,7 @@ AFRAME.registerComponent('info-display', {
       color: 'white',
     }
 
-    this.el.setAttribute('text', textData )
+    this.el.setAttribute('text', textData)
 
     // Instantiate a second text object behind the first to achieve an shadow effect
     const textShadowEl = document.createElement('a-entity')
@@ -111,10 +116,10 @@ AFRAME.registerComponent('info-display', {
     textShadowEl.setAttribute('text', textData)
     textShadowEl.object3D.position.z = -0.01
     this.el.appendChild(textShadowEl)
-  }
+  },
 })
 
-// xrextras-generate-image-targets uses this primitive to automatically populate multiple image targets
+// xrextras-generate-image-targets uses this primitive to populate multiple image targets
 AFRAME.registerPrimitive('artgallery-frame', {
   defaultComponents: {
     artgalleryframe: {},
@@ -124,5 +129,5 @@ AFRAME.registerPrimitive('artgallery-frame', {
     name: 'artgalleryframe.name',
     rotated: 'artgalleryframe.rotated',
     metadata: 'artgalleryframe.metadata',
-  }
+  },
 })
