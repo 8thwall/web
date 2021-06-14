@@ -1,78 +1,47 @@
-#photoModeContainer {
+#overlay {
+  z-index: 35;
   position: absolute;
-  left: 0;
   top: 0;
   bottom: 0;
+  left: 0;
   right: 0;
-  z-index: 10;
   pointer-events: none;
 }
 
-#flash {
+#savePrompt {
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  background-color: white;
-  z-index: 10;
-  opacity: 0;
-  transition: 0.5s;
-}
-
-.flash #flash {
-  opacity: 1;
-  transition: 0s;
-  pointer-events: auto;
-}
-
-#photoModeImage {
-  position: absolute;
-  max-width: 65%;
-  max-height: 65%;
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0px 0px 0px 5px white;
-  border-radius: 2vmax;
-  opacity: 0;
-  transition: 0.5s;
-}
-
-.photo #photoModeImage {
-  opacity: 1;
-  transition: 0s;
-  pointer-events: auto;
-}
-
-#shutterButton, #closeButton {
-  position: absolute;
-  width: 15vmin;
-  height: 15vmin;
-  background-color: white;
-  bottom: 2vmax;
-  border-radius: 7.5vmin;
-  left: 50%;
+  bottom: 22vh;
   transform: translateX(-50%);
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  pointer-events: auto;
+  max-width: 80vw;
+
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 6vmin;
+  color: black;
+  text-align: center;
+
+  background-color: white;
+  padding: 2vmin;
+  border-radius: 10px;
 }
 
-#shutterButton {
-  background-image: url('camera.png');
+#actionButton {
+  /* change color of action button */
+  background-color: #007aff !important;
 }
 
-.photo #shutterButton {
-  display: none;
-}
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 812px)
+and (-webkit-min-device-pixel-ratio: 3)
+and (orientation: landscape) {
 
-#closeButton {
-  background-image: url('close.png');
-  display: none;
-}
+  .recorder-container {
+    /* move recorder button to side in landscape on mobile */
+    left: unset !important;
+    transform: unset !important;
+    right: 3vw !important;
+   }
 
-.photo #closeButton {
-  display: block;
 }

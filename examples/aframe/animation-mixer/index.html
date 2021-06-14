@@ -6,54 +6,52 @@
     <link rel="stylesheet" type="text/css" href="index.css">
 
     <!-- We've included a slightly modified version of A-Frame, which fixes some polish concerns -->
-    <script src="//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js"></script>
-    <script defer src="//cdn.8thwall.com/web/aframe/aframe-animation-component-5.1.2.min.js"></script>
-    <script src="//cdn.8thwall.com/web/aframe/aframe-extras-4.2.0.min.js"></script>
+    <script src="//cdn.8thwall.com/web/aframe/8frame-1.1.0.min.js"></script>
+    <script src="//cdn.8thwall.com/web/aframe/aframe-extras-6.1.1.min.js"></script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/tree/master/xrextras -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
-    <script src="gesture-detector.js"></script>
-    <script src="hold-drag.js"></script>
-    <script src="pinch-scale.js"></script>
-    <script src="two-finger-spin.js"></script>
-
     <!-- 8thWall Web - Replace the app key here with your own app key -->
     <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXXX"></script>
 
     <script>
-        AFRAME.registerComponent('next-button', {
-          init: function() {
+      AFRAME.registerComponent('next-button', {
+        init() {
+          const animationList = ['idle', 'pockets', 'hiphop', 'chicken']
 
-            const animationList = ["idle", "pockets", "hiphop", "chicken"]
+          const model = document.getElementById('model')
+          const nextButton = document.getElementById('nextbutton')
 
-            const model = document.getElementById('model')
-            const nextButton = document.getElementById('nextbutton')
+          nextButton.style.display = 'block'
 
-            let idx = 1 // Start with the 2nd animation because the model starts with idle animation
-            const nextAnimation = () => {
-              model.setAttribute('animation-mixer', {
-                clip: animationList[idx],
-                loop: 'repeat',
-              })
-              idx = (idx + 1) % animationList.length
-            }
-
-            nextButton.onclick = nextAnimation // Switch to the next animation when the button is pressed.
+          let idx = 1  // Start with the 2nd animation because the model starts with idle animation
+          const nextAnimation = () => {
+            model.setAttribute('animation-mixer', {
+              clip: animationList[idx],
+              loop: 'repeat',
+              crossFadeDuration: 0.4,
+            })
+            idx = (idx + 1) % animationList.length
           }
-        })
+          nextButton.onclick = nextAnimation  // Switch to the next animation when the button is pressed.
+        },
+      })
     </script>
   </head>
   <body>
-    <div class="nextbutton" id="nextbutton">Next &gt;</div>
+    <div id="nextbutton" style="display: none; z-index: 10">
+      <h2>Next Animation</h2>
+    </div>
 
     <a-scene
       next-button
-      gesture-detector
+      xrextras-gesture-detector
       xrextras-almost-there
       xrextras-loading
       xrextras-runtime-error
+      renderer="colorManagement:true"
       xrweb>
 
       <!-- We can define assets here to be loaded when A-Frame initializes -->
@@ -72,12 +70,19 @@
       </a-camera>
 
       <a-entity
-        light="type: directional;
-               intensity: 0.8;"
-        position="1 4.3 2.5">
+          light="type: directional;
+             intensity: 0.8;
+             castShadow: true;
+             shadowMapHeight:2048;
+             shadowMapWidth:2048;
+             shadowCameraTop: 10;
+             target: #model;"
+          position="1 4.3 2.5"
+          xrextras-attach="target: model; offset: 1 15 3;"
+          shadow>
       </a-entity>
 
-      <a-light type="ambient" intensity="1"></a-light>
+      <a-light type="ambient" intensity="0.5"></a-light>
 
       <a-entity
         id="model"
@@ -85,17 +90,13 @@
         class="cantap"
         scale="3 3 3"
         animation-mixer="clip: idle; loop: repeat"
-        hold-drag two-finger-spin pinch-scale>
+        xrextras-hold-drag
+        xrextras-two-finger-rotate
+        xrextras-pinch-scale
+        shadow>
       </a-entity>
 
-      <a-entity
-        id="ground"
-        class="cantap"
-        geometry="primitive: box"
-        material="color: #ffffff; transparent: true; opacity: 0.0"
-        scale="1000 2 1000"
-        position="0 -1 0">
-      </a-entity>
+      <a-plane id="ground" position="0 0 0" rotation="-90 0 0" width="50" height="50" material="shader: shadow" shadow></a-plane>
     </a-scene>
   </body>
 </html>
