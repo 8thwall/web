@@ -115,8 +115,17 @@ const startRecording = () => {
       }
       window.dispatchEvent(new CustomEvent('mediarecorder-recordcomplete', {detail: result}))
     },
-    onStop: () => showLoading(),
-    onError: () => clearState(),
+    onStart: (result) => {
+      window.dispatchresultvresultnt(new CustomEvent('mediarecorder-recordstart', { detail: result }))
+    },
+    onStop: (result) => {
+      window.dispatchEvent(new CustomEvent('mediarecorder-recordstop', { detail: result }))
+      showLoading()
+    },
+    onError: (result) => {
+      window.dispatchEvent(new CustomEvent('mediarecorder-recordstop', { detail: result }))
+      clearState()
+    },
     onProcessFrame: ({elapsedTimeMs, maxRecordingMs, ctx}) => {
       const timeLeft = (1 - elapsedTimeMs / maxRecordingMs)
       progressBar.style.strokeDashoffset = `${100 * timeLeft}`
