@@ -34,6 +34,7 @@ const DEFAULT_PORT = 8080
 const HOST = process.env.HOST || '0.0.0.0'
 const protocol = 'https'
 const useLocalhost = process.env.USE_LOCALHOST === 'true'
+const SELECT_PORT = process.env.PORT || DEFAULT_PORT;
 
 ///////////////////////////////////////////////////////////////////////////////
 let https = true
@@ -113,7 +114,7 @@ config.plugins.push(new HtmlWebpackPlugin({
 // enable hot reloading
 if (process.env.NO_RELOAD !== "true") {
   config.entry.app.unshift(path.resolve(__dirname, '..', 'node_modules', 'webpack-dev-server/client/index.js')
-    + `?${protocol}://${useLocalhost ? 'localhost' : address}:${PORT}`)
+    + `?${protocol}://${useLocalhost ? 'localhost' : address}:${SELECT_PORT}`)
   config.devServer = { inline: "true" }
 }
 
@@ -136,7 +137,7 @@ compiler.plugin('done', stats => {
 }) // end compiler.plugin on done
 
 // Find available port and launch WebpackDevServer
-nextAvailable(process.env.PORT || DEFAULT_PORT).then((PORT) => {
+nextAvailable(SELECT_PORT).then((PORT) => {
   // Exit if user defined port is in use
   if (process.env.PORT && (process.env.PORT != PORT)) {
     console.log('ERROR: Port ' + process.env.PORT + ' is in use by another process.')
