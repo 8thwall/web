@@ -23,6 +23,7 @@ let videoPending = false
 let visibleObjectUrl = null
 let afterFinalizeAction = null  // Can be 'share' or 'download'
 let closedWhileFinalizing = false
+let currentDownloadUrl = null
 
 let previewContainer
 let imagePreview
@@ -42,6 +43,7 @@ const clearState = () => {
   previewContainer.style.removeProperty('pointer-events')
   finalizeProgressBar.value = 0
   currentUrl = null
+  currentDownloadUrl = null
   visibleObjectUrl = null
   previewIsImage = false
   videoPending = false
@@ -81,7 +83,7 @@ const downloadFile = () => {
     return
   }
   clickAnchor({
-    href: currentUrl,
+    href: currentDownloadUrl || currentUrl,
     download: currentFilename,
   })
 
@@ -155,8 +157,13 @@ const showVideoPreview = ({videoBlob}) => {
 
   previewContainer.classList.add('video-preview')
 
-  videoPreview.oncanplaythrough = () => {
-    videoPreview.oncanplaythrough = null
+  let waitingOnVideo = true
+  let waitingOnDataUrl = true
+
+  const maybeFinishLoading = () => {
+    if (waitingOnVideo || waitingOnDataUrl) {
+      return
+    }
     showPreview()
 
     setMuted(false)
@@ -171,6 +178,27 @@ const showVideoPreview = ({videoBlob}) => {
       setMuted(true)
       videoPreview.play()
     })
+  }
+
+  // On iOS, if we use the blob URL as the download href for a video, the user has the option to
+  // "View" the file instead of downloading, but that doesn't play properly. Instead, if we use
+  // the base 64 data URL, that doesn't display a broken video player when a user clicks "View".
+  if (window.XR8.XrDevice.deviceEstimate().os === 'iOS') {
+    const reader = new FileReader()
+    reader.readAsDataURL(currentBlob)
+    reader.onloadend = () => {
+      waitingOnDataUrl = false
+      currentDownloadUrl = reader.result
+      maybeFinishLoading()
+    }
+  } else {
+    waitingOnDataUrl = false
+  }
+
+  videoPreview.oncanplaythrough = () => {
+    videoPreview.oncanplaythrough = null
+    waitingOnVideo = false
+    maybeFinishLoading()
   }
 
   videoPreview.src = currentUrl

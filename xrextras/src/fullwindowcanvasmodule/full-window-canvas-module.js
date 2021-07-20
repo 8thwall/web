@@ -52,7 +52,7 @@ function create() {
 
     // Wait for orientation change to take effect before handling resize on mobile phones only.
     const displayOrientationMismatch = ((orientation_ == 0 || orientation_ == 180) && ww > wh)
-      || ((orientation_ == 90 || orientation_ == -90) && wh > ww)
+    || ((orientation_ == 90 || orientation_ == -90) && wh > ww)
     if (displayOrientationMismatch && isCompatibleMobile()) {
       window.requestAnimationFrame(fillScreenWithCanvas)
       return
@@ -88,7 +88,7 @@ function create() {
 
     // Switch back to a landscape aspect ratio if required.
     if (ww > wh) {
-      let tmp = cw
+      const tmp = cw
       cw = ch
       ch = tmp
     }
@@ -134,6 +134,8 @@ function create() {
     fillScreenWithCanvas()
   }
 
+  const noop = () => {}
+
   const onAttach = ({canvas, orientation, videoWidth, videoHeight}) => {
     canvas_ = canvas
     orientation_ = orientation
@@ -142,6 +144,8 @@ function create() {
 
     body.appendChild(canvas_)
 
+    // Fixes an issue where on iOS 15 when you tap on the screen the URL bar will pop up / minimize.
+    document.addEventListener('click', noop)
     window.addEventListener('resize', onWindowResize)
     updateVideoSize({videoWidth, videoHeight})
     fillScreenWithCanvas()
@@ -152,6 +156,7 @@ function create() {
     orientation_ = 0
     delete vsize_.w
     delete vsize_.h
+    document.removeEventListener('click', noop)
     window.removeEventListener('resize', onWindowResize)
   }
 
