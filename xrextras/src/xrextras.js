@@ -14,20 +14,44 @@ const {MediaRecorder} = require('./mediarecorder/mediarecorder.js')
 
 require('./common.css')
 
-module.exports = {
-  XRExtras: {
-    AFrame: AFrameFactory(),
-    AlmostThere: AlmostThereFactory(),
-    DebugWebViews: DebugWebViewsFactory(),
-    FullWindowCanvas: FullWindowCanvasFactory(),
-    Loading: LoadingFactory(),
-    PauseOnBlur: PauseOnBlurFactory(),
-    PauseOnHidden: PauseOnHiddenFactory(),
-    PlayCanvas: PlayCanvasFactory(),
-    PwaInstaller: PwaInstallerFactory(),
-    RuntimeError: RuntimeErrorFactory(),
-    Stats: StatsFactory(),
-    ThreeExtras: ThreeExtrasFactory(),
-    MediaRecorder,
-  },
+const XRExtras = {
+  AFrame: AFrameFactory(),
+  AlmostThere: AlmostThereFactory(),
+  DebugWebViews: DebugWebViewsFactory(),
+  FullWindowCanvas: FullWindowCanvasFactory(),
+  Loading: LoadingFactory(),
+  PauseOnBlur: PauseOnBlurFactory(),
+  PauseOnHidden: PauseOnHiddenFactory(),
+  PlayCanvas: PlayCanvasFactory(),
+  PwaInstaller: PwaInstallerFactory(),
+  RuntimeError: RuntimeErrorFactory(),
+  Stats: StatsFactory(),
+  ThreeExtras: ThreeExtrasFactory(),
+  MediaRecorder,
 }
+
+const setDeprecatedProperty = (object, property, value, message) => {
+  let warned = false
+
+  Object.defineProperty(object, property, {
+    get: () => {
+      if (!warned) {
+        warned = true
+        /* eslint-disable no-console */
+        console.warn('[XR] Deprecation Warning:', message)
+        console.warn(Error().stack.replace(/^Error.*\n\s*/, '').replace(/\n\s+/g, '\n'))
+        /* eslint-enable no-console */
+      }
+      return value
+    },
+  })
+}
+
+const setRenameDeprecation = (oldName, newName, value, version) => {
+  const message = `XRExtras.${oldName} was deprecated in ${version}. Use ${newName} instead.`
+  setDeprecatedProperty(XRExtras, oldName, value, message)
+}
+
+setRenameDeprecation('PauseOnBlur', 'PauseOnHidden', XRExtras.PauseOnBlur, 'R17.0')
+
+module.exports = {XRExtras}
