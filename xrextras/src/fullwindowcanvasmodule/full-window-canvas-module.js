@@ -1,3 +1,5 @@
+/* globals XR8:readonly */
+
 let fullWindowCanvas = null
 
 const FullWindowCanvasFactory = () => {
@@ -12,6 +14,8 @@ function create() {
   let canvas_ = null
   const vsize_ = {}
   let orientation_ = 0
+  const originalBodyStyleSubset_ = {}
+  const originalHtmlStyleSubset_ = {}
 
   const canvasStyle_ = {
     width: '100%',
@@ -31,14 +35,9 @@ function create() {
   }
 
   const isCompatibleMobile = () =>
-    XR8.XrDevice.isDeviceBrowserCompatible({allowedDevices: XR8.XrConfig.device().MOBILE})
-
-  const onWindowResize = () => {
-    if (isCompatibleMobile()) {
-      return
-    }
-    fillScreenWithCanvas()
-  }
+    // eslint-disable-next-line implicit-arrow-linebreak
+    XR8.XrDevice.isDeviceBrowserCompatible({allowedDevices: XR8.XrConfig.device().MOBILE}) &&
+    !XR8.XrDevice.deviceEstimate().model.toLowerCase().includes('ipad')
 
   // Update the size of the camera feed canvas to fill the screen.
   const fillScreenWithCanvas = () => {
@@ -51,8 +50,8 @@ function create() {
     const wh = uwh * devicePixelRatio
 
     // Wait for orientation change to take effect before handling resize on mobile phones only.
-    const displayOrientationMismatch = ((orientation_ == 0 || orientation_ == 180) && ww > wh)
-    || ((orientation_ == 90 || orientation_ == -90) && wh > ww)
+    const displayOrientationMismatch = ((orientation_ == 0 || orientation_ == 180) && ww > wh) ||
+    ((orientation_ == 90 || orientation_ == -90) && wh > ww)
     if (displayOrientationMismatch && isCompatibleMobile()) {
       window.requestAnimationFrame(fillScreenWithCanvas)
       return
@@ -110,6 +109,13 @@ function create() {
     vsize_.h = videoHeight
   }
 
+  const onWindowResize = () => {
+    if (isCompatibleMobile()) {
+      return
+    }
+    fillScreenWithCanvas()
+  }
+
   const onVideoSizeChange = ({videoWidth, videoHeight}) => {
     updateVideoSize({videoWidth, videoHeight})
     fillScreenWithCanvas()
@@ -127,36 +133,54 @@ function create() {
   }
 
   const onUpdate = () => {
-    if (canvas_.style.width === canvasStyle_.width
-      && canvas_.style.height === canvasStyle_.height) {
+    if (canvas_.style.width === canvasStyle_.width &&
+      canvas_.style.height === canvasStyle_.height) {
       return
     }
     fillScreenWithCanvas()
   }
 
-  const noop = () => {}
-
   const onAttach = ({canvas, orientation, videoWidth, videoHeight}) => {
     canvas_ = canvas
     orientation_ = orientation
-    const body = document.getElementsByTagName('body')[0]
-    Object.assign(body.style, bodyStyle_)
 
-    body.appendChild(canvas_)
+    if (XR8.XrDevice.deviceEstimate().os === 'iOS') {
+      // Save styles that we modify in unusual ways so we can reset them to their original state.
+      const computedBodyStyle = getComputedStyle(document.body)
+      originalBodyStyleSubset_.backgroundColor =
+        computedBodyStyle.getPropertyValue('background-color')
+      originalBodyStyleSubset_.overflowY = computedBodyStyle.getPropertyValue('overflow-y')
+      originalHtmlStyleSubset_.overflow =
+        getComputedStyle(document.documentElement).getPropertyValue('overflow')
 
-    // Fixes an issue where on iOS 15 when you tap on the screen the URL bar will pop up / minimize.
-    document.addEventListener('click', noop)
+      // Set black / white background color on iOS devices depending on dark / light mode.
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        bodyStyle_.backgroundColor = 'black'
+      } else {
+        bodyStyle_.backgroundColor = 'white'
+      }
+
+      // Prevent address bar hiding on scroll on iOS (https://stackoverflow.com/a/33953987/4979029).
+      bodyStyle_.overflowY = 'scroll'
+      Object.assign(document.documentElement.style, {overflow: 'hidden'})
+    }
+    Object.assign(document.body.style, bodyStyle_)
+
+    document.body.appendChild(canvas_)
+
     window.addEventListener('resize', onWindowResize)
     updateVideoSize({videoWidth, videoHeight})
     fillScreenWithCanvas()
   }
 
   const onDetach = () => {
+    // Reset styles that we cached in `onAttach()`.
+    Object.assign(document.body.style, originalBodyStyleSubset_)
+    Object.assign(document.documentElement.style, originalHtmlStyleSubset_)
     canvas_ = null
     orientation_ = 0
     delete vsize_.w
     delete vsize_.h
-    document.removeEventListener('click', noop)
     window.removeEventListener('resize', onWindowResize)
   }
 
@@ -165,18 +189,16 @@ function create() {
     fillScreenWithCanvas()
   }
 
-  const pipelineModule = () => {
-    return {
-      name: 'fullwindowcanvas',
-      onAttach,
-      onDetach,
-      onCameraStatusChange,
-      onDeviceOrientationChange,
-      onVideoSizeChange,
-      onCanvasSizeChange,
-      onUpdate,
-    }
-  }
+  const pipelineModule = () => ({
+    name: 'fullwindowcanvas',
+    onAttach,
+    onDetach,
+    onCameraStatusChange,
+    onDeviceOrientationChange,
+    onVideoSizeChange,
+    onCanvasSizeChange,
+    onUpdate,
+  })
 
   return {
     // Creates a camera pipeline module that, when installed, keeps the canvas specified on

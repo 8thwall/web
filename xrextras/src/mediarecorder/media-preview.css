@@ -111,10 +111,6 @@
 .style-reset:focus { outline:0; }
 
 #actionButton {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
   padding: 0.3em 0.5em 0.3em 0.5em;
   user-select: none;
   -webkit-user-select: none;
@@ -125,6 +121,17 @@
   border-radius: 0.5em;
   font-size: 5vmin;
   min-width: 3.25em;
+}
+
+.show-with-download-button {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.show-alone {
+  margin-bottom: 2vmin;
 }
 
 #actionButton img {
