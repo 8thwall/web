@@ -14,6 +14,9 @@ const clickAnchor = (properties) => {
   document.body.removeChild(anchor)
 }
 
+// Is Web Share API Level 2 being used?
+let webShareAPILevel2 = false
+
 let currentBlob = null
 let currentUrl = null
 let currentFilename = null
@@ -183,7 +186,7 @@ const showVideoPreview = ({videoBlob}) => {
   // On iOS, if we use the blob URL as the download href for a video, the user has the option to
   // "View" the file instead of downloading, but that doesn't play properly. Instead, if we use
   // the base 64 data URL, that doesn't display a broken video player when a user clicks "View".
-  if (window.XR8.XrDevice.deviceEstimate().os === 'iOS') {
+  if (window.XR8.XrDevice.deviceEstimate().os === 'iOS' && !webShareAPILevel2) {
     const reader = new FileReader()
     reader.readAsDataURL(currentBlob)
     reader.onloadend = () => {
@@ -279,9 +282,16 @@ const initMediaPreview = (options = {}) => {
 
   // Check if Web Share API Level 2 is supported
   if (navigator.canShare && navigator.canShare(shareTestObj)) {
+    webShareAPILevel2 = true
     actionButtonText.textContent = options.actionButtonShareText || 'Share'
     actionButtonImg.src = '//cdn.8thwall.com/web/img/mediarecorder/share-v1.svg'
     actionButton.addEventListener('click', share)
+    if (window.XR8.XrDevice.deviceEstimate().os === 'iOS') {
+      // Hide the download button on iOS and only allow sharing.
+      actionButton.classList.remove('show-with-download-button')
+      actionButton.classList.add('show-alone')
+      downloadButton.parentNode.removeChild(downloadButton)
+    }
   } else if (window.XR8.XrDevice.deviceEstimate().os === 'iOS' && isWKWebViewiOS) {
     previewContainer.classList.add('disabled-download')
     actionButton.parentNode.removeChild(actionButton)

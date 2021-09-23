@@ -5,6 +5,8 @@ require('!style-loader!css-loader!./loading-module.css')
 
 const html = require('./loading-module.html')
 
+const FIRST_FRAME_DELAY = 5
+
 // This is a simplistic check to be used when we have already failed in getting
 // access to the camera. This can be used to differentiate between a permission denial
 // and a lack of camera.
@@ -30,8 +32,12 @@ function create() {
   let cameraSelectionError_
   let deviceMotionErrorApple_
   let appLoaded_ = () => true
+  // Should the loading module wait for a reality texture to hide the loading screen.
+  let waitForRealityTexture_ = false
   let numUpdates_ = 0
-  let waitingOnReality_ = false
+  // Are we waiting to hide the loading screen.
+  let waitingToHideLoadingScreen_ = false
+  let waitingOnAppResources_ = false
   let needsCookie_ = false
   let runConfig_ = null
   const ua = navigator.userAgent
@@ -77,18 +83,46 @@ function create() {
     motionPermissionsErrorApple_ = document.getElementById('motionPermissionsErrorApple')
   }
 
-  const hideLoadingScreenNow = (removeRoot = true) => {
-    loadBackground_.classList.add('hidden')
-    if (removeRoot && rootNode_.parentNode) {
+  const clearRoot = () => {
+    if (rootNode_ && rootNode_.parentNode) {
       rootNode_.parentNode.removeChild(rootNode_)
+    }
+    rootNode_ = null
+    loadBackground_ = null
+    loadImageContainer_ = null
+    camPermissionsRequest_ = null
+    camPermissionsFailedAndroid_ = null
+    camPermissionsFailedApple_ = null
+    micPermissionsFailedAndroid_ = null
+    micPermissionsFailedApple_ = null
+    linkOutViewAndroid_ = null
+    copyLinkViewAndroid_ = null
+    deviceMotionErrorApple_ = null
+    userPromptError_ = null
+    cameraSelectionError_ = null
+    motionPermissionsErrorApple_ = null
+  }
+
+  // Hide the loading screen.
+  const hideLoadingScreenNow = (removeRoot = true) => {
+    if (loadBackground_) {
+      loadBackground_.classList.add('hidden')
+    }
+    if (removeRoot) {
+      clearRoot()
     }
   }
 
+  // Fade out the loading screen and then hide it.
   const hideLoadingScreen = (removeRoot = true) => {
-    loadImageContainer_.classList.add('fade-out')
+    if (loadImageContainer_) {
+      loadImageContainer_.classList.add('fade-out')
+    }
     setTimeout(() => {
-      loadBackground_.classList.add('fade-out')
-      loadBackground_.style.pointerEvents = 'none'
+      if (loadBackground_) {
+        loadBackground_.classList.add('fade-out')
+        loadBackground_.style.pointerEvents = 'none'
+      }
       setTimeout(() => hideLoadingScreenNow(removeRoot), 400)
     }, 400)
   }
@@ -276,7 +310,11 @@ function create() {
 
     document.getElementsByTagName('body')[0].appendChild(rootNode)
     setRoot(rootNode)
-    waitingOnReality_ = true
+    waitingToHideLoadingScreen_ = true
+
+    if (args && args.waitForRealityTexture) {
+      waitForRealityTexture_ = true
+    }
 
     if (args && args.onxrloaded) {
       if (window.XR8) {
@@ -287,16 +325,6 @@ function create() {
     }
   }
 
-  const checkLoaded = () => {
-    if (appLoaded_() && !waitingOnReality_) {
-      if (needsCookie_) {
-        document.cookie = 'previouslyGotCameraPermission=true;max-age=31536000'
-      }
-      hideLoadingScreen()
-      return
-    }
-    requestAnimationFrame(() => { checkLoaded() })
-  }
   const isAndroid = ua.includes('Linux')
   needsCookie_ = isAndroid && !document.cookie.includes('previouslyGotCameraPermission=true')
   const previouslyGotCameraPermission = isAndroid && !needsCookie_
@@ -307,23 +335,46 @@ function create() {
         promptUserToChangeBrowserMotionSettings()
       }
     },
-    onUpdate: () => {
-      if (!waitingOnReality_) {
+    onUpdate: ({processCpuResult}) => {
+      // We have already removed the loading screen, return.
+      if (!waitingToHideLoadingScreen_) {
         return
       }
-      if (numUpdates_ < 5) {
-        ++numUpdates_
-      } else {
-        waitingOnReality_ = false
-        checkLoaded()
+
+      // Stay in sync with xr-aframe, which also has a FIRST_FRAME_DELAY but doesn't start counting
+      // frames until it has a texture. This will only work for A-Frame. If other renderers need a
+      // delay, use frameStartResult's cameraTexture, which should be one frame ahead of
+      // `reality`'s texture.
+      if (waitForRealityTexture_) {
+        const {reality, facecontroller} = processCpuResult
+        if (!(reality && reality.realityTexture) &&
+            !(facecontroller && facecontroller.cameraFeedTexture)) {
+          return
+        }
       }
+
+      // Show the canvas after N frames have passed and app resources are loaded. Don't wait for app
+      // resources to be loaded to start counting frames.
+      numUpdates_++
+      if (numUpdates_ > FIRST_FRAME_DELAY && !waitingOnAppResources_ && appLoaded_()) {
+        if (needsCookie_) {
+          document.cookie = 'previouslyGotCameraPermission=true;max-age=31536000'
+        }
+        hideLoadingScreen()
+        waitingToHideLoadingScreen_ = false
+      }
+    },
+    onAppResourcesLoaded: () => {
+      waitingOnAppResources_ = false
     },
     onBeforeRun: (args) => {
       runConfig_ = args && args.config
+      waitingOnAppResources_ = true
+      numUpdates_ = 0
       showLoading()
     },
     onCameraStatusChange: ({status, config, reason}) => {
-      if (!XR8.XrDevice.isDeviceBrowserCompatible(runConfig_)) {
+      if (!XR8.XrDevice.isDeviceBrowserCompatible(runConfig_) || !rootNode_) {
         return
       }
       if (status === 'requesting') {
@@ -391,6 +442,13 @@ function create() {
           }
         }
       }
+    },
+    onDetach: () => {
+      waitForRealityTexture_ = false
+      waitingToHideLoadingScreen_ = false
+    },
+    onRemove: () => {
+      hideLoadingScreenNow()
     },
     onException: (error) => {
       if (!rootNode_) {

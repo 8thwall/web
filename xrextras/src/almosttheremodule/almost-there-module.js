@@ -73,7 +73,6 @@ function create() {
       if (device.os === 'iOS') {
         if (details.inAppBrowserType == 'Safari') {
           showId('error_msg_open_in_safari')
-          showId('apple_open_safari_hint')
         } else {
           switch (details.inAppBrowser) {
             case 'Instagram':
@@ -136,13 +135,22 @@ function create() {
 
     // Desktop: help our user with a qr code
     showId('error_msg_device')
-    const scriptElem = document.createElement('script')
-    scriptElem.type = 'text/javascript'
-    scriptElem.src = 'https://cdn.8thwall.com/web/share/qrcode8-1.1.0.js'
-    scriptElem.onload = () => {
-      document.getElementById('qrcode').innerHTML = qrcode8.generateQR8Svg(redirectUrl, 250, 80)
-    }
-    document.getElementById('almostthereContainer').appendChild(scriptElem)
+
+    // NOTE(christoph): Using an SVG here to preserve backwards compatibility with
+    //   CSS rules for ".qrcode svg"
+    document.getElementById('qrcode').innerHTML = `\
+<svg 
+  xmlns="http://www.w3.org/2000/svg" 
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  viewBox="0 0 250 250" 
+  width="250" height="250"
+>
+  <image 
+    width="250" 
+    height="250" 
+    xlink:href="https://8th.io/qr?v=2&margin=2&url=${encodeURIComponent(redirectUrl)}" 
+  />
+</svg>`
   }
 
   const checkCompatibility = (runConfig) => {
@@ -173,6 +181,9 @@ function create() {
         // methods.
         throw Error('Device or browser incompatible with XR.')
       }
+    },
+    onRemove: () => {
+      hideAlmostThere()
     },
     onException: () => {
       checkCompatibility(runConfig_)

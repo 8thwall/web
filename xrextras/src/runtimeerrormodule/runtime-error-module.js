@@ -28,6 +28,9 @@ const create = () => {
     return {
       name: 'error',
       onStart: () => { started = true },
+      onRemove: () => {
+        hideRuntimeError()
+      },
       onException: (error) => {
         // Only handle errors while running, not at startup.
         if (!started) { return }

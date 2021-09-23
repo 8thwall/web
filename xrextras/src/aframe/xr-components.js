@@ -1,4 +1,4 @@
-/* globals XRExtras, XR8 */
+/* globals XRExtras, XR8, THREE */
 
 const {ensureXrAndExtras} = require('./ensure')
 
@@ -38,7 +38,9 @@ const xrComponents = () => {
       const aframeDidLoad = () => aframeLoaded
       const load = () => {
         XRExtras.Loading.setAppLoadedProvider(aframeDidLoad)
-        XRExtras.Loading.showLoading({onxrloaded})
+        const waitForRealityTexture =
+          !!(this.el.sceneEl.attributes.xrweb || this.el.sceneEl.attributes.xrface)
+        XRExtras.Loading.showLoading({onxrloaded, waitForRealityTexture})
       }
       window.XRExtras ? load() : window.addEventListener('xrextrasloaded', load, {once: true})
 
@@ -451,8 +453,14 @@ const xrComponents = () => {
     },
     init() {
       this.camera = document.getElementById(this.data.cameraId)
+      if (!this.camera) {
+        throw new Error(`[xrextras-hold-drag] Couldn't find camera with id '${this.data.cameraId}'`)
+      }
       this.threeCamera = this.camera.getObject3D('camera')
       this.ground = document.getElementById(this.data.groundId)
+      if (!this.ground) {
+        throw new Error(`[xrextras-hold-drag] Couldn't find ground with id '${this.data.groundId}'`)
+      }
 
       this.internalState = {
         fingerDown: false,
