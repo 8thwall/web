@@ -167,6 +167,15 @@ const xrPrimitives = () => {
     },
   }
 
+  const opaqueBackgroundPrimitive = {
+    defaultComponents: {
+      'xrextras-opaque-background': {},
+    },
+    mappings: {
+      remove: 'xrextras-opaque-background.remove',
+    },
+  }
+
   return {
     'xrextras-faceanchor': faceAnchorPrimitive,
     'xrextras-resource': resourcePrimitive,
@@ -183,6 +192,7 @@ const xrPrimitives = () => {
     'xrextras-target-mesh': targetMeshPrimitive,
     'xrextras-target-video-fade': targetVideoFadePrimitive,
     'xrextras-target-video-sound': targetVideoSoundPrimitive,
+    'xrextras-opaque-background': opaqueBackgroundPrimitive,
   }
 }
 

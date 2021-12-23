@@ -266,11 +266,11 @@ const initMediaPreview = (options = {}) => {
   const actionButtonImg = document.getElementById('actionButtonImg')
 
   // Checks for WKWebView's that can't download: https://github.com/eligrey/FileSaver.js/issues/686
-  const isWKWebViewiOS = ['Microsoft Edge', 'Google Chrome', 'Mozilla Firefox Focus', 'Opera Touch',
-    'Pinterest', 'Snapchat', 'Instagram', 'Facebook', 'Facebook Messenger', 'Line', 'LinkedIn',
-    'Naver', 'Baidu', 'Brave']
-    .includes(window.XR8.XrDevice.deviceEstimate().browser.inAppBrowser) ||
-    window.XR8.XrDevice.deviceEstimate().browser.name === 'Firefox'
+  const browser = window.XR8.XrDevice.deviceEstimate().browser.inAppBrowser ||
+    window.XR8.XrDevice.deviceEstimate().browser.name
+  const isWKWebViewiOS = ['Microsoft Edge', 'Google Chrome', 'Mozilla Firefox Focus', 'Firefox',
+    'Opera Touch', 'Pinterest', 'Snapchat', 'Instagram', 'Facebook', 'Facebook Messenger', 'Line',
+    'LinkedIn', 'Naver', 'Baidu', 'Brave'].includes(browser)
 
   const tmpFile = new File([new Blob()], 'tmp.mp4', {
     type: 'video/mp4',

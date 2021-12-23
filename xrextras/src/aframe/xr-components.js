@@ -133,6 +133,29 @@ const xrComponents = () => {
     },
   }
 
+  // Show or hide sub-elements if the user has an opaque background session.
+  const opaqueBackgroundComponent = {
+    schema: {
+      'remove': {default: false},
+    },
+    init() {
+      const obj = this.el.object3D
+      const {remove} = this.data
+      const onAttach = ({rendersOpaque}) => {
+        // rendersOpaque = 1 | remove = 1 | visible = 0
+        // rendersOpaque = 1 | remove = 0 | visible = 1
+        // rendersOpaque = 0 | remove = 1 | visible = 1
+        // rendersOpaque = 0 | remove = 0 | visible = 0
+        obj.visible = !!rendersOpaque !== !!remove  // cast to bool, !==
+      }
+      XRExtras.Lifecycle.attachListener.add(onAttach)
+      this.onAttach = onAttach
+    },
+    remove() {
+      XRExtras.Lifecycle.attachListener.delete(this.onAttach)
+    },
+  }
+
   // Recenter the scene when the screen is tapped.
   const tapRecenterComponent = {
     init() {
@@ -1385,6 +1408,7 @@ const xrComponents = () => {
     'xrextras-loading': loadingComponent,
     'xrextras-runtime-error': runtimeErrorComponent,
     'xrextras-stats': statsComponent,
+    'xrextras-opaque-background': opaqueBackgroundComponent,
     'xrextras-tap-recenter': tapRecenterComponent,
     'xrextras-generate-image-targets': generateImageTargetsComponent,
     'xrextras-named-image-target': namedImageTargetComponent,
