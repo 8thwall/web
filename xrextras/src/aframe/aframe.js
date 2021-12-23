@@ -125,10 +125,15 @@ function create() {
     // before assets finish loading, versus a Component which gets `init` after load.
     AFRAME.registerSystem('eager-load-system', {
       init() {
-        /* eslint-disable-next-line no-unused-expressions */
-        window.XRExtras
-          ? eagerload()
-          : window.addEventListener('xrextrasloaded', eagerload, {once: true})
+        try {
+          /* eslint-disable-next-line no-unused-expressions */
+          window.XRExtras
+            ? eagerload()
+            : window.addEventListener('xrextrasloaded', eagerload, {once: true})
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error(err)
+        }
       },
     })
     registerComponents(xrComponents())
