@@ -27,6 +27,12 @@ const customThreejsPipelineModule = () => {
     scene3 = {scene, camera, renderer}
     engaged = true
   }
+
+  // This is a workaround for https://bugs.webkit.org/show_bug.cgi?id=237230
+  // Once the fix is released, we can add `&& parseFloat(device.osVersion) < 15.x`
+  const device = window.XR8.XrDevice.deviceEstimate()
+  const needsPrerenderFinish = device.os === 'iOS' && parseFloat(device.osVersion) >= 15.4
+
   return {
     name: 'customthreejs',
     onStart: (args) => engage(args),
@@ -77,6 +83,9 @@ const customThreejsPipelineModule = () => {
     onRender: () => {
       const {scene, renderer, camera} = scene3
       renderer.clearDepth()
+      if (needsPrerenderFinish) {
+        renderer.getContext().finish()
+      }
       renderer.render(scene, camera)
     },
     // Get a handle to the xr scene, camera and renderer. Returns:
