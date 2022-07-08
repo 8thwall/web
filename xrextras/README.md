@@ -47,21 +47,19 @@ index.js:
 
 ```javascript
 const onxrloaded = () => {
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    window.LandingPage.pipelineModule(),         // Detects unsupported browsers and gives hints.
-    XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
-    XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
-    XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
+    XR8.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    window.LandingPage.pipelineModule(),          // Detects unsupported browsers and gives hints.
+    XRExtras.FullWindowCanvas.pipelineModule(),   // Modifies the canvas to fill the window.
+    XRExtras.Loading.pipelineModule(),            // Manages the loading screen on startup.
+    XRExtras.RuntimeError.pipelineModule(),       // Shows an error image on runtime error.
   ])
 
-  XR.run({canvas: document.getElementById('camerafeed')})   // Request permissions and run camera.
+  XR8.run({canvas: document.getElementById('camerafeed')})   // Request permissions and run camera.
 }
 
-// Show loading screen before the full XR library has been loaded.
-const load = () => { XRExtras.Loading.showLoading({onxrloaded}) }
-window.onload = () => { window.XRExtras ? load() : window.addEventListener('xrextrasloaded', load) }
+window.XR8 ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded)
 ```
 
 ### AFrame
@@ -140,14 +138,14 @@ index.html:
 Quick Reference:
 
 ```javascript
-  XR.addCameraPipelineModules([  // Add camera pipeline modules.
+  XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
-    XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    window.LandingPage.pipelineModule(),         // Detects unsupported browsers and gives hints.
-    XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
-    XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
-    XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
-    XRExtras.PwaInstaller.pipelineModule(),      // Displays a prompt to add to home screen.
+    XR8.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
+    window.LandingPage.pipelineModule(),          // Detects unsupported browsers and gives hints.
+    XRExtras.FullWindowCanvas.pipelineModule(),   // Modifies the canvas to fill the window.
+    XRExtras.Loading.pipelineModule(),            // Manages the loading screen on startup.
+    XRExtras.RuntimeError.pipelineModule(),       // Shows an error image on runtime error.
+    XRExtras.PwaInstaller.pipelineModule(),       // Displays a prompt to add to home screen.
   ])
 ```
 
@@ -210,4 +208,3 @@ Quick Reference:
       window.XRExtras ? screenlog() : window.addEventListener('xrextrasloaded', screenlog)
     </script>
 ```
-
