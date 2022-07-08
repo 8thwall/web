@@ -25,11 +25,14 @@ index.html:
     <title>XRExtras: Camera Pipeline</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
+    <!-- XR Extras - provides utilities like load screen, error handling, and gesture control helpers.
          See https://github.com/8thwall/web/tree/master/xrextras/ -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
-    <!-- 8thWall Web - Replace the app key here with your own app key -->
+    <!-- Landing Pages - see https://www.8thwall.com/docs/web/#landing-pages -->
+    <script src='//cdn.8thwall.com/web/landing-page/landing-page.js'></script>
+    
+    <!-- 8th Wall Engine - Replace the app key here with your own app key -->
     <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXX"></script>
 
     <script src="index.js"></script>
@@ -47,7 +50,7 @@ const onxrloaded = () => {
   XR.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
     XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
+    window.LandingPage.pipelineModule(),         // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
@@ -71,13 +74,16 @@ index.html:
     <title>XRExtras: A-FRAME</title>
 
     <!-- We've included a slightly modified version of A-Frame, which fixes some polish concerns -->
-    <script src="//cdn.8thwall.com/web/aframe/8frame-0.8.2.min.js"></script>
+    <script src="//cdn.8thwall.com/web/aframe/8frame-1.3.0.min.js"></script>
 
-    <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
+    <!-- XR Extras - provides utilities like load screen, error handling, and gesture control helpers.
          See https://github.com/8thwall/web/tree/master/xrextras/ -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+    
+    <!-- Landing Pages - see https://www.8thwall.com/docs/web/#landing-pages -->
+    <script src='//cdn.8thwall.com/web/landing-page/landing-page.js'></script>
 
-    <!-- 8thWall Web - Replace the app key here with your own app key -->
+    <!-- 8th Wall Engine - Replace the app key here with your own app key -->
     <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXX"></script>
   </head>
 
@@ -85,7 +91,7 @@ index.html:
     <!-- Add the 'xrweb' attribute to your scene to make it an 8th Wall Web A-FRAME scene. -->
     <a-scene
       xrweb
-      xrextras-almost-there
+      landing-pages
       xrextras-loading
       xrextras-runtime-error
       xrextras-tap-recenter>
@@ -137,7 +143,7 @@ Quick Reference:
   XR.addCameraPipelineModules([  // Add camera pipeline modules.
     // Existing pipeline modules.
     XR.GlTextureRenderer.pipelineModule(),       // Draws the camera feed.
-    XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
+    window.LandingPage.pipelineModule(),         // Detects unsupported browsers and gives hints.
     XRExtras.FullWindowCanvas.pipelineModule(),  // Modifies the canvas to fill the window.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.
@@ -147,7 +153,7 @@ Quick Reference:
 
 Pipeline Modules:
 
-* AlmostThere.pipelineModule(): Detects if the user is not on a supported device or browser, and
+* LandingPage.pipelineModule(): Detects if the user is not on a supported device or browser, and
 provides helpful information for how to view the XR experience.
 * FullWindowCanvas.pipelineModule(): Makes sure that the camera display canvas fills the full
 browser window across device orientation changes, etc.
@@ -163,7 +169,7 @@ Quick Reference:
 ```html
     <a-scene
       xrweb
-      xrextras-almost-there
+      landing-pages
       xrextras-loading
       xrextras-runtime-error
       xrextras-tap-recenter>
@@ -178,7 +184,7 @@ you can call this method.
 
 AFrame Components:
 
-* xrextras-almost-there: Detects if the user is not on a supported device or browser, and provides
+* landing-pages: Detects if the user is not on a supported device or browser, and provides
 helpful information for how to view the XR experience.
 * xrextras-loading: Displays a loading overlay and camera permissions prompt while the scene and
 libraries are loading, and while the camera is starting up.
