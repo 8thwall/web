@@ -12,4 +12,5 @@ Use this image target to test:
 [Try the live demo here](https://templates.8thwall.app/alpha-video-aframe)
 
 or scan on phone:
+
 ![QR](../../../images/qr-alpha-video.png)
