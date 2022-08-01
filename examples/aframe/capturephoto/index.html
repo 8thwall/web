@@ -5,26 +5,29 @@
     <title>8th Wall Web: Capture a photo</title>
 
     <!-- We've included a slightly modified version of A-Frame, which fixes some polish concerns -->
-    <script src="//cdn.8thwall.com/web/aframe/8frame-1.1.0.min.js"></script>
+    <script src="//cdn.8thwall.com/web/aframe/8frame-1.3.0.min.js"></script>
     <script src="photo-mode.js"></script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/tree/master/xrextras -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
+    <!-- Landing Pages - see https://www.8thwall.com/docs/web/#landing-pages -->
+    <script src='//cdn.8thwall.com/web/landing-page/landing-page.js'></script>
+
     <!-- 8thWall Web - Replace the app key here with your own app key -->
-    <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXXX"></script>
+    <script async src="//apps.8thwall.com/xrweb?appKey=XXXXX"></script>
 
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
     <a-scene
-      xrextras-almost-there
+      landing-page
       xrextras-loading
       xrextras-runtime-error
       xrextras-tap-recenter
       renderer="colorManagement:true"
-      xrweb>
+      xrweb="allowedDevices: any">
 
       <!-- We can define assets here to be loaded when A-Frame initializes -->
       <a-assets>
