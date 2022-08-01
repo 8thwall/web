@@ -1,4 +1,4 @@
-// Copyright (c) 2021 8th Wall, Inc.
+// Copyright (c) 2022 8th Wall, Inc.
 /* globals AFRAME */
 
 AFRAME.registerComponent('target-video', {
@@ -11,7 +11,6 @@ AFRAME.registerComponent('target-video', {
     const {name} = this.data
     object3D.visible = false
     const v = document.querySelector(this.data.video)
-    const {el} = this
 
     const showImage = ({detail}) => {
       if (name !== detail.name) {

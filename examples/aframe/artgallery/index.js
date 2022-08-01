@@ -10,7 +10,7 @@ AFRAME.registerComponent('artgalleryframe', {
     const contents = document.getElementById('contents')
     const container = document.getElementById('container')
 
-    const {object3D, sceneEl} = this.el
+    const {object3D} = this.el
 
     // Hide the image target until it is found
     object3D.visible = false
@@ -56,7 +56,7 @@ AFRAME.registerComponent('artgalleryframe', {
     }
     this.el.appendChild(tapTarget)
 
-    tapTarget.addEventListener('click', (e) => {
+    tapTarget.addEventListener('click', () => {
       // Set the innerHTML of our UI element to the data returned by the API
       contents.innerHTML = pageContent
       // Removing the collapsed class from container triggers a CSS transition to show the content

@@ -49,9 +49,9 @@ index.js:
 ...
 ...
 
-const onxrloaded = () => {
-  const myThreejsModule = customThreejsPipelineModule()
+const myThreejsModule = customThreejsPipelineModule()
 
+const onxrloaded = () => {
   XR8.addCameraPipelineModules([  // Add camera pipeline modules.
     XR8.GlTextureRenderer.pipelineModule(),      // Draws the camera feed.
     myThreejsModule, // Custom three.js pipeline module. Replaces XR8.Threejs.pipelineModule()
