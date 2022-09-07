@@ -18,15 +18,34 @@ function create() {
       #else
       #define SHADOW_SAMPLERVS sampler2D
       #endif
+      vec3 dEmissive;
       float getShadowPCF3x3(SHADOW_SAMPLERVS shadowMap, vec3 shadowParams);
-
-      vec3 getEmission() {
+      vec3 getTransparentShadow() {
           float shadow = getShadowPCF3x3(light0_shadowMap, light0_shadowParams);
           dAlpha = 1. - clamp(shadow + 0.5, 0., 1.);
           return -gl_FragColor.rgb;
-      }`
+      }
+      
+      void getEmission() {
+
+      }
+    `
+
+    const endShader = `
+      gl_FragColor.rgb = combineColor();
+      gl_FragColor.rgb += getTransparentShadow();
+      gl_FragColor.rgb = addFog(gl_FragColor.rgb);
+
+      #ifndef HDR
+      gl_FragColor.rgb = toneMap(gl_FragColor.rgb);
+      gl_FragColor.rgb = gammaCorrectOutput(gl_FragColor.rgb);
+      #endif
+    `
+
     // We use emissive because it can overwrite color to be pure black.
+    materialResource.chunks.APIVersion = pc.CHUNKAPI_1_55
     materialResource.chunks.emissivePS = shadowFragmentShader
+    materialResource.chunks.endPS = endShader
     materialResource.blendType = pc.BLEND_PREMULTIPLIED
     materialResource.update()
   }
