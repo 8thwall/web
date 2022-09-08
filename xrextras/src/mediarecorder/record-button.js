@@ -1,6 +1,6 @@
 import * as htmlContent from './record-button.html'
 import './record-button.css'
-import {configure} from './capture-config'
+import {configure, getConfig} from './capture-config'
 import {drawWatermark} from './watermark'
 
 const ACTIVE_TIMEOUT = 300
@@ -55,10 +55,14 @@ const previewClosed = () => {
 }
 
 const takeScreenshot = () => {
+  const currentConfig = getConfig()
   status = 'flash'
   flashElement.classList.add('flashing')
   window.XR8.CanvasScreenshot.takeScreenshot({
     onProcessFrame: ({ctx}) => {
+      if (currentConfig.onProcessFrame) {
+        currentConfig.onProcessFrame({ctx})
+      }
       drawWatermark(ctx)
     },
   }).then(
@@ -104,6 +108,7 @@ const startRecording = () => {
     return
   }
 
+  const currentConfig = getConfig()
   status = 'recording'
   container.classList.add('recording')
 
@@ -126,9 +131,13 @@ const startRecording = () => {
       window.dispatchEvent(new CustomEvent('mediarecorder-recorderror', {detail: result}))
       clearState()
     },
-    onProcessFrame: ({elapsedTimeMs, maxRecordingMs, ctx}) => {
+    onProcessFrame: (frameInfo) => {
+      const {elapsedTimeMs, maxRecordingMs, ctx} = frameInfo
       const timeLeft = (1 - elapsedTimeMs / maxRecordingMs)
       progressBar.style.strokeDashoffset = `${100 * timeLeft}`
+      if (currentConfig.onProcessFrame) {
+        currentConfig.onProcessFrame(frameInfo)
+      }
       drawWatermark(ctx)
     },
     onPreviewReady: (result) => {

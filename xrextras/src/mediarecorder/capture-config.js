@@ -2,7 +2,7 @@
 
 const currentConfig = {
   enableEndCard: true,
-  footerImageUrl: 'https://cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-2.svg',
+  footerImageUrl: 'https://cdn.8thwall.com/web/img/almostthere/v2/poweredby-horiz-white-4.svg',
 }
 
 const internalConfig = {}
@@ -45,7 +45,7 @@ const updateConfig = () => {
 
 const internalKeys = new Set([
   'watermarkImageUrl', 'watermarkMaxWidth', 'watermarkMaxHeight', 'watermarkLocation',
-  'fileNamePrefix',
+  'fileNamePrefix', 'onProcessFrame',
 ])
 
 const configure = (config = {}) => {
