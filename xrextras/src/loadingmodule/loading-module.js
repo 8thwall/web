@@ -346,9 +346,11 @@ function create() {
       // delay, use frameStartResult's cameraTexture, which should be one frame ahead of
       // `reality`'s texture.
       if (waitForRealityTexture_) {
-        const {reality, facecontroller} = processCpuResult
-        if (!(reality && reality.realityTexture) &&
-            !(facecontroller && facecontroller.cameraFeedTexture)) {
+        const {reality, facecontroller, layerscontroller} = processCpuResult
+        const slamReady = reality && reality.realityTexture
+        const faceControllerReady = facecontroller && facecontroller.cameraFeedTexture
+        const layersControllerReady = layerscontroller && layerscontroller.cameraFeedTexture
+        if (!slamReady && !faceControllerReady && !layersControllerReady) {
           return
         }
       }

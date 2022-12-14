@@ -97,7 +97,8 @@ const xrComponents = () => {
     },
     init() {
       if (this.data.version === true) {
-        this.el.sceneEl.addEventListener('realityready', () => {
+        const onready = () => {
+          this.el.sceneEl.removeEventListener('realityready', onready)
           const version = XR8.version()
           this.versionDisplay = document.createElement('h2')
           Object.assign(this.versionDisplay.style, {
@@ -112,7 +113,9 @@ const xrComponents = () => {
           })
           this.versionDisplay.textContent = version
           document.body.appendChild(this.versionDisplay)
-        })
+        }
+
+        this.el.sceneEl.addEventListener('realityready', onready)
       }
       this.loadModule = () => { XR8.addCameraPipelineModule(XRExtras.Stats.pipelineModule()) }
       if (window.XRExtras && window.XR8) {
@@ -217,7 +220,13 @@ const xrComponents = () => {
       const {object3D} = this.el
       const {name} = this.data
       const geometry = {}
-      object3D.visible = false
+
+      const onready = () => {
+        this.el.sceneEl.removeEventListener('realityready', onready)
+        object3D.visible = false
+      }
+
+      this.el.sceneEl.addEventListener('realityready', onready)
 
       const checkGeometry = (newGeometry) => {
         let needsUpdate = false
@@ -752,7 +761,6 @@ const xrComponents = () => {
   const faceAnchorComponent = {
     init() {
       let id_ = null
-      this.el.object3D.visible = false
 
       const show = ({detail}) => {
         if (id_ && detail.id != id_) {
@@ -860,7 +868,6 @@ const xrComponents = () => {
     },
     init() {
       this.headMesh = null
-      this.el.object3D.visible = false
 
       const beforeRun = ({detail}) => {
         let material
@@ -917,7 +924,6 @@ const xrComponents = () => {
     },
     init() {
       let id_ = null
-      this.el.object3D.visible = false
 
       const show = ({detail}) => {
         if (id_ && detail.id != id_) {
@@ -1292,8 +1298,7 @@ const xrComponents = () => {
       direction: {default: 'normal'},
     },
     init() {
-      const {el} = this
-      el.setAttribute('animation__spin', {
+      this.el.setAttribute('animation__spin', {
         property: 'object3D.rotation.y',
         from: 0,
         to: 360,
@@ -1302,6 +1307,9 @@ const xrComponents = () => {
         loop: true,
         easing: 'linear',
       })
+    },
+    remove() {
+      this.el.removeAttribute('animation__spin')
     },
   }
 
