@@ -39,7 +39,7 @@ const eagerload = () => {
       foundLoading = true
     }
 
-    if (attr === 'xrweb' || attr === 'xrface') {
+    if (attr === 'xrweb' || attr === 'xrface' || attr === 'xrlayers') {
       const allowedDevicesMatch = new RegExp('allowedDevices:([^;]*)').exec(attrs.item(a).value)
       if (allowedDevicesMatch) {
         runConfig = {allowedDevices: allowedDevicesMatch[1].trim()}
@@ -61,7 +61,8 @@ const eagerload = () => {
   }
 
   if (foundLoading) {
-    const waitForRealityTexture = !!(scene.attributes.xrweb || scene.attributes.xrface)
+    const waitForRealityTexture =
+      !!(scene.attributes.xrweb || scene.attributes.xrface || scene.attributes.xrlayers)
     window.XRExtras.Loading.showLoading({onxrloaded, waitForRealityTexture})
   }
 }
@@ -86,7 +87,14 @@ function create() {
 
   // If XR or XRExtras load before AFrame, we need to manually register their AFrame components.
   const ensureAFrameComponents = () => {
-    window.XR8 && window.AFRAME.registerComponent('xrweb', XR8.AFrame.xrwebComponent())
+    if (window.XR8) {
+      window.AFRAME.registerComponent('xrweb', XR8.AFrame.xrwebComponent())
+      window.AFRAME.registerComponent('xrface', XR8.AFrame.xrfaceComponent())
+      window.AFRAME.registerComponent('xrlayers', XR8.AFrame.xrlayersComponent())
+      window.AFRAME.registerComponent('xrlayerscene', XR8.AFrame.xrlayersceneComponent())
+      window.AFRAME.registerPrimitive('sky-scene', XR8.AFrame.skyscenePrimitive())
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     window.XRExtras && window.XRExtras.AFrame.registerXrExtrasComponents()
   }
 

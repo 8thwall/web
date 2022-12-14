@@ -22,7 +22,7 @@ index.html:
 ```html
 <html>
   <head>
-    <title>XRExtras: Camera Pipeline</title>
+    <title>XR Extras: Camera Pipeline</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
     <!-- XR Extras - provides utilities like load screen, error handling, and gesture control helpers.
@@ -31,7 +31,7 @@ index.html:
 
     <!-- Landing Pages - see https://www.8thwall.com/docs/web/#landing-pages -->
     <script src='//cdn.8thwall.com/web/landing-page/landing-page.js'></script>
-    
+
     <!-- 8th Wall Engine - Replace the app key here with your own app key -->
     <script async src="//apps.8thwall.com/xrweb?appKey=XXXXXXXX"></script>
 
@@ -77,7 +77,7 @@ index.html:
     <!-- XR Extras - provides utilities like load screen, error handling, and gesture control helpers.
          See https://github.com/8thwall/web/tree/master/xrextras/ -->
     <script src="//cdn.8thwall.com/web/xrextras/xrextras.js"></script>
-    
+
     <!-- Landing Pages - see https://www.8thwall.com/docs/web/#landing-pages -->
     <script src='//cdn.8thwall.com/web/landing-page/landing-page.js'></script>
 
@@ -208,3 +208,4 @@ Quick Reference:
       window.XRExtras ? screenlog() : window.addEventListener('xrextrasloaded', screenlog)
     </script>
 ```
+

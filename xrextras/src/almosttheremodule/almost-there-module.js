@@ -1,3 +1,5 @@
+/* globals XR8:readonly */
+
 require('!style-loader!css-loader!../fonts/fonts.css')
 require('!style-loader!css-loader!./almost-there-module.css')
 
@@ -71,7 +73,7 @@ function create() {
 
     if (reasons.includes(XR8.XrDevice.IncompatibilityReasons.UNSUPPORTED_BROWSER)) {
       if (device.os === 'iOS') {
-        if (details.inAppBrowserType == 'Safari') {
+        if (details.inAppBrowserType === 'Safari') {
           showId('error_msg_open_in_safari')
         } else {
           switch (details.inAppBrowser) {
@@ -112,24 +114,29 @@ function create() {
     }
 
     if (reasons.includes(XR8.XrDevice.IncompatibilityReasons.MISSING_WEB_ASSEMBLY)) {
-      if (device.os == 'iOS') {
+      if (device.os === 'iOS') {
         showId('error_msg_web_assembly_ios')
         return
       }
-      if (device.os == 'Android') {
+      if (device.os === 'Android') {
         showId('error_msg_web_assembly_android')
         return
       }
     }
 
-    if (device.os == 'iOS') {
+    if (device.os === 'iOS') {
       showId('error_unknown_webview')
       showId('error_text_header_unknown')
       return
     }
 
-    if (device.os == 'Android') {
+    if (device.os === 'Android') {
       showId('error_msg_android_almost_there')
+      if (device.manufacturer === 'Huawei') {
+        showId('error_msg_detail_huawei_almost_there')
+      } else {
+        showId('error_msg_detail_android_almost_there')
+      }
       return
     }
 

@@ -16,8 +16,8 @@ Example 8th Wall Web projects, by 3D framework
 
 * [Change animations](https://github.com/8thwall/web/tree/master/examples/aframe/animation-mixer) - This interactive example allows the user to position, scale, rotate, and change between animations embedded in a 3D model. This showcases raycasting, gesture inputs and using A-Frame's animation-mixer.
 
-Tap to place | Toss Object | Portal 
-:----------: | :---------: | :----: 
+Tap to place | Toss Object | Portal
+:----------: | :---------: | :----:
 ![tapplace-screenshot](../images/screenshot-tap.jpg) | ![toss-screenshot](../images/screenshot-toss.jpg) | ![portal-screenshot](../images/screenshot-portal.jpg)
 [Try Demo (mobile)](https://templates.8thwall.app/placeground-aframe) | [Try Demo (mobile)](https://templates.8thwall.app/tossobject-aframe) | [Try Demo (mobile)](https://templates.8thwall.app/portal-aframe)
 or scan on phone:<br> ![QR1](../images/qr-placeground.png) | or scan on phone:<br> ![QR2](../images/qr-tossobject.png) | or scan on phone:<br> ![QR3](../images/qr-portal.png)
