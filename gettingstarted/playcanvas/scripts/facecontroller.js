@@ -9,9 +9,9 @@ FaceController.attributes.add('material', {
 
 FaceController.prototype.initialize = function() {
   const pcCamera = XRExtras.PlayCanvas.findOneCamera(this.entity)
-      
+
   let mesh = null
-  
+
   // Fires when loading begins for additional face AR resources.
   this.app.on('xr:faceloading', ({maxDetections, pointsPerDetection, indices, uvs}) => {
     const node = new pc.GraphNode();
@@ -32,26 +32,26 @@ FaceController.prototype.initialize = function() {
     this.entity.model.model = model;
   }, {})
 
-  
+
   // Fires when all face AR resources have been loaded and scanning has begun.
   this.app.on('xr:facescanning', ({maxDetections, pointsPerDetection, indices, uvs}) => {
   }, {})
 
-  
+
   // Fires when a face first found
   this.app.on('xr:facefound', ({id, transform, attachmentPoints, vertices, normals}) => {
   }, {})
 
-  
+
   // Fires when a face is lost
   this.app.on('xr:facelost', ({id}) => {
   }, {})
 
-  
+
   // Fires when a face is subsequently found.
   this.app.on('xr:faceupdated', ({id, transform, attachmentPoints, vertices, normals}) => {
     const {position, rotation, scale, scaledDepth, scaledHeight, scaledWidth} = transform
-    
+
     this.entity.setPosition(position.x, position.y, position.z);
     this.entity.setLocalScale(scale, scale, scale)
     this.entity.setRotation(rotation.x, rotation.y, rotation.z, rotation.w)
@@ -67,7 +67,7 @@ FaceController.prototype.initialize = function() {
   const runOnLoad = ({pcCamera, pcApp}, extramodules) => () => {
     const config = {allowedDevices: XR8.XrConfig.device().ANY,
                     cameraConfig: {direction: XR8.XrConfig.camera().FRONT}}
-    XR8.PlayCanvas.runFaceEffects({pcCamera, pcApp}, extramodules, config)
+    XR8.PlayCanvas.run({pcCamera, pcApp}, extramodules, config)
     XR8.FaceController.configure({
       meshGeometry: ['face'],
       coordinates: {
@@ -76,8 +76,9 @@ FaceController.prototype.initialize = function() {
       }
     })
   }
-  
+
   XRExtras.Loading.showLoading({onxrloaded: runOnLoad({pcCamera, pcApp: this.app}, [
-    XRExtras.Loading.pipelineModule(),  // Manages the loading screen on startup.
+    XR8.FaceController.pipelineModule(), // Enables Face tracking.
+    XRExtras.Loading.pipelineModule(),   // Manages the loading screen on startup.
   ])})
 };
