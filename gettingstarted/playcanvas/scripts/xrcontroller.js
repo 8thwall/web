@@ -18,7 +18,7 @@ xrcontroller.prototype.initialize = function() {
   // After XR has fully loaded, open the camera feed and start displaying AR.
   const runOnLoad = ({pcCamera, pcApp}, extramodules) => () => {
     XR8.XrController.configure({disableWorldTracking})
-    XR8.PlayCanvas.runXr({pcCamera, pcApp}, extramodules)
+    XR8.PlayCanvas.run({pcCamera, pcApp}, extramodules)
   }
 
   // If a shadow material was given, apply the appropriate shaders.
@@ -31,12 +31,13 @@ xrcontroller.prototype.initialize = function() {
   const pcCamera = XRExtras.PlayCanvas.findOneCamera(this.entity)
 
   // While XR is still loading, show some helpful things.
-  // Almost There: Detects whether the user's environment can support web ar, and if it doesn't,
-  //     shows hints for how to view the experience.
+  // Almost There: Detects whether the user's environment can support WebAR, and if it doesn't,
+  // shows hints for how to view the experience.
   // Loading: shows prompts for camera permission and hides the scene until it's ready for display.
   // Runtime Error: If something unexpected goes wrong, display an error screen.
   XRExtras.Loading.showLoading({onxrloaded: runOnLoad({pcCamera, pcApp: this.app}, [
     // Optional modules that developers may wish to customize or theme.
+    XR8.XrController.pipelineModule(),           // Enables SLAM tracking.
     XRExtras.AlmostThere.pipelineModule(),       // Detects unsupported browsers and gives hints.
     XRExtras.Loading.pipelineModule(),           // Manages the loading screen on startup.
     XRExtras.RuntimeError.pipelineModule(),      // Shows an error image on runtime error.

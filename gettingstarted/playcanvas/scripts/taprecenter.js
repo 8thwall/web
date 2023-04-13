@@ -1,6 +1,6 @@
 /*jshint esversion: 6, asi: true, laxbreak: true*/
 
-// taprecenter.js: Defines a playcanvas script that re-centers the AR scene when the screen is
+// taprecenter.js: Defines a PlayCanvas script that re-centers the AR scene when the screen is
 // tapped.
 
 var taprecenter = pc.createScript('taprecenter')
