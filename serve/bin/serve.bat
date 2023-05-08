@@ -26,7 +26,7 @@ IF %PRINT_INSTRUCTIONS% == true (
 )
 
 cd %DIRNAME%
-node src\index.js %SERVE%
+node serve\src\index.js %SERVE%
 
 EXIT /B %ERRORLEVEL%
 
