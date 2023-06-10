@@ -54,6 +54,7 @@ function create() {
   // warning is printed and one of them is returned arbitrarily. If there are no cameras, an error
   // is printed, and undefined is returned.
   const findOneCamera = (entity) => {
+    // Find all camera components in the graph of an entity.
     const cameras = entity.root.findComponents('camera')
 
     if (!cameras.length) {
