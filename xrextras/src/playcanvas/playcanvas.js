@@ -13,15 +13,10 @@ function create() {
   const makeShadowMaterial = ({pc, material}) => {
     const materialResource = material.resource || material
     const shadowFragmentShader = `
-      #ifdef GL2
-      #define SHADOW_SAMPLERVS sampler2DShadow
-      #else
-      #define SHADOW_SAMPLERVS sampler2D
-      #endif
-      vec3 dEmissive;
-      float getShadowPCF3x3(SHADOW_SAMPLERVS shadowMap, vec3 shadowParams);
+      float getShadowPCF3x3(SHADOWMAP_ACCEPT(shadowMap), vec3 shadowCoord, vec3 shadowParams);
+
       vec3 getTransparentShadow() {
-          float shadow = getShadowPCF3x3(light0_shadowMap, light0_shadowParams);
+          float shadow = getShadowPCF3x3(light0_shadowMap, dShadowCoord, light0_shadowParams);
           dAlpha = 1. - clamp(shadow + 0.5, 0., 1.);
           return -gl_FragColor.rgb;
       }
