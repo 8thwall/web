@@ -39,7 +39,7 @@ function create() {
     `
 
     // We use emissive because it can overwrite color to be pure black.
-    materialResource.chunks.APIVersion = pc.CHUNKAPI_1_55
+    materialResource.chunks.APIVersion = pc.CHUNKAPI_1_62
     materialResource.chunks.emissivePS = shadowFragmentShader
     materialResource.chunks.endPS = endShader
     materialResource.blendType = pc.BLEND_PREMULTIPLIED
