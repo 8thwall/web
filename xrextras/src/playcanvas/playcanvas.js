@@ -15,10 +15,10 @@ function create() {
     const shadowFragmentShader = `
       float getShadowPCF3x3(SHADOWMAP_ACCEPT(shadowMap), vec3 shadowCoord, vec3 shadowParams);
 
-      vec3 getTransparentShadow() {
+      vec4 getTransparentShadow() {
           float shadow = getShadowPCF3x3(light0_shadowMap, dShadowCoord, light0_shadowParams);
-          dAlpha = 1. - clamp(shadow + 0.5, 0., 1.);
-          return -gl_FragColor.rgb;
+          float a = 1. - clamp(shadow + 0.5, 0., 1.);
+          return vec4(-gl_FragColor.rgb, a);
       }
       
       void getEmission() {
@@ -29,7 +29,10 @@ function create() {
     const endShader = `
       gl_FragColor.rgb = combineColor(litShaderArgs.albedo, litShaderArgs.sheen.specularity, litShaderArgs.clearcoat.specularity);
 
-      gl_FragColor.rgb += getTransparentShadow();
+      vec4 shadow = getTransparentShadow();
+      gl_FragColor.rgb += shadow.rgb;
+      litShaderArgs.opacity = shadow.a;
+
       gl_FragColor.rgb = addFog(gl_FragColor.rgb);
 
       #ifndef HDR
