@@ -13,7 +13,7 @@ function create() {
   const makeShadowMaterial = ({pc, material}) => {
     const materialResource = material.resource || material
     const shadowFragmentShader = `
-      float getShadowPCF3x3(SHADOWMAP_ACCEPT(shadowMap), vec3 shadowCoord, vec3 shadowParams);
+      float getShadowPCF3x3(SHADOWMAP_ACCEPT(shadowMap), vec3 shadowCoord, vec4 shadowParams);
 
       vec4 getTransparentShadow() {
           float shadow = getShadowPCF3x3(light0_shadowMap, dShadowCoord, light0_shadowParams);
