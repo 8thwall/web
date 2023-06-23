@@ -12,14 +12,11 @@ function create() {
   // Attach a shader to a material that makes it appear transparent while still receiving shadows.
   const makeShadowMaterial = ({pc, material}) => {
     const materialResource = material.resource || material
-    const endShader = `
+    materialResource.chunks.APIVersion = pc.CHUNKAPI_1_62
+    materialResource.chunks.endPS = `
       litShaderArgs.opacity = mix(light0_shadowIntensity, 0.0, shadow0);
       gl_FragColor.rgb = vec3(0.0);
     `
-
-    // We use emissive because it can overwrite color to be pure black.
-    materialResource.chunks.APIVersion = pc.CHUNKAPI_1_62
-    materialResource.chunks.endPS = endShader
     materialResource.blendType = pc.BLEND_PREMULTIPLIED
     materialResource.update()
   }
