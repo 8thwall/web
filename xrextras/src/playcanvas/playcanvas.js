@@ -12,34 +12,13 @@ function create() {
   // Attach a shader to a material that makes it appear transparent while still receiving shadows.
   const makeShadowMaterial = ({pc, material}) => {
     const materialResource = material.resource || material
-    const shadowFragmentShader = `
-      float getShadowPCF3x3(SHADOWMAP_ACCEPT(shadowMap), vec3 shadowCoord, vec3 shadowParams);
-
-      float getTransparentShadow() {
-          float shadow = getShadowPCF3x3(light0_shadowMap, dShadowCoord, light0_shadowParams);
-          float alpha = 1. - clamp(shadow + 0.5, 0., 1.);
-          return alpha;
-      }
-      
-      void getEmission() {
-
-      }
-    `
-
     const endShader = `
-      litShaderArgs.opacity = getTransparentShadow();
-
-      gl_FragColor.rgb = addFog(vec3(0));
-
-      #ifndef HDR
-      gl_FragColor.rgb = toneMap(gl_FragColor.rgb);
-      gl_FragColor.rgb = gammaCorrectOutput(gl_FragColor.rgb);
-      #endif
+      litShaderArgs.opacity = mix(light0_shadowIntensity, 0.0, shadow0);
+      gl_FragColor.rgb = vec3(0.0);
     `
 
     // We use emissive because it can overwrite color to be pure black.
     materialResource.chunks.APIVersion = pc.CHUNKAPI_1_62
-    materialResource.chunks.emissivePS = shadowFragmentShader
     materialResource.chunks.endPS = endShader
     materialResource.blendType = pc.BLEND_PREMULTIPLIED
     materialResource.update()
