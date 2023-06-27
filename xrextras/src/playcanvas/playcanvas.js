@@ -25,31 +25,19 @@ function create() {
   // warning is printed and one of them is returned arbitrarily. If there are no cameras, an error
   // is printed, and undefined is returned.
   const findOneCamera = (entity) => {
-    // Recursively traverse an entity graph until the root is reached.
-    const findRoot = (entity) => (entity.parent && findRoot(entity.parent)) || entity
+    // Find all camera components in the graph of an entity.
+    const cameras = entity.root.findComponents('camera')
 
-    // Return a node and all entities in its subtree as a flat list, in pre-order traversal order.
-    // Note thiat subtree(findRoot(entity)) will return all nodes in the graph of entity.
-    const subtree = (entity) =>
-      [entity].concat(entity.children.reduce((r, v) => r.concat(subtree(v)), []))
-
-    // Find all camera entities in the graph of an entity.
-    const cameras = (entity) =>
-      subtree(findRoot(entity)).filter(v => v.camera && v.camera instanceof pc.CameraComponent)
-
-    // Get the cameras in the request entity's graph, and print an error or warning if there isn't
-    // exactly one.
-    const cs = cameras(entity)
-    if (!cs.length) {
+    if (!cameras.length) {
       console.error(`Couldn't find any cameras in the scene graph of ${entity.name}`)
       return
     }
-    if (cs.length > 1) {
-      console.warn(`Found too many cameras (${cs.length}) in the scene graph of ${entity.name}`)
+    if (cameras.length > 1) {
+      console.warn(`Found too many cameras (${cameras.length}) in the scene graph of ${entity.name}`)
     }
 
-    // Pick the frist camera if there are multiple.
-    return cs[0]
+    // Pick the first camera if there are multiple.
+    return cameras[0].entity
   }
 
   // Configures the playcanvas entity to to track the image target with the specified name. This
