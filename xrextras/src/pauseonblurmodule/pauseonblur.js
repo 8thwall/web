@@ -17,19 +17,17 @@ function create() {
     XR8.resume()
   }
 
-  const pipelineModule = () => {
-    return {
-      name: 'pauseonblur',
-      onAttach: () => {
-        window.addEventListener('blur', blur)
-        window.addEventListener('focus', focus)
-      },
-      onDetach: () => {
-        window.removeEventListener('blur', blur)
-        window.removeEventListener('focus', focus)
-      }
-    }
-  }
+  const pipelineModule = () => ({
+    name: 'pauseonblur',
+    onAttach: () => {
+      window.addEventListener('blur', blur)
+      window.addEventListener('focus', focus)
+    },
+    onDetach: () => {
+      window.removeEventListener('blur', blur)
+      window.removeEventListener('focus', focus)
+    },
+  })
 
   return {
     // Creates a camera pipeline module that, when installed, pauses the camera feed and processing
@@ -38,6 +36,6 @@ function create() {
   }
 }
 
-module.exports = {
+export {
   PauseOnBlurFactory,
 }

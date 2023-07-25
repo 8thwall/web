@@ -67,6 +67,6 @@ const LifecycleFactory = () => ({
   },
 })
 
-module.exports = {
+export {
   LifecycleFactory,
 }

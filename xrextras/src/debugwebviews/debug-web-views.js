@@ -14,7 +14,7 @@ function create() {
   const enableLogToScreen = () => {
     const mylog = (args) => {
       nativelog(args)
-      logstr = logstr + '* ' + args + '<br>'
+      logstr = `${logstr}* ${args}<br>`
       let logdiv = document.getElementById('logdiv')
       if (!logdiv) {
         const body = document.getElementsByTagName('body')[0]
@@ -30,7 +30,7 @@ function create() {
         logdiv.style.backgroundColor = '#FFFFFF'
         logdiv.id = 'logdiv'
       }
-      logdiv.innerHTML = '<pre>' + logstr + '</pre>'
+      logdiv.innerHTML = `<pre>${logstr}</pre>`
     }
     const mywarn = (args) => { mylog(`<font color=orange>${args}</font>`) }
     const myerror = (args) => { mylog(`<font color=red>${args}</font>`) }
@@ -43,6 +43,6 @@ function create() {
   }
 }
 
-module.exports = {
+export {
   DebugWebViewsFactory,
 }

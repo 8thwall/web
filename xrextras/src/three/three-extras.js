@@ -174,6 +174,6 @@ const create = () => ({
   videoMaterial,
 })
 
-module.exports = {
+export {
   ThreeExtrasFactory,
 }

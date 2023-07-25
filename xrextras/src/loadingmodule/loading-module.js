@@ -1,9 +1,8 @@
 /* globals XR8 */
 
-require('!style-loader!css-loader!../fonts/fonts.css')
-require('!style-loader!css-loader!./loading-module.css')
-
-const html = require('./loading-module.html')
+import '../fonts/fonts.css'
+import './loading-module.css'
+import html from './loading-module.html'
 
 const FIRST_FRAME_DELAY = 5
 
@@ -346,11 +345,12 @@ function create() {
       // delay, use frameStartResult's cameraTexture, which should be one frame ahead of
       // `reality`'s texture.
       if (waitForRealityTexture_) {
-        const {reality, facecontroller, layerscontroller} = processCpuResult
+        const {reality, facecontroller, handcontroller, layerscontroller} = processCpuResult
         const slamReady = reality && reality.realityTexture
         const faceControllerReady = facecontroller && facecontroller.cameraFeedTexture
+        const handControllerReady = handcontroller && handcontroller.cameraFeedTexture
         const layersControllerReady = layerscontroller && layerscontroller.cameraFeedTexture
-        if (!slamReady && !faceControllerReady && !layersControllerReady) {
+        if (!slamReady && !faceControllerReady && !handControllerReady && !layersControllerReady) {
           return
         }
       }
@@ -515,6 +515,6 @@ const LoadingFactory = () => {
   return loadingModule
 }
 
-module.exports = {
+export {
   LoadingFactory,
 }

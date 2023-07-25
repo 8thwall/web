@@ -1,9 +1,9 @@
 /* globals XR8:readonly */
 
-require('!style-loader!css-loader!../fonts/fonts.css')
-require('!style-loader!css-loader!./almost-there-module.css')
+import '../fonts/fonts.css'
+import './almost-there-module.css'
 
-const html = require('./almost-there-module.html')
+import html from './almost-there-module.html'
 
 let almostThereModule = null
 
@@ -146,16 +146,16 @@ function create() {
     // NOTE(christoph): Using an SVG here to preserve backwards compatibility with
     //   CSS rules for ".qrcode svg"
     document.getElementById('qrcode').innerHTML = `\
-<svg 
-  xmlns="http://www.w3.org/2000/svg" 
-  xmlns:xlink="http://www.w3.org/1999/xlink" 
-  viewBox="0 0 250 250" 
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 250 250"
   width="250" height="250"
 >
-  <image 
-    width="250" 
-    height="250" 
-    xlink:href="https://8th.io/qr?v=2&margin=2&url=${encodeURIComponent(redirectUrl)}" 
+  <image
+    width="250"
+    height="250"
+    xlink:href="https://8th.io/qr?v=2&margin=2&url=${encodeURIComponent(redirectUrl)}"
   />
 </svg>`
   }
@@ -211,6 +211,6 @@ function create() {
   }
 }
 
-module.exports = {
+export {
   AlmostThereFactory,
 }

@@ -1,4 +1,4 @@
-import * as htmlContent from './media-preview.html'
+import htmlContent from './media-preview.html'
 import './media-preview.css'
 import {configure, getConfig} from './capture-config'
 

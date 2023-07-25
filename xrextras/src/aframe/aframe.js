@@ -1,8 +1,8 @@
 /* globals AFRAME, XRExtras, XR8 */
 
-const {xrComponents} = require('./xr-components.js')
-const {xrPrimitives} = require('./xr-primitives.js')
-const {ensureXrAndExtras} = require('./ensure')
+import {xrComponents} from './xr-components'
+import {xrPrimitives} from './xr-primitives'
+import {ensureXrAndExtras} from './ensure'
 
 let xrextrasAframe = null
 
@@ -25,6 +25,7 @@ const eagerload = () => {
   let runConfig = null
 
   // Eagerly inspect the dom, and trigger loading or almost there modules early if appropriate.
+  const xrconfigPresent = Array.from(attrs).map(attr => attr.name).includes('xrconfig')
   Object.keys(attrs).forEach((a) => {
     const attr = attrs.item(a).name
     if (attr === 'xrextras-almost-there') {
@@ -39,7 +40,9 @@ const eagerload = () => {
       foundLoading = true
     }
 
-    if (attr === 'xrweb' || attr === 'xrface' || attr === 'xrlayers') {
+    // We use xrconfig if it is present, else xrweb or xrface or xrlayers.
+    if (attr === 'xrconfig' ||
+      (!xrconfigPresent && (attr === 'xrweb' || attr === 'xrface' || attr === 'xrlayers'))) {
       const allowedDevicesMatch = new RegExp('allowedDevices:([^;]*)').exec(attrs.item(a).value)
       if (allowedDevicesMatch) {
         runConfig = {allowedDevices: allowedDevicesMatch[1].trim()}
@@ -88,6 +91,7 @@ function create() {
   // If XR or XRExtras load before AFrame, we need to manually register their AFrame components.
   const ensureAFrameComponents = () => {
     if (window.XR8) {
+      window.AFRAME.registerComponent('xrconfig', XR8.AFrame.xrconfigComponent())
       window.AFRAME.registerComponent('xrweb', XR8.AFrame.xrwebComponent())
       window.AFRAME.registerComponent('xrface', XR8.AFrame.xrfaceComponent())
       window.AFRAME.registerComponent('xrlayers', XR8.AFrame.xrlayersComponent())
@@ -167,6 +171,6 @@ const AFrameFactory = () => {
   return xrextrasAframe
 }
 
-module.exports = {
+export {
   AFrameFactory,
 }
