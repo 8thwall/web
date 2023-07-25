@@ -1,9 +1,14 @@
 const STATS_URL = 'https://cdn.8thwall.com/web/aframe/stats.16.min.js'
 let statsModule = null
 
-const loadJsPromise = url => new Promise((resolve, reject) =>
-  document.head.appendChild(Object.assign(
-    document.createElement('script'), {async: true, onload: resolve, onError: reject, src: url})))
+const loadJsPromise = url => new Promise((resolve, reject) => (
+  document.head.appendChild(
+    Object.assign(
+      document.createElement('script'),
+      {async: true, onload: resolve, onError: reject, src: url}
+    )
+  )
+))
 
 const StatsFactory = () => {
   if (statsModule == null) {
@@ -47,6 +52,6 @@ function create() {
   }
 }
 
-module.exports = {
+export {
   StatsFactory,
 }

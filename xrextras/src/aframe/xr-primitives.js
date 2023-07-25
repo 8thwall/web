@@ -3,6 +3,9 @@ const xrPrimitives = () => {
     defaultComponents: {
       'xrextras-faceanchor': {},
     },
+    mappings: {
+      'face-id': 'xrextras-faceanchor.faceId',
+    },
   }
   const resourcePrimitive = {
     defaultComponents: {
@@ -108,7 +111,7 @@ const xrPrimitives = () => {
       'file-name-prefix': 'xrextras-capture-config.fileNamePrefix',
       'request-mic': 'xrextras-capture-config.requestMic',
       'include-scene-audio': 'xrextras-capture-config.includeSceneAudio',
-      'exclude-scene-audio': 'xrextras-capture-config.excludeSceneAudio', // deprecated
+      'exclude-scene-audio': 'xrextras-capture-config.excludeSceneAudio',  // deprecated
     },
   }
 
@@ -176,6 +179,47 @@ const xrPrimitives = () => {
     },
   }
 
+  // Register hand attachment point primitive
+  const handAttachmentPrimitive = {
+    defaultComponents: {
+      'xrextras-hand-attachment': {},
+    },
+
+    mappings: {
+      'point': 'xrextras-hand-attachment.point',
+      'point-type': 'xrextras-hand-attachment.pointType',
+    },
+  }
+
+  // Register hand anchor primitive
+  const handAnchorPrimitive = {
+    defaultComponents: {
+      'xrextras-hand-anchor': {},
+    },
+  }
+
+  // Register hand mesh primitive
+  const handMeshPrimitive = {
+    defaultComponents: {
+      'xrextras-hand-mesh': {},
+    },
+    mappings: {
+      'material-resource': 'xrextras-hand-mesh.material-resource',
+      'wireframe': 'xrextras-hand-mesh.wireframe',
+    },
+  }
+
+  // Register hand mesh primitive
+  const handOccluderPrimitive = {
+    defaultComponents: {
+      'xrextras-hand-occluder': {},
+    },
+    mappings: {
+      'show': 'xrextras-hand-occluder.show',
+      'adjustment': 'xrextras-hand-occluder.adjustment',
+    },
+  }
+
   return {
     'xrextras-faceanchor': faceAnchorPrimitive,
     'xrextras-resource': resourcePrimitive,
@@ -193,9 +237,13 @@ const xrPrimitives = () => {
     'xrextras-target-video-fade': targetVideoFadePrimitive,
     'xrextras-target-video-sound': targetVideoSoundPrimitive,
     'xrextras-opaque-background': opaqueBackgroundPrimitive,
+    'xrextras-hand-attachment': handAttachmentPrimitive,
+    'xrextras-hand-anchor': handAnchorPrimitive,
+    'xrextras-hand-mesh': handMeshPrimitive,
+    'xrextras-hand-occluder': handOccluderPrimitive,
   }
 }
 
-module.exports = {
+export {
   xrPrimitives,
 }

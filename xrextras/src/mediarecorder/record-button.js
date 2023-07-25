@@ -1,4 +1,4 @@
-import * as htmlContent from './record-button.html'
+import htmlContent from './record-button.html'
 import './record-button.css'
 import {configure, getConfig} from './capture-config'
 import {drawWatermark} from './watermark'

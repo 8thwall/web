@@ -1,19 +1,19 @@
-const {AFrameFactory} = require('./aframe/aframe.js')
-const {AlmostThereFactory} = require('./almosttheremodule/almost-there-module.js')
-const {DebugWebViewsFactory} = require('./debugwebviews/debug-web-views.js')
-const {FullWindowCanvasFactory} = require('./fullwindowcanvasmodule/full-window-canvas-module.js')
-const {LoadingFactory} = require('./loadingmodule/loading-module.js')
-const {LifecycleFactory} = require('./lifecyclemodule/lifecycle.js')
-const {PauseOnBlurFactory} = require('./pauseonblurmodule/pauseonblur.js')
-const {PauseOnHiddenFactory} = require('./pauseonhiddenmodule/pauseonhidden.js')
-const {PlayCanvasFactory} = require('./playcanvas/playcanvas.js')
-const {PwaInstallerFactory} = require('./pwainstallermodule/pwa-installer-module.js')
-const {RuntimeErrorFactory} = require('./runtimeerrormodule/runtime-error-module.js')
-const {StatsFactory} = require('./statsmodule/stats.js')
-const {ThreeExtrasFactory} = require('./three/three-extras.js')
-const {MediaRecorder} = require('./mediarecorder/mediarecorder.js')
+import {AFrameFactory} from './aframe/aframe'
+import {AlmostThereFactory} from './almosttheremodule/almost-there-module'
+import {DebugWebViewsFactory} from './debugwebviews/debug-web-views'
+import {FullWindowCanvasFactory} from './fullwindowcanvasmodule/full-window-canvas-module'
+import {LoadingFactory} from './loadingmodule/loading-module'
+import {LifecycleFactory} from './lifecyclemodule/lifecycle'
+import {PauseOnBlurFactory} from './pauseonblurmodule/pauseonblur'
+import {PauseOnHiddenFactory} from './pauseonhiddenmodule/pauseonhidden'
+import {PlayCanvasFactory} from './playcanvas/playcanvas'
+import {PwaInstallerFactory} from './pwainstallermodule/pwa-installer-module'
+import {RuntimeErrorFactory} from './runtimeerrormodule/runtime-error-module'
+import {StatsFactory} from './statsmodule/stats'
+import {ThreeExtrasFactory} from './three/three-extras'
+import {MediaRecorder} from './mediarecorder/mediarecorder'
 
-require('./common.css')
+import './common.css'
 
 const XRExtras = {
   AFrame: AFrameFactory(),
@@ -56,4 +56,6 @@ const setRenameDeprecation = (oldName, newName, value, version) => {
 
 setRenameDeprecation('PauseOnBlur', 'PauseOnHidden', XRExtras.PauseOnBlur, 'R17.0')
 
-module.exports = {XRExtras}
+export {
+  XRExtras,
+}

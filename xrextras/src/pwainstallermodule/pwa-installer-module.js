@@ -1,10 +1,10 @@
 /* globals XR8 */
-require('!style-loader!css-loader!../fonts/fonts.css')
-require('!style-loader!css-loader!./pwa-installer-module.css')
+import '../fonts/fonts.css'
+import './pwa-installer-module.css'
 
-const {MILLISECONDS_PER_SECOND, MILLISECONDS_PER_DAY} = require('./time.js')
-const html = require('./pwa-installer-module.html')
-const iosActionSvg = require('./ios-action-icon-svg.html')
+import {MILLISECONDS_PER_SECOND, MILLISECONDS_PER_DAY} from './time'
+import html from './pwa-installer-module.html'
+import iosActionSvg from './ios-action-icon-svg.html'
 
 const NUM_VISITS_BEFORE_INSTALL_PROMPT = 2
 const PROMPT_DISMISSAL_DELAY_MS = MILLISECONDS_PER_DAY * 90
@@ -14,7 +14,7 @@ const NUM_VISITS_KEY = 'NUM_VISITS_KEY'
 const DEFAULT_INSTALL_TITLE = 'Add to your home screen'
 const DEFAULT_INSTALL_SUBTITLE = 'for easy access.'
 const DEFAULT_INSTALL_BUTTON_TEXT = 'Install'
-const DEFAULT_IOS_INSTALL_TEXT = `Tap $ACTION_ICON and then "Add to Homescreen"`
+const DEFAULT_IOS_INSTALL_TEXT = 'Tap $ACTION_ICON and then "Add to Homescreen"'
 
 let pwaInstallerModule_ = null
 let installEvent_ = null
@@ -67,17 +67,24 @@ const getDefaultPwaName = () => (
 )
 
 const create = () => {
+  const preferredName = () => getDefaultPwaName()
+  const preferredIconSrc = () => getDefaultIconSrc()
+  const preferredInstallTitle = () => DEFAULT_INSTALL_TITLE
+  const preferredInstallSubtitle = () => DEFAULT_INSTALL_SUBTITLE
+  const preferredInstallButtonText = () => DEFAULT_INSTALL_BUTTON_TEXT
+  const preferredIosInstallText = () => DEFAULT_IOS_INSTALL_TEXT
+
   const promptConfig_ = {
     delayAfterDismissalMillis: PROMPT_DISMISSAL_DELAY_MS,
-    minNumVisits: NUM_VISITS_BEFORE_INSTALL_PROMPT
+    minNumVisits: NUM_VISITS_BEFORE_INSTALL_PROMPT,
   }
   const displayConfig_ = {
-    preferredName: preferredName,
-    preferredIconSrc: preferredIconSrc,
-    preferredInstallTitle: preferredInstallTitle,
-    preferredInstallSubtitle: preferredInstallSubtitle,
-    preferredInstallButtonText: preferredInstallButtonText,
-    preferredIosInstallText: preferredIosInstallText,
+    preferredName,
+    preferredIconSrc,
+    preferredInstallTitle,
+    preferredInstallSubtitle,
+    preferredInstallButtonText,
+    preferredIosInstallText,
   }
   let numUpdates_ = 0
   let waitingOnReality_ = true
@@ -91,7 +98,7 @@ const create = () => {
   let displayInstallPrompt_ = displayInstallPrompt
   let hideInstallPrompt_ = hideInstallPrompt
 
-  function pipelineModule () {
+  function pipelineModule() {
     return {
       name: 'pwa-installer',
       onBeforeRun: (args) => {
@@ -115,32 +122,8 @@ const create = () => {
       },
       onDetach: () => {
         setDisplayAllowed(false)
-      }
+      },
     }
-  }
-
-  function preferredName() {
-    return getDefaultPwaName()
-  }
-
-  function preferredIconSrc() {
-    return getDefaultIconSrc()
-  }
-
-  function preferredInstallTitle() {
-    return DEFAULT_INSTALL_TITLE
-  }
-
-  function preferredInstallSubtitle() {
-    return DEFAULT_INSTALL_SUBTITLE
-  }
-
-  function preferredInstallButtonText() {
-    return DEFAULT_INSTALL_BUTTON_TEXT
-  }
-
-  function preferredIosInstallText() {
-    return DEFAULT_IOS_INSTALL_TEXT
   }
 
   function displayInstallPrompt(displayConfig, onInstalled, onDismissed) {
@@ -191,11 +174,11 @@ const create = () => {
         if (!installEvent_) {
           console.error('Attempting install app without `beforeinstallprompt` event')
           hideInstallPrompt_()
-          return
+          return Promise.resolve()
         }
 
         installEvent_.prompt()
-        return installEvent_.userChoice.then(choice => {
+        return installEvent_.userChoice.then((choice) => {
           if (choice.outcome === 'accepted') {
             onInstalled()
           } else {
@@ -211,7 +194,7 @@ const create = () => {
     if (iosInstallTextNode) {
       const iosInstallText =
         displayConfig.iosInstallText && displayConfig.iosInstallText.replace('$ACTION_ICON', iosActionSvg)
-        iosInstallTextNode.innerHTML = iosInstallText
+      iosInstallTextNode.innerHTML = iosInstallText
     }
 
     document.getElementsByTagName('body')[0].appendChild(rootNode_)
@@ -283,7 +266,7 @@ const create = () => {
         installTitle: displayConfig_.preferredInstallTitle(),
         installSubtitle: displayConfig_.preferredInstallSubtitle(),
         installButtonText: displayConfig_.preferredInstallButtonText(),
-        iosInstallText: displayConfig_.preferredIosInstallText()
+        iosInstallText: displayConfig_.preferredIosInstallText(),
       }
       displayInstallPrompt_(config, onInstalled, onDismissed)
     } else if (displayInstallPrompt_) {
@@ -304,7 +287,7 @@ const create = () => {
       displayConfig,
       shouldDisplayInstallPrompt,
       displayInstallPrompt,
-      hideInstallPrompt
+      hideInstallPrompt,
     } = args
 
     if (displayConfig) {
@@ -363,7 +346,7 @@ const PwaInstallerFactory = () => {
   return pwaInstallerModule_
 }
 
-window.addEventListener('beforeinstallprompt', function(e) {
+window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault()
   installEvent_ = e
 })
@@ -372,6 +355,6 @@ window.addEventListener('load', (event) => {
   recordVisit()
 })
 
-module.exports = {
+export {
   PwaInstallerFactory,
 }

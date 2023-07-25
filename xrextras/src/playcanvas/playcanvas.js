@@ -70,6 +70,6 @@ function create() {
   }
 }
 
-module.exports = {
+export {
   PlayCanvasFactory,
 }

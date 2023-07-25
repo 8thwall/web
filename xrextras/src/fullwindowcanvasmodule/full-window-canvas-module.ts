@@ -1,21 +1,19 @@
-/* globals XR8:readonly */
-
-let fullWindowCanvas = null
-
-const FullWindowCanvasFactory = () => {
-  if (fullWindowCanvas == null) {
-    fullWindowCanvas = create()
-  }
-
-  return fullWindowCanvas
-}
+declare const XR8: any
 
 function create() {
   let canvas_ = null
-  const vsize_ = {}
+  const vsize_ = {
+    w: 0,
+    h: 0,
+  }
   let orientation_ = 0
-  const originalBodyStyleSubset_ = {}
-  const originalHtmlStyleSubset_ = {}
+  const originalBodyStyleSubset_ = {
+    backgroundColor: 'initial',
+    overflowY: 'initial',
+  }
+  const originalHtmlStyleSubset_ = {
+    overflow: 'initial',
+  }
 
   const canvasStyle_ = {
     width: '100%',
@@ -32,6 +30,8 @@ function create() {
     margin: '0px',
     padding: '0px',
     border: '0px',
+    overflowY: 'initial',
+    backgroundColor: 'initial',
   }
 
   const isCompatibleMobile = () =>
@@ -50,8 +50,8 @@ function create() {
     const wh = uwh * devicePixelRatio
 
     // Wait for orientation change to take effect before handling resize on mobile phones only.
-    const displayOrientationMismatch = ((orientation_ == 0 || orientation_ == 180) && ww > wh) ||
-    ((orientation_ == 90 || orientation_ == -90) && wh > ww)
+    const displayOrientationMismatch = ((orientation_ === 0 || orientation_ === 180) && ww > wh) ||
+    ((orientation_ === 90 || orientation_ === -90) && wh > ww)
     if (displayOrientationMismatch && isCompatibleMobile()) {
       window.requestAnimationFrame(fillScreenWithCanvas)
       return
@@ -207,6 +207,16 @@ function create() {
   }
 }
 
-module.exports = {
+let fullWindowCanvas = null
+
+const FullWindowCanvasFactory = () => {
+  if (fullWindowCanvas == null) {
+    fullWindowCanvas = create()
+  }
+
+  return fullWindowCanvas
+}
+
+export {
   FullWindowCanvasFactory,
 }

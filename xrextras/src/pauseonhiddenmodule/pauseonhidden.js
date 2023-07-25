@@ -41,6 +41,6 @@ const PauseOnHiddenFactory = () => {
   return pauseOnHidden
 }
 
-module.exports = {
+export {
   PauseOnHiddenFactory,
 }

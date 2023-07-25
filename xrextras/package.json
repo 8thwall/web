@@ -1,23 +1,27 @@
 {
   "name": "xrextras",
-  "version": "0.0.26",
+  "version": "0.1.0",
   "description": "",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "node_modules/.bin/webpack-dev-server",
+    "dev": "webpack server --devtool eval --mode development",
     "clean": "rm -r dist/*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "css-loader": "^2.1.1",
-    "html-loader": "^0.5.5",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "@types/aframe": "^1.2.2",
+    "css-loader": "^6.8.1",
+    "html-loader": "^4.2.0",
+    "style-loader": "^3.3.3",
+    "text-loader": "^0.0.1",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }
