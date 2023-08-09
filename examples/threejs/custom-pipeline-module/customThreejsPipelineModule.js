@@ -34,7 +34,7 @@ const customThreejsPipelineModule = () => {
     onDetach: () => { engaged = false },
     onUpdate: ({processCpuResult}) => {
       const realitySource = processCpuResult.reality || processCpuResult.facecontroller ||
-        processCpuResult.layerscontroller
+      processCpuResult.handcontroller || processCpuResult.layerscontroller
 
       if (!realitySource) {
         return
