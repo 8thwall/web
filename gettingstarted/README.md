@@ -1,4 +1,4 @@
-# Getting Started with 8th Wall Web
+# Getting Started with 8th Wall
 
 ## Download and run sample projects
 
