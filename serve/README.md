@@ -19,7 +19,7 @@ If you don't already have Node.js and npm installed, get it here: https://www.np
 
 Example:
 ```
-./serve/bin/serve -n -d gettingstarted/xraframe/ -p 7777
+./serve/bin/serve -n -d gettingstarted/aframe/ -p 7777
 ```
 
 **IMPORTANT**: To connect to this local webserver, make sure to copy the **entire** "Listening" URL into your browser, including both the "**https://**" at the beginning and **port** number at the end.
@@ -28,7 +28,7 @@ Example:
 
 Example - specify network interface:
 ```
-./serve/bin/serve -d gettingstarted/xraframe/ -p 7777 -i en0
+./serve/bin/serve -d gettingstarted/aframe/ -p 7777 -i en0
 ```
 
 ## Serving locally From Windows
@@ -48,7 +48,7 @@ If you don't already have Node.js and npm installed, get it here: https://www.np
 
 Example:
 ```
-serve\bin\serve.bat -n -d gettingstarted\xraframe -p 7777
+serve\bin\serve.bat -n -d gettingstarted\aframe -p 7777
 ```
 **IMPORTANT**: To connect to this local webserver, make sure to copy the **entire** "Listening" URL into your browser, including both the "**https://**" at the beginning and **port** number at the end.
 
@@ -56,5 +56,5 @@ serve\bin\serve.bat -n -d gettingstarted\xraframe -p 7777
 
 Example - specify network interface:
 ```
-serve\bin\serve.bat -d gettingstarted\xraframe -p 7777 -i WiFi
+serve\bin\serve.bat -d gettingstarted\aframe -p 7777 -i WiFi
 ```
