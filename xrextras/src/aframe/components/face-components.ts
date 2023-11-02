@@ -1,7 +1,50 @@
 import type {ComponentDefinition} from 'aframe'
 
+import {memo} from '../../common/factory'
+
 declare const THREE: any
 declare const XRExtras: any
+
+// Keep in sync with face-controller
+const EAR_POINTS = new Set([
+  'leftHelix',
+  'leftCanal',
+  'leftLobe',
+  'rightHelix',
+  'rightCanal',
+  'rightLobe',
+])
+const FACE_POINTS = new Set([
+  'forehead',
+  'rightEyebrowInner',
+  'rightEyebrowMiddle',
+  'rightEyebrowOuter',
+  'leftEyebrowInner',
+  'leftEyebrowMiddle',
+  'leftEyebrowOuter',
+  'leftEar',
+  'rightEar',
+  'leftCheek',
+  'rightCheek',
+  'noseBridge',
+  'noseTip',
+  'leftEye',
+  'rightEye',
+  'leftEyeOuterCorner',
+  'rightEyeOuterCorner',
+  'upperLip',
+  'lowerLip',
+  'mouth',
+  'mouthRightCorner',
+  'mouthLeftCorner',
+  'chin',
+  'leftIris',
+  'rightIris',
+  'leftUpperEyelid',
+  'rightUpperEyelid',
+  'leftLowerEyelid',
+  'rightLowerEyelid',
+])
 
 const faceAttachmentComponent: ComponentDefinition = {
   schema: {
@@ -10,17 +53,41 @@ const faceAttachmentComponent: ComponentDefinition = {
   init() {
     // Checks the face-id of the parent face-anchor to apply attachments correctly.
     const parentId = parseInt(this.el.parentEl.getAttribute('face-id'), 10) || 0
+
+    // Schema check cannot be done on init because sceneEl.components are not parsed
+    // @return true if schema is valid
+    const schemaCheck = memo(() => {
+      const isEarEnabled = this.el.sceneEl.components.xrface?.data.enableEars
+      if (isEarEnabled) {
+        if (!FACE_POINTS.has(this.data.point) && !EAR_POINTS.has(this.data.point)) {
+          /* eslint-disable-next-line no-console */
+          console.error(`${this.data.point} is not a valid face/ear point.`)
+          return false
+        }
+      } else {
+        // only face, no ear
+        /* eslint-disable-next-line no-lonely-if */
+        if (!FACE_POINTS.has(this.data.point)) {
+          /* eslint-disable-next-line no-console */
+          console.error(`${this.data.point} is not a valid face point.`)
+          return false
+        }
+      }
+      return true
+    })
+
     const show = ({detail}) => {
+      if (!schemaCheck()) {
+        // Schema failed the check, no need to do anything else.
+        return
+      }
       if (parentId && detail.id !== parentId) {
         return
       }
-      const apt = detail.attachmentPoints[this.data.point]
-      if (!apt) {
-        // eslint-disable-next-line no-console
-        console.error(`Invalid face attachment point ${this.data.point}`)
+      const position = detail.attachmentPoints[this.data.point]?.position
+      if (!position) {
         return
       }
-      const {position} = apt
       this.el.object3D.position.copy(position)
       this.el.object3D.visible = true
     }

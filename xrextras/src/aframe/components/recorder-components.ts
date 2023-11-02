@@ -130,4 +130,5 @@ export {
   captureButtonComponent,
   capturePreviewComponent,
   captureConfigComponent,
+  CaptureComponentDefinition,
 }

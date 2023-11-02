@@ -7,6 +7,10 @@ import {
 } from './components/asset-components'
 
 import {
+  sessionReconfigureComponent,
+} from './components/session-reconfigure-components'
+
+import {
   runtimeErrorComponent,
   statsComponent,
   logToScreenComponent,
@@ -104,6 +108,7 @@ const xrComponents = () => {
     'xrextras-hand-attachment': handAttachmentComponent,
     'xrextras-hand-mesh': handMeshComponent,
     'xrextras-hand-occluder': handOccluderComponent,
+    'xrextras-session-reconfigure': sessionReconfigureComponent,
   }
 }
 

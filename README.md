@@ -2,16 +2,16 @@
 
 8th Wall Web: WebAR for mobile devices!
 
-Built entirely using standards-compliant JavaScript and WebGL, 8th Wall Web is a complete implementation of 8th Wall’s Simultaneous Localization and Mapping (SLAM) engine, hyper-optimized for real-time AR on mobile browsers. Features include World Tracking, Image Targets, Face Effects, Lightship Visual Positioning System (VPS), and more.
+Built entirely using standards-compliant JavaScript and WebGL, 8th Wall Web is a complete implementation of 8th Wall’s Simultaneous Localization and Mapping (SLAM) engine, hyper-optimized for real-time AR on mobile browsers. Features include World Tracking, Image Targets, Face Effects, Lightship Visual Positioning System (VPS), Sky Effects, Hand Tracking, and more.
 
 - - -
 
 # Resources
 
-* [Getting Started Guide](https://github.com/8thwall/web/tree/master/gettingstarted)
+* [Getting Started Guide](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting#getting-started)
+* [Serving projects over HTTPS](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting#serve-projects-over-https)
 * [Documentation](https://www.8thwall.com/docs/web/)
 * [8th Wall Website](https://www.8thwall.com)
-* [Serving projects locally](https://github.com/8thwall/web/tree/master/serve)
 
 # Examples
 

@@ -373,4 +373,7 @@ export {
   pinchScaleComponent,
   holdDragComponent,
   playVideoComponent,
+  FingerMoveComponentDefinition,
+  GestureDetectorComponentDefinition,
+  HoldDragComponentDefinition,
 }
