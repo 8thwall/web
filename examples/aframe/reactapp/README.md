@@ -21,8 +21,6 @@ If you're developing on Windows, modify the `start` script in package.json to ex
 set HTTPS=true&&react-app-rewired start
 ```
 
-In order to use the [serve script](https://github.com/8thwall/web/tree/master/serve) for testing the production build, you may need to run `export NODE_OPTIONS=--openssl-legacy-provider`, and execute the script on the build folder.
-
 ## Learn More
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

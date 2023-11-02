@@ -12,6 +12,7 @@ import {RuntimeErrorFactory} from './runtimeerrormodule/runtime-error-module'
 import {StatsFactory} from './statsmodule/stats'
 import {ThreeExtrasFactory} from './three/three-extras'
 import {MediaRecorder} from './mediarecorder/mediarecorder'
+import {SessionReconfigureFactory} from './sessionreconfiguremodule/session-reconfigure-module'
 
 import './common.css'
 
@@ -30,6 +31,7 @@ const XRExtras = {
   Stats: StatsFactory(),
   ThreeExtras: ThreeExtrasFactory(),
   MediaRecorder,
+  SessionReconfigure: SessionReconfigureFactory(),
 }
 
 const setDeprecatedProperty = (object, property, value, message) => {
