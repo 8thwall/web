@@ -215,6 +215,7 @@ const xrPrimitives = () => {
     mappings: {
       'material-resource': 'xrextras-hand-mesh.material-resource',
       'wireframe': 'xrextras-hand-mesh.wireframe',
+      'uv-orientation': 'xrextras-hand-mesh.uv-orientation',
     },
   }
 
