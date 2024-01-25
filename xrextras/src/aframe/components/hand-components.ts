@@ -84,9 +84,8 @@ const handAttachmentComponent: ComponentDefinition = {
   },
 }
 
-const handMesh = (modelGeometry, material, wireframe) => {
+const handMesh = (modelGeometry, material, wireframe, uvOrientation) => {
   let handKind = 2
-
   const geometry = new THREE.BufferGeometry()
 
   // Fill geometry with default vertices.
@@ -97,22 +96,15 @@ const handMesh = (modelGeometry, material, wireframe) => {
   const normals = new Float32Array(modelGeometry.pointsPerDetection * 3)
   geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3))
 
-  // // Add the UVs to the geometry.
-  // const uvs = new Float32Array(modelGeometry.uvs.length * 2)
-  // for (let i = 0; i < modelGeometry.uvs.length; ++i) {
-  //   uvs[i * 2] = modelGeometry.uvs[i].u
-  //   uvs[i * 2 + 1] = modelGeometry.uvs[i].v
-  // }
-  // geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+  // Create and set UVs based on uvOrientation
 
-  // By default, using the right hand indices.
+  // Instantiate both left and right hand indices as we use them at runtime
   const rightIndices = new Array(modelGeometry.rightIndices.length * 3)
   for (let i = 0; i < modelGeometry.rightIndices.length; ++i) {
     rightIndices[i * 3] = modelGeometry.rightIndices[i].a
     rightIndices[i * 3 + 1] = modelGeometry.rightIndices[i].b
     rightIndices[i * 3 + 2] = modelGeometry.rightIndices[i].c
   }
-  geometry.setIndex(rightIndices)
 
   const leftIndices = new Array(modelGeometry.leftIndices.length * 3)
   for (let i = 0; i < modelGeometry.leftIndices.length; ++i) {
@@ -120,6 +112,31 @@ const handMesh = (modelGeometry, material, wireframe) => {
     leftIndices[i * 3 + 1] = modelGeometry.leftIndices[i].b
     leftIndices[i * 3 + 2] = modelGeometry.leftIndices[i].c
   }
+
+  // Construct UVs based on hand mesh orientation
+  let uv
+  if (uvOrientation === 'left') {
+    const leftUvs = new Float32Array(modelGeometry.leftUvs.length * 2)
+    for (let i = 0; i < modelGeometry.pointsPerDetection; i++) {
+      leftUvs[2 * i] = modelGeometry.leftUvs[i].u
+      leftUvs[2 * i + 1] = modelGeometry.leftUvs[i].v
+    }
+    const leftUvBuffer = new THREE.BufferAttribute(leftUvs, 2)
+
+    uv = leftUvBuffer
+    geometry.setIndex(leftIndices)
+  } else if (uvOrientation === 'right') {
+    const rightUvs = new Float32Array(modelGeometry.rightUvs.length * 2)
+    for (let i = 0; i < modelGeometry.pointsPerDetection; i++) {
+      rightUvs[2 * i] = modelGeometry.rightUvs[i].u
+      rightUvs[2 * i + 1] = modelGeometry.rightUvs[i].v
+    }
+    const rightUvBuffer = new THREE.BufferAttribute(rightUvs, 2)
+
+    uv = rightUvBuffer
+    geometry.setIndex(rightIndices)
+  }
+  geometry.setAttribute('uv', uv)
 
   if (wireframe) {
     material.wireframe = true
@@ -173,7 +190,8 @@ const handMesh = (modelGeometry, material, wireframe) => {
 const handMeshComponent: ComponentDefinition = {
   schema: {
     'material-resource': {type: 'string'},
-    'wireframe': {type: 'boolean', default: false},
+    'wireframe': {type: 'boolean', default: true},
+    'uv-orientation': {type: 'string', default: 'right'},
   },
   init() {
     this.handMesh = null
@@ -191,7 +209,7 @@ const handMeshComponent: ComponentDefinition = {
         )
       }
 
-      this.handMesh = handMesh(detail, material, this.data.wireframe)
+      this.handMesh = handMesh(detail, material, this.data.wireframe, this.data['uv-orientation'])
       this.el.setObject3D('mesh', this.handMesh.mesh)
 
       this.el.emit('model-loaded')
@@ -248,14 +266,14 @@ const handOccluder = (modelGeometry, material, adjustment) => {
     rightIndices[i * 3 + 1] = modelGeometry.rightIndices[i].b
     rightIndices[i * 3 + 2] = modelGeometry.rightIndices[i].c
   }
-  geometry.setIndex(rightIndices)
-
   const leftIndices = new Array(modelGeometry.leftIndices.length * 3)
   for (let i = 0; i < modelGeometry.leftIndices.length; ++i) {
     leftIndices[i * 3] = modelGeometry.leftIndices[i].a
     leftIndices[i * 3 + 1] = modelGeometry.leftIndices[i].b
     leftIndices[i * 3 + 2] = modelGeometry.leftIndices[i].c
   }
+
+  geometry.setIndex(rightIndices)
 
   const mesh = new THREE.Mesh(geometry, material)
 
