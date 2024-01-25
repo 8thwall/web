@@ -190,7 +190,7 @@ const handMesh = (modelGeometry, material, wireframe, uvOrientation) => {
 const handMeshComponent: ComponentDefinition = {
   schema: {
     'material-resource': {type: 'string'},
-    'wireframe': {type: 'boolean', default: true},
+    'wireframe': {type: 'boolean', default: false},
     'uv-orientation': {type: 'string', default: 'right'},
   },
   init() {
