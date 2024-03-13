@@ -204,6 +204,9 @@ const showVideoPreview = ({videoBlob}) => {
     maybeFinishLoading()
   }
 
+  //ios 17.4 issue
+  videoPreview.oncanplaythrough()
+
   videoPreview.src = currentUrl
   videoPreview.load()
 }
