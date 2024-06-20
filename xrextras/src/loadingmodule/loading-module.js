@@ -503,6 +503,8 @@ function create() {
   return {
     pipelineModule,
     showLoading,
+    hideLoadingScreen,
+    hideLoadingScreenNow,
     setAppLoadedProvider,
   }
 }
