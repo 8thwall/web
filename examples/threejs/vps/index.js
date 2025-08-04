@@ -10,6 +10,7 @@ const initScenePipelineModule = () => {
   let mixer
   const clock = new THREE.Clock()
   //   const loader = new THREE.GLTFLoader()
+  THREE.ColorManagement.enabled = false // Set to true by default in three.js 152+
 
   const group = new THREE.Group()
   group.visible = false

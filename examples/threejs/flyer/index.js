@@ -7,6 +7,7 @@ const imageTargetPipelineModule = () => {
   const videoFile = 'jellyfish-video.mp4'
 
   const loader = new THREE.GLTFLoader()  // This comes from GLTFLoader.js.
+  THREE.ColorManagement.enabled = false // Set to true by default in three.js 152+
 
   let model
   let video, videoObj
