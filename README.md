@@ -8,9 +8,9 @@ Built entirely using standards-compliant JavaScript and WebGL, 8th Wall Web is a
 
 # Resources
 
-* [Getting Started Guide](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting#getting-started)
-* [Serving projects over HTTPS](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting#serve-projects-over-https)
-* [Documentation](https://www.8thwall.com/docs/web/)
+* [Getting Started Guide](https://www.8thwall.com/docs/legacy/guides/advanced-topics/local-hosting/#getting-started)
+* [Serving projects over HTTPS](https://www.8thwall.com/docs/legacy/guides/advanced-topics/local-hosting/#serve-projects-over-https)
+* [Legacy Documentation](https://www.8thwall.com/docs/legacy/)
 * [8th Wall Website](https://www.8thwall.com)
 
 # Examples

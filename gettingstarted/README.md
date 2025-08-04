@@ -9,10 +9,10 @@ Follow the getting started guide by cloning self-hosted sample projects from thi
 To develop locally you need Node.js and npm installed. If you don't already have Node.js and npm installed, [get it here](https://www.npmjs.com/get-npm).
 
 1. Download the source code from this repository and `cd` into an example of your choice (aframe is recommended for beginners).
-2. Replace the app key in `index.html` with your [app key from the project settings page](https://www.8thwall.com/docs/guides/projects/project-settings/#app-key) in the 8th Wall console.
-3. Authorize access to your app key on your device by [authorizing the device](https://www.8thwall.com/docs/web/#device-authorization) or [whitelisting the domain](https://www.8thwall.com/docs/web/#connected-domains) (localhost / IP address).
-4. Serve a project directory on your local network over HTTPS with [http-server](https://github.com/http-party/http-server#readme). See [Serve projects over HTTPS](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting/#serve-projects-over-https).
-5. Connect to your sever from your device, accept certificate warnings and camera permissions. See [View Project on iOS](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting/#view-project-on-ios) or [View Project on Android](https://www.8thwall.com/docs/guides/advanced-topics/local-hosting/#view-project-on-android).
+2. Replace the app key in `index.html` with your [app key from the project settings page](https://www.8thwall.com/docs/legacy/guides/projects/project-settings/#app-key) in the 8th Wall console.
+3. Authorize access to your app key on your device by [authorizing the device](https://www.8thwall.com/docs/legacy/guides/advanced-topics/device-authorization/) or [whitelisting the domain](https://www.8thwall.com/docs/legacy/guides/projects/self-hosted-domains/) (localhost / IP address).
+4. Serve a project directory on your local network over HTTPS with [http-server](https://github.com/http-party/http-server#readme). See [Serve projects over HTTPS](https://www.8thwall.com/docs/legacy/guides/advanced-topics/local-hosting/#serve-projects-over-https).
+5. Connect to your sever from your device, accept certificate warnings and camera permissions. See [View Project on iOS](https://www.8thwall.com/docs/legacy/guides/advanced-topics/local-hosting/#view-project-on-ios) or [View Project on Android](https://www.8thwall.com/docs/legacy/guides/advanced-topics/local-hosting/#view-project-on-android).
 
 ## Serve projects over HTTPS
 

@@ -1,8 +1,7 @@
 # XR Extras
 
 This library provides modules that extend the
-[Camera Pipeline Module framework](https://docs.8thwall.com/web/#camerapipelinemodule) in
-[8th Wall XR](https://8thwall.com/products-web.html) to handle common application needs.
+[Camera Pipeline Module framework](https://www.8thwall.com/docs/legacy/api/camerapipelinemodule/) to handle common application needs.
 
 The library is served at
 [//cdn.8thwall.com/web/xrextras/xrextras.js](https://cdn.8thwall.com/web/xrextras/xrextras.js), or
