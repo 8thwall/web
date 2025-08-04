@@ -14,6 +14,7 @@ const placegroundScenePipelineModule = () => {
   const raycaster = new THREE.Raycaster()
   const tapPosition = new THREE.Vector2()
   const loader = new THREE.GLTFLoader()  // This comes from GLTFLoader.js.
+  THREE.ColorManagement.enabled = false // Set to true by default in three.js 152+
 
   let surface  // Transparent surface for raycasting for object placement.
 

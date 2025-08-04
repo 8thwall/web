@@ -6,17 +6,29 @@
     <title>three.js: VPS Template</title>
     <link rel="stylesheet" type="text/css" href="index.css">
 
-    <!-- THREE.js must be supplied -->
-    <script src="//cdn.jsdelivr.net/npm/three@0.146.0/build/three.min.js"></script>
+    <!-- Three.js 160+ requires the use of import maps to use the Three.js renderer in projects -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.172.0/build/three.module.min.js",
+          "three/addons/": "https://unpkg.com/three@0.172.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from 'three';
+      import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+      window.THREE = { ...THREE };
+      window.THREE.GLTFLoader = GLTFLoader;
+    </script>
 
     <!-- Landing pages -->
     <script src='//cdn.8thwall.com/web/landing-page/landing-page.js'></script>
 
     <!-- VPS Coaching Overlay -->
     <script src='//cdn.8thwall.com/web/coaching-overlay/coaching-overlay.js'></script>
-
-    <!-- Required to load glTF (.gltf or .glb) models -->
-    <script src="//cdn.jsdelivr.net/gh/mrdoob/three.js@r146/examples/js/loaders/GLTFLoader.js"></script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/tree/master/xrextras -->
