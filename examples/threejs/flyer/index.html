@@ -6,11 +6,23 @@
     <title>8th Wall Web: three.js image targets</title>
     <link rel="stylesheet" type="text/css" href="index.css">
 
-    <!-- THREE.js must be supplied -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r123/three.min.js"></script>
+    <!-- Three.js 160+ requires the use of import maps to use the Three.js renderer in projects -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.172.0/build/three.module.min.js",
+          "three/addons/": "https://unpkg.com/three@0.172.0/examples/jsm/"
+        }
+      }
+    </script>
 
-    <!-- Required to load glTF (.gltf or .glb) models -->
-    <script src="//cdn.rawgit.com/mrdoob/three.js/r123/examples/js/loaders/GLTFLoader.js"></script>
+    <script type="module">
+      import * as THREE from 'three';
+      import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+      window.THREE = { ...THREE };
+      window.THREE.GLTFLoader = GLTFLoader;
+    </script>
 
     <!-- XR Extras - provides utilities like load screen, almost there, and error handling.
          See github.com/8thwall/web/tree/master/xrextras -->
