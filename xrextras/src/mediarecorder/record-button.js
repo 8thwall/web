@@ -217,6 +217,7 @@ const up = () => {
 
 const initRecordButton = () => {
   window.XR8.addCameraPipelineModule(XR8.MediaRecorder.pipelineModule())
+  window.XR8.addCameraPipelineModule(XR8.CanvasScreenshot.pipelineModule())
 
   document.body.insertAdjacentHTML('beforeend', htmlContent)
 
@@ -241,6 +242,7 @@ const initRecordButton = () => {
 
 const removeRecordButton = () => {
   window.XR8.removeCameraPipelineModule(window.XR8.MediaRecorder.pipelineModule().name)
+  window.XR8.removeCameraPipelineModule(window.XR8.CanvasScreenshot.pipelineModule().name)
   container.parentNode.removeChild(container)
   flashElement.parentNode.removeChild(flashElement)
 
