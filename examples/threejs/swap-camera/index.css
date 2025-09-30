@@ -1,0 +1,23 @@
+body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  margin: -1px 0px 0px 0px !important;
+  padding: 0;
+}
+
+#swap-btn {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  background: white;
+  border-radius: 50px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
